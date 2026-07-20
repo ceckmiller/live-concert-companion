@@ -1,0 +1,39 @@
+{
+  "name": "live-konzert-companion",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5174",
+    "build": "next build",
+    "start": "next start -p 5174",
+    "lint": "eslint",
+    "test": "vitest run",
+    "db:seed": "tsx scripts/seed.ts",
+    "assets:fetch": "node scripts/download-assets.mjs",
+    "videos:search": "node scripts/search-concert-youtube.mjs",
+    "videos:search:all": "node scripts/search-concert-youtube.mjs",
+    "videos:sanitize": "node scripts/sanitize-concert-live-videos.mjs",
+    "recordings:search": "node scripts/search-concert-recordings.mjs",
+    "db:setup": "npm run assets:fetch && npm run db:seed",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.17.3",
+    "@netlify/plugin-nextjs": "^5.15.11",
+    "drizzle-orm": "^0.45.2",
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9",
+    "tsx": "^4.22.4",
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  }
+}

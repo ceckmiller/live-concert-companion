@@ -1,0 +1,2026 @@
+{
+  "wanda": {
+    "1, 2, 3, 4": {
+      "origin": "artist",
+      "album": "FM4 Best of Songs zum Mitsingen",
+      "year": 2019
+    },
+    "A Hard Day's Night (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Auseinandergehen ist schwer": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Bleib wo du warst": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2017
+    },
+    "Bologna": {
+      "origin": "artist",
+      "album": "FM4 Soundselection 31",
+      "year": 2014
+    },
+    "Bussi Baby": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2017
+    },
+    "Das wär schön": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2017
+    },
+    "Dass es uns überhaupt gegeben hat": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Gib mir Alles": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Ich will Schnaps": {
+      "origin": "artist",
+      "album": "Amore",
+      "year": 2014
+    },
+    "Luzia": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Luzia (Reprise)": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Meine beiden Schwestern": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Mona Lisa der Lobau": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Schickt mir die Post": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2016
+    },
+    "Stehengelassene Weinflaschen": {
+      "origin": "artist",
+      "album": "Amore Meine Stadt",
+      "year": 2017
+    },
+    "Wenn ich zwanzig bin": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    }
+  },
+  "capital-bra": {
+    "Allein": {
+      "origin": "artist",
+      "album": "Allein",
+      "year": 2018
+    },
+    "Benzema": {
+      "origin": "artist",
+      "album": "Blyat",
+      "year": 2018
+    },
+    "Cherry Lady": {
+      "origin": "artist",
+      "album": "CB6",
+      "year": 2019
+    },
+    "Dresscode Gucci": {
+      "origin": "artist",
+      "album": "CB6",
+      "year": 2019
+    },
+    "5 Songs in Einer Nacht": {
+      "origin": "artist",
+      "album": "Berlin lebt",
+      "year": 2018
+    },
+    "fick 31er": {
+      "origin": "artist",
+      "album": "Blyat",
+      "year": 2018
+    },
+    "Ich liebe es": {
+      "origin": "artist",
+      "album": "CB6",
+      "year": 2019
+    },
+    "Melodien": {
+      "origin": "artist",
+      "album": "CB6",
+      "year": 2019
+    },
+    "Neymar": {
+      "origin": "artist",
+      "album": "Blyat",
+      "year": 2018
+    },
+    "Nur noch Gucci": {
+      "origin": "artist",
+      "album": "Blyat",
+      "year": 2018
+    },
+    "Rolex": {
+      "origin": "artist",
+      "album": "CB6",
+      "year": 2019
+    },
+    "Wir ticken": {
+      "origin": "artist",
+      "album": "Berlin lebt",
+      "year": 2018
+    }
+  },
+  "jan-delay": {
+    "Intro": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Klar": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Spass": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Large": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Wassermann": { "origin": "artist", "album": "Searching for the Jan Soul Rebels", "year": 2007 },
+    "Bass und Gang": { "origin": "artist", "album": "Merking", "year": 2010 },
+    "King": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Zurück": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Disko": { "origin": "artist", "album": "Searching for the Jan Soul Rebels", "year": 2007 },
+    "Action": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Feuer": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "Oh Jonny": { "origin": "artist", "album": "Oh Jonny", "year": 2014 },
+    "Eule": { "origin": "artist", "album": "Bummelkasten", "year": 2014 },
+    "Hoffnung": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 },
+    "St. Pauli": { "origin": "artist", "album": "Earth, Wind & Feiern", "year": 2022 }
+  },
+  "cro": {
+    "1975 (with Majan)": {
+      "origin": "artist",
+      "album": "tru.",
+      "year": 2017
+    },
+    "5 Minuten": {
+      "origin": "artist",
+      "album": "tru.",
+      "year": 2017
+    },
+    "ALLES DOPE": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "Blessed": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "Dein Song": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "Endless Summer": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "Fall auf": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "Glücklich (01099 cover)": {
+      "origin": "cover",
+      "by": "01099",
+      "album": "trip",
+      "year": 2021
+    },
+    "God Bless (with Cro & Badchieff)": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "hoch": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "ich liebe... (with Badchieff, Edo Saiya, Cro & Majan)": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "letzter song": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "Meine Gang (BANG BANG)": {
+      "origin": "artist",
+      "album": "tru.",
+      "year": 2017
+    },
+    "NICE!": {
+      "origin": "artist",
+      "album": "trip",
+      "year": 2021
+    },
+    "unendlichkeit - Main Edit": {
+      "origin": "artist",
+      "album": "tru.",
+      "year": 2017
+    },
+    "Victoria's Secret": {
+      "origin": "artist",
+      "album": "tru.",
+      "year": 2017
+    },
+    "8 km/h": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Allein": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Bye Bye": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Chillin": {
+      "origin": "artist",
+      "album": "Raop +5",
+      "year": 2013
+    },
+    "Cop Love": {
+      "origin": "artist",
+      "album": "MTV Unplugged (Deluxe Edition)",
+      "year": null
+    },
+    "Die Welt gehört dir": {
+      "origin": "artist",
+      "album": "Sunny",
+      "year": 2013
+    },
+    "Du": {
+      "origin": "artist",
+      "album": "RTL Hits 2012 Unsere größten Hits des Jahres",
+      "year": 2012
+    },
+    "Easy": {
+      "origin": "artist",
+      "album": "Easy",
+      "year": 2012
+    },
+    "Ein Teil": {
+      "origin": "artist",
+      "album": "Raop +5",
+      "year": 2013
+    },
+    "Einmal um die Welt": {
+      "origin": "artist",
+      "album": "Meine Musik",
+      "year": null
+    },
+    "Erinnerung": {
+      "origin": "artist",
+      "album": "MTV Unplugged (Deluxe Edition)",
+      "year": null
+    },
+    "Genauso": {
+      "origin": "artist",
+      "album": "Raop +5",
+      "year": 2013
+    },
+    "Hey Girl": {
+      "origin": "artist",
+      "album": "Hey Girl",
+      "year": 2014
+    },
+    "Hi Kids": {
+      "origin": "artist",
+      "album": "Easy",
+      "year": 2012
+    },
+    "I Know": {
+      "origin": "artist",
+      "album": "Melodie",
+      "year": 2014
+    },
+    "Intro": {
+      "origin": "artist",
+      "album": "Meine Musik",
+      "year": null
+    },
+    "Jeder Tag": {
+      "origin": "artist",
+      "album": "MTV Unplugged (Deluxe Edition)",
+      "year": null
+    },
+    "Lange her": {
+      "origin": "artist",
+      "album": "Sunny",
+      "year": 2013
+    },
+    "Meine Gang": {
+      "origin": "artist",
+      "album": "Hey Girl",
+      "year": 2014
+    },
+    "Melodie": {
+      "origin": "artist",
+      "album": "Melodie",
+      "year": 2014
+    },
+    "Never Cro Up": {
+      "origin": "artist",
+      "album": "Melodie",
+      "year": 2014
+    },
+    "Non Stop": {
+      "origin": "artist",
+      "album": "Sunny",
+      "year": 2013
+    },
+    "Rennen": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Rockstar": {
+      "origin": "artist",
+      "album": "Easy",
+      "year": 2011
+    },
+    "Traum": {
+      "origin": "artist",
+      "album": "Fetenhits: Silvester 2014",
+      "year": 2014
+    },
+    "Vielleicht": {
+      "origin": "artist",
+      "album": "Melodie",
+      "year": 2014
+    },
+    "Wir waren hier": {
+      "origin": "artist",
+      "album": "MTV Unplugged (Deluxe Edition)",
+      "year": null
+    }
+  },
+  "madness": {
+    "Baggy Trousers": {
+      "origin": "artist",
+      "album": "Madstock!",
+      "year": 2015
+    },
+    "Bed and Breakfast Man": {
+      "origin": "artist",
+      "album": "Faces for Radio: The BBC Sessions 1979-1982",
+      "year": 2026
+    },
+    "Can't Touch Us Now": {
+      "origin": "artist",
+      "album": "Hit Parade",
+      "year": 2025
+    },
+    "Chase the Devil (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Don't Leave the Past Behind You": {
+      "origin": "artist",
+      "album": "Can’t Touch Us Now",
+      "year": 2024
+    },
+    "Embarrassment": {
+      "origin": "artist",
+      "album": "Madstock!",
+      "year": 2015
+    },
+    "Girl Why Don't You? (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Grey Day": {
+      "origin": "artist",
+      "album": "Divine Madness",
+      "year": 2002
+    },
+    "Herbert": {
+      "origin": "artist",
+      "album": "Can’t Touch Us Now",
+      "year": 2024
+    },
+    "Highway to Hell (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "House of Fun": {
+      "origin": "artist",
+      "album": "Madstock!",
+      "year": 2015
+    },
+    "It Must Be Love (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Lovestruck": {
+      "origin": "artist",
+      "album": "Hit Parade",
+      "year": 2025
+    },
+    "Madness (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Mr. Apples": {
+      "origin": "artist",
+      "album": "Mr. Apples",
+      "year": 2016
+    },
+    "My Girl": {
+      "origin": "artist",
+      "album": "Divine Madness",
+      "year": 2002
+    },
+    "NW5": {
+      "origin": "artist",
+      "album": "On Board the Nutty Express: Live at the London Astoria 2007",
+      "year": 2007
+    },
+    "Night Boat to Cairo": {
+      "origin": "artist",
+      "album": "Nutty Sounds 3",
+      "year": null
+    },
+    "One Step Beyond (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Our House": {
+      "origin": "artist",
+      "album": "Y-100: Sonic Sessions, Volume 3",
+      "year": 1999
+    },
+    "Return of the Los Palmas 7": {
+      "origin": "artist",
+      "album": "On Board the Nutty Express: Live at the London Astoria 2007",
+      "year": 2007
+    },
+    "Shut Up": {
+      "origin": "artist",
+      "album": "Universal Madness: Live in Los Angeles",
+      "year": 1998
+    },
+    "Take It or Leave It": {
+      "origin": "artist",
+      "album": "Absolutely",
+      "year": null
+    },
+    "The Prince": {
+      "origin": "artist",
+      "album": "Non-Stop Seventies Party",
+      "year": 1999
+    },
+    "The Sun and the Rain": {
+      "origin": "artist",
+      "album": "To the Edge of the Universe and Beyond",
+      "year": 2006
+    },
+    "Wings of a Dove": {
+      "origin": "artist",
+      "album": "Madstock!",
+      "year": 2015
+    }
+  },
+  "the-cure": {
+    "Alone": {
+      "origin": "artist",
+      "album": "Songs of a Lost World",
+      "year": 2024
+    },
+    "And Nothing Is Forever": {
+      "origin": "artist",
+      "album": "Songs of a Lost World",
+      "year": 2024
+    },
+    "Closedown": {
+      "origin": "artist",
+      "album": "Pornography",
+      "year": 1982
+    },
+    "Cold": {
+      "origin": "artist",
+      "album": "Pornography",
+      "year": 1982
+    },
+    "Disintegration": {
+      "origin": "artist",
+      "album": "Disintegration",
+      "year": 1989
+    },
+    "Endsong": {
+      "origin": "artist",
+      "album": "Songs of a Lost World",
+      "year": 2024
+    },
+    "Plainsong": {
+      "origin": "artist",
+      "album": "Disintegration",
+      "year": 1989
+    },
+    "Play for Today": {
+      "origin": "artist",
+      "album": "Faith",
+      "year": 1981
+    },
+    "Prayers for Rain": {
+      "origin": "artist",
+      "album": "Disintegration",
+      "year": 1989
+    },
+    "Primary": {
+      "origin": "artist",
+      "album": "Faith",
+      "year": 1981
+    },
+    "The Figurehead": {
+      "origin": "artist",
+      "album": "Disintegration",
+      "year": 1989
+    },
+    "A Forest": {
+      "origin": "artist",
+      "album": "BBC Sessions 1979–1985",
+      "year": 2008
+    },
+    "A Night Like This": {
+      "origin": "artist",
+      "album": "The Cure in Orange",
+      "year": 1987
+    },
+    "Boys Don't Cry": {
+      "origin": "artist",
+      "album": "Dr. Robert and Mr. Smith",
+      "year": 2001
+    },
+    "Burn": {
+      "origin": "artist",
+      "album": "2016‐06‐20: Madison Square Garden, New York, NY, USA",
+      "year": null
+    },
+    "Close to Me": {
+      "origin": "artist",
+      "album": "Live MTV Unplugged",
+      "year": null
+    },
+    "Dressing Up": {
+      "origin": "artist",
+      "album": "1984‐05‐30: Maaspoort, Hertogenbosch, Netherlands",
+      "year": null
+    },
+    "Fascination Street": {
+      "origin": "artist",
+      "album": "Digging in the Dirt",
+      "year": 1998
+    },
+    "Friday I'm in Love": {
+      "origin": "artist",
+      "album": "2001-10-26: Le Réservoir, Paris, France",
+      "year": null
+    },
+    "From the Edge of the Deep Green Sea": {
+      "origin": "artist",
+      "album": "2012‐06‐01: Primavera Sound, Parc del Fòrum, Barcelona, Spain",
+      "year": 2012
+    },
+    "Give Me It": {
+      "origin": "artist",
+      "album": "The Walk",
+      "year": 1993
+    },
+    "High": {
+      "origin": "artist",
+      "album": "2019‐07‐11: NOS ALIVE! Festival, Oeiras, Portugal",
+      "year": null
+    },
+    "Hot Hot Hot!!!": {
+      "origin": "artist",
+      "album": "2016‐06‐18: Madison Square Garden, New York, NY, USA",
+      "year": null
+    },
+    "In Between Days": {
+      "origin": "artist",
+      "album": "1986-06-21: Glastonbury Festival, Worthy Farm, Glastonbury, UK",
+      "year": null
+    },
+    "It Can Never Be the Same": {
+      "origin": "artist",
+      "album": "2016‐06‐18: Madison Square Garden, New York, NY, USA",
+      "year": null
+    },
+    "Just Like Heaven": {
+      "origin": "artist",
+      "album": "The Swing Tour ’96 Barcelona",
+      "year": null
+    },
+    "Let's Go to Bed": {
+      "origin": "artist",
+      "album": "Stained Glass Smile",
+      "year": null
+    },
+    "Lovesong": {
+      "origin": "artist",
+      "album": "Halloween Galore",
+      "year": null
+    },
+    "Lullaby": {
+      "origin": "artist",
+      "album": "Digging in the Dirt",
+      "year": 1998
+    },
+    "Never Enough": {
+      "origin": "artist",
+      "album": "Ultra Rare Trax",
+      "year": 1994
+    },
+    "One Hundred Years": {
+      "origin": "artist",
+      "album": "2000‐02‐03: Ancienne Belgique, Brussels, Belgium",
+      "year": null
+    },
+    "Pictures of You": {
+      "origin": "artist",
+      "album": "Bite the Big Apple",
+      "year": 1992
+    },
+    "Push": {
+      "origin": "artist",
+      "album": "2019‐06‐30: Glastonbury Festival, Worthy Farm, Pilton, England, UK",
+      "year": null
+    },
+    "Shake Dog Shake": {
+      "origin": "artist",
+      "album": "Som da Frente – 1982–1993",
+      "year": 2005
+    },
+    "Sinking": {
+      "origin": "artist",
+      "album": "Digging in the Dirt",
+      "year": 1998
+    },
+    "Sleep When I'm Dead": {
+      "origin": "artist",
+      "album": "2012‐06‐01: Primavera Sound, Parc del Fòrum, Barcelona, Spain",
+      "year": 2012
+    },
+    "The Baby Screams": {
+      "origin": "artist",
+      "album": "2006-04-01: Royal Albert Hall, London, UK",
+      "year": null
+    },
+    "The Caterpillar": {
+      "origin": "artist",
+      "album": "2019‐06‐30: Glastonbury Festival, Worthy Farm, Pilton, England, UK",
+      "year": null
+    },
+    "The Perfect Girl": {
+      "origin": "artist",
+      "album": "The Kissing Tour 1987",
+      "year": null
+    },
+    "The Walk": {
+      "origin": "artist",
+      "album": "Halloween Galore",
+      "year": null
+    },
+    "Want": {
+      "origin": "artist",
+      "album": "The Swing Tour ’96 Barcelona",
+      "year": null
+    },
+    "Why Can't I Be You?": {
+      "origin": "artist",
+      "album": "2012‐06‐01: Primavera Sound, Parc del Fòrum, Barcelona, Spain",
+      "year": 2012
+    },
+    "Wrong Number": {
+      "origin": "artist",
+      "album": "2012‐05‐26: Pinkpop Festival, Megaland, Landgraaf, Netherlands",
+      "year": null
+    },
+    "alt.end": {
+      "origin": "artist",
+      "album": "2004‐06‐23: Piazza del Cannone, Milan, Italy",
+      "year": null
+    }
+  },
+  "placebo": {
+    "36 Degrees": {
+      "origin": "artist",
+      "album": "Phoenix: The Album",
+      "year": 1997
+    },
+    "Beautiful James": {
+      "origin": "artist",
+      "album": "Collapse Into Never: Live in Europe 2023",
+      "year": null
+    },
+    "Bionic": {
+      "origin": "artist",
+      "album": "2000-08-06: FIB, Benicàssim, Spain",
+      "year": 2000
+    },
+    "Chemtrails": {
+      "origin": "artist",
+      "album": "This Search For Meaning",
+      "year": 2025
+    },
+    "Devil in the Details": {
+      "origin": "artist",
+      "album": "Battle for the Sun",
+      "year": 2010
+    },
+    "Every You Every Me": {
+      "origin": "artist",
+      "album": "Music Planet 2nite",
+      "year": 2001
+    },
+    "Exit Wounds": {
+      "origin": "artist",
+      "album": "Loud Like Love",
+      "year": 2013
+    },
+    "Fix Yourself": {
+      "origin": "artist",
+      "album": "This Search For Meaning",
+      "year": 2025
+    },
+    "For What It's Worth": {
+      "origin": "artist",
+      "album": "2009-08-26: Reading Festival, Reading, England",
+      "year": null
+    },
+    "Forever Chemicals": {
+      "origin": "artist",
+      "album": "Collapse Into Never: Live in Europe 2023",
+      "year": null
+    },
+    "Happy Birthday in the Sky": {
+      "origin": "artist",
+      "album": "Live",
+      "year": 2023
+    },
+    "Hugz": {
+      "origin": "artist",
+      "album": "Live",
+      "year": 2023
+    },
+    "I Know": {
+      "origin": "artist",
+      "album": "Re:Created",
+      "year": 2026
+    },
+    "Infra-red": {
+      "origin": "artist",
+      "album": "Extended Play ’07",
+      "year": 2007
+    },
+    "Jesus' Son": {
+      "origin": "artist",
+      "album": "Life’s What You Make It",
+      "year": 2016
+    },
+    "Lady of the Flowers": {
+      "origin": "artist",
+      "album": "Freak Accurance",
+      "year": null
+    },
+    "Lazarus": {
+      "origin": "artist",
+      "album": "Meds",
+      "year": 2007
+    },
+    "Loud Like Love": {
+      "origin": "artist",
+      "album": "A Place for Us to Dream",
+      "year": 2016
+    },
+    "Nancy Boy": {
+      "origin": "artist",
+      "album": "Bruised and Broken",
+      "year": null
+    },
+    "Protect Me From What I Want": {
+      "origin": "artist",
+      "album": "2003-06-07: Rock am Ring, Nürburgring, Germany",
+      "year": null
+    },
+    "Pure Morning": {
+      "origin": "artist",
+      "album": "2000-08-13: La Route du Rock Festival, Saint-Malo, France",
+      "year": null
+    },
+    "Running Up That Hill (A Deal With God) (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Sad White Reggae": {
+      "origin": "artist",
+      "album": "Live",
+      "year": 2023
+    },
+    "Scene of the Crime": {
+      "origin": "artist",
+      "album": "Collapse Into Never: Live in Europe 2023",
+      "year": null
+    },
+    "Shout (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Slave to the Wage": {
+      "origin": "artist",
+      "album": "Acoustic",
+      "year": 2001
+    },
+    "Song to Say Goodbye": {
+      "origin": "artist",
+      "album": "iTunes Festival: London 2009",
+      "year": 2009
+    },
+    "Soulmates": {
+      "origin": "artist",
+      "album": "A Place for Us to Dream",
+      "year": 2016
+    },
+    "Space Monkey": {
+      "origin": "artist",
+      "album": "Ancienne Belgique",
+      "year": 2006
+    },
+    "Special K": {
+      "origin": "artist",
+      "album": "2000-08-06: FIB, Benicàssim, Spain",
+      "year": 2000
+    },
+    "Special Needs": {
+      "origin": "artist",
+      "album": "iTunes Festival: London 2009",
+      "year": 2009
+    },
+    "Surrounded by Spies": {
+      "origin": "artist",
+      "album": "Collapse Into Never: Live in Europe 2023",
+      "year": null
+    },
+    "Teenage Angst": {
+      "origin": "artist",
+      "album": "2003-06-07: Rock am Ring, Nürburgring, Germany",
+      "year": null
+    },
+    "The Bitter End": {
+      "origin": "artist",
+      "album": "B‐Sides & Live at La Cigale",
+      "year": 2009
+    },
+    "Too Many Friends": {
+      "origin": "artist",
+      "album": "MTV Unplugged",
+      "year": 2015
+    },
+    "Try Better Next Time": {
+      "origin": "artist",
+      "album": "Live",
+      "year": 2023
+    },
+    "Twenty Years": {
+      "origin": "artist",
+      "album": "Live @ Rock am Ring 2006",
+      "year": 2006
+    },
+    "Twin Demons": {
+      "origin": "artist",
+      "album": "Live",
+      "year": 2023
+    },
+    "Went Missing": {
+      "origin": "artist",
+      "album": "Live",
+      "year": 2023
+    },
+    "Without You I'm Nothing": {
+      "origin": "artist",
+      "album": "Bruised and Broken",
+      "year": null
+    }
+  },
+  "depeche-mode": {
+    "\"Heroes\" (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "A Pain That I'm Used To": {
+      "origin": "artist",
+      "album": "2006-04-29: Touring the Angel: Empire Polo Field, Indio, CA, USA",
+      "year": 2006
+    },
+    "A Question of Lust": {
+      "origin": "artist",
+      "album": "1993-05-29: Devotional Tour: Stockholm, Sweden",
+      "year": 2003
+    },
+    "A Question of Time": {
+      "origin": "artist",
+      "album": "1986‐05‐20: Münsterlandhalle, Münster, Germany",
+      "year": null
+    },
+    "Barrel of a Gun": {
+      "origin": "artist",
+      "album": "Ultra",
+      "year": 2016
+    },
+    "Corrupt": {
+      "origin": "artist",
+      "album": "Sounds of the Universe",
+      "year": 2009
+    },
+    "Cover Me": {
+      "origin": "artist",
+      "album": "Spirit",
+      "year": 2017
+    },
+    "Enjoy the Silence": {
+      "origin": "artist",
+      "album": "2006-05-17: Touring the Angel: Bell Centre, Montréal, Canada",
+      "year": 2006
+    },
+    "Everything Counts": {
+      "origin": "artist",
+      "album": "Memento Mori: Mexico City",
+      "year": 2025
+    },
+    "Going Backwards": {
+      "origin": "artist",
+      "album": "SPiRiTS IN THE FOREST",
+      "year": 2020
+    },
+    "Home": {
+      "origin": "artist",
+      "album": "2006-07-10: Touring the Angel: Moon & Stars, Locarno, Switzerland",
+      "year": 2006
+    },
+    "I Feel You": {
+      "origin": "artist",
+      "album": "2006-06-28: Touring the Angel: Waldbühne, Berlin, Germany",
+      "year": 2006
+    },
+    "In Your Room": {
+      "origin": "artist",
+      "album": "2006-06-29: Touring the Angel: City Square, Arras, France",
+      "year": 2006
+    },
+    "Insight": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "It's No Good": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Never Let Me Down Again": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Personal Jesus": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Poison Heart": {
+      "origin": "artist",
+      "album": "SPiRiTS IN THE FOREST",
+      "year": 2020
+    },
+    "Precious": {
+      "origin": "artist",
+      "album": "Precious",
+      "year": 2005
+    },
+    "So Much Love": {
+      "origin": "artist",
+      "album": "Spirit",
+      "year": 2017
+    },
+    "Somebody": {
+      "origin": "artist",
+      "album": "Some Great Reward",
+      "year": 2006
+    },
+    "Strangelove": {
+      "origin": "artist",
+      "album": "101",
+      "year": null
+    },
+    "Stripped": {
+      "origin": "artist",
+      "album": "Black Celebration",
+      "year": null
+    },
+    "Useless": {
+      "origin": "artist",
+      "album": "The Singles Tour 86–98",
+      "year": 1998
+    },
+    "Walking in My Shoes": {
+      "origin": "artist",
+      "album": "Depeche Mode: M",
+      "year": 2025
+    },
+    "Where's the Revolution": {
+      "origin": "artist",
+      "album": "SPiRiTS IN THE FOREST",
+      "year": 2020
+    },
+    "World in My Eyes": {
+      "origin": "artist",
+      "album": "2010‐02‐17: Concert for Teenage Cancer Trust: The Royal Albert Hall, London, UK",
+      "year": 2010
+    },
+    "Wrong": {
+      "origin": "artist",
+      "album": "2009‐07‐28: Tour of the Universe: Washington, DC, USA",
+      "year": 2009
+    }
+  },
+  "bilderbuch": {
+    "Ab und Auf": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Baba": {
+      "origin": "artist",
+      "album": "Magic Life",
+      "year": 2017
+    },
+    "Baba 2": {
+      "origin": "artist",
+      "album": "Magic Life",
+      "year": 2017
+    },
+    "Babylon": {
+      "origin": "artist",
+      "album": "Musikexpress 0317",
+      "year": 2017
+    },
+    "Barry Manilow": {
+      "origin": "artist",
+      "album": "SCHICK SCHOCK",
+      "year": 2015
+    },
+    "Blütenstaub": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Bungalow": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Checkpoint (Nie Game Over)": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Dates": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Daydrinking": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Europa 22": {
+      "origin": "artist",
+      "album": "Live in Schoenbrunn",
+      "year": 2019
+    },
+    "For Rent": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Gelb ist das Feld": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Golden Retriever": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "I'm Not Gonna Lie": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Kitsch": {
+      "origin": "artist",
+      "album": "Kitsch",
+      "year": 2019
+    },
+    "La Pampa": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "Magic Life": {
+      "origin": "artist",
+      "album": "Magic Life",
+      "year": 2017
+    },
+    "Maschin": {
+      "origin": "artist",
+      "album": "Live in Schoenbrunn",
+      "year": 2019
+    },
+    "Megaplex": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Moonboots": {
+      "origin": "artist",
+      "album": "Feinste Seide",
+      "year": 2013
+    },
+    "Mr. Refrigerator": {
+      "origin": "artist",
+      "album": "Live in Schoenbrunn",
+      "year": 2019
+    },
+    "Nahuel Huapi": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "OM": {
+      "origin": "artist",
+      "album": "Live in Schoenbrunn",
+      "year": 2019
+    },
+    "Schick Schock": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Schwarzes Karma": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Softdrink": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Spliff": {
+      "origin": "artist",
+      "album": "FM4 Soundselection 31",
+      "year": 2014
+    },
+    "Sprit N' Soda": {
+      "origin": "artist",
+      "album": "Magic Life",
+      "year": 2017
+    },
+    "Superfunkypartytime": {
+      "origin": "artist",
+      "album": "Magic Life",
+      "year": 2017
+    },
+    "Sweetlove": {
+      "origin": "artist",
+      "album": "Magic Life",
+      "year": 2017
+    },
+    "Vul'indela (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Willkommen im Dschungel": {
+      "origin": "artist",
+      "album": "SCHICK SCHOCK",
+      "year": 2015
+    },
+    "Zwischen deiner und meiner Welt": {
+      "origin": "artist",
+      "album": "Gelb ist das Feld",
+      "year": 2022
+    },
+    "sneakers4free": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    }
+  },
+  "danger-dan": {
+    "Amewuga (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Anti Alles Aktion (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Army Parka (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Auf sie mit Gebrüll (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Da draußen (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Das ist alles von der Kunstfreiheit gedeckt": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Der Ekel I (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Der Ekel II": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Der goldene Presslufthammer (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Die Prinzentragödie": {
+      "origin": "artist",
+      "album": "Reflexionen aus dem beschönigten Leben",
+      "year": 2018
+    },
+    "Die Verwandlung": {
+      "origin": "artist",
+      "album": "Reflexionen aus dem beschönigten Leben",
+      "year": 2018
+    },
+    "Du wartest (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Eine aufs Maul": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt (Live In Berlin)",
+      "year": 2023
+    },
+    "Eine gute Nachricht": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Enkeltrick (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Fickt-Euch-Allee (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Happy Birthday und Wie schön, dass du geboren bist": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Ich verprügelte die Sextouristen in Bangkok": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt",
+      "year": 2021
+    },
+    "Ingloria Victoria": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt",
+      "year": 2021
+    },
+    "Jein (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Keine Party (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Lauf davon": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt (Live In Berlin)",
+      "year": 2023
+    },
+    "Life is a journey": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Lovesongs (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Mein Fahrrad (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Mein Vater wird gesucht (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Mingvase": {
+      "origin": "artist",
+      "album": "Reflexionen aus dem beschönigten Leben",
+      "year": 2018
+    },
+    "Mir kann nichts passieren": {
+      "origin": "artist",
+      "album": "Antilopen Geldwäsche Sampler 1",
+      "year": 2021
+    },
+    "Ode an den Mord": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt",
+      "year": 2021
+    },
+    "Patientenkollektiv (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Stop the hate": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Tesafilm": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt",
+      "year": 2021
+    },
+    "Trotzdem": {
+      "origin": "artist",
+      "album": "Das ist alles von der Kunstfreiheit gedeckt",
+      "year": 2021
+    },
+    "Verliebt (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Ölsardinenindustrie": {
+      "origin": "artist",
+      "album": "Dinkelbrot & Ölsardinen",
+      "year": null
+    }
+  },
+  "peter-fox": {
+    "Alles neu": {
+      "origin": "artist",
+      "album": "Germany's Next Topmodel 2009",
+      "year": 2009
+    },
+    "Augenbling (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Disney": {
+      "origin": "artist",
+      "album": "Love Songs",
+      "year": 2024
+    },
+    "Ein Auge blau": {
+      "origin": "artist",
+      "album": "Love Songs",
+      "year": 2024
+    },
+    "Gegengift": {
+      "origin": "artist",
+      "album": "Love Songs",
+      "year": 2024
+    },
+    "Hale-Bopp (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Haus am See": {
+      "origin": "artist",
+      "album": "The Sound of My Life: 100 Deutsche Hits",
+      "year": 2020
+    },
+    "Kein Regen in Dubai": {
+      "origin": "artist",
+      "album": "Love Songs",
+      "year": 2024
+    },
+    "Kopf verloren": {
+      "origin": "artist",
+      "album": "Stadtaffe",
+      "year": 2008
+    },
+    "Lass sie gehn (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Lok auf 2 Beinen": {
+      "origin": "artist",
+      "album": "Stadtaffe",
+      "year": 2008
+    },
+    "Schwarz zu blau": {
+      "origin": "artist",
+      "album": "Chartboxx 3/2009",
+      "year": 2009
+    },
+    "Schüttel deinen Speck": {
+      "origin": "artist",
+      "album": "Stadtaffe",
+      "year": 2008
+    },
+    "Stadtaffe / Put Your Hands Where My Eyes Could See": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Ticket (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "Toscana Fanboys": {
+      "origin": "artist",
+      "album": "Love Songs",
+      "year": 2024
+    },
+    "Tuff Cookie": {
+      "origin": "artist",
+      "album": "Love Songs",
+      "year": 2024
+    },
+    "Vergessen wie": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Weisse Fahnen": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Zukunft Pink": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    }
+  },
+  "die-fantastischen-vier": {
+    "25": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "45 Fieber": {
+      "origin": "artist",
+      "album": "VIEL",
+      "year": 2007
+    },
+    "Buenos Dias Messias": {
+      "origin": "artist",
+      "album": "4 gewinnt",
+      "year": 2005
+    },
+    "Danke": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Das Spiel ist aus": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Dicker Pulli": {
+      "origin": "artist",
+      "album": "Jetzt geht's ab",
+      "year": 1999
+    },
+    "Die 4. Dimension": {
+      "origin": "artist",
+      "album": "Die 4. Dimension",
+      "year": 1999
+    },
+    "Die Stadt die es nicht gibt": {
+      "origin": "artist",
+      "album": "4 gewinnt",
+      "year": 2005
+    },
+    "Disco": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Gebt uns ruhig die Schuld (den Rest könnt ihr behalten)": {
+      "origin": "artist",
+      "album": "4 gewinnt",
+      "year": 2005
+    },
+    "Gegen jede Vernunft": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Gott ist mein Zeuge": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Heute": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Lass sehen": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Liebesbrief": {
+      "origin": "cover",
+      "album": "Thomas D",
+      "year": 2000
+    },
+    "Locker bleiben": {
+      "origin": "artist",
+      "album": "VIEL",
+      "year": 2007
+    },
+    "Populär": {
+      "origin": "artist",
+      "album": "4 gewinnt",
+      "year": 2005
+    },
+    "Single": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Typisch ich": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Und los": {
+      "origin": "artist",
+      "album": "Rekord",
+      "year": 2014
+    },
+    "Was geht": {
+      "origin": "artist",
+      "album": "Lauschgift",
+      "year": 1999
+    },
+    "Yeah Yeah Yeah": {
+      "origin": "artist",
+      "album": "Die 4. Dimension",
+      "year": 1999
+    },
+    "44 Tausend": {
+      "origin": "artist",
+      "album": "Long Player on Tour",
+      "year": 2025
+    },
+    "Aller Anfang ist Yeah": {
+      "origin": "artist",
+      "album": "Captain Fantastic",
+      "year": 2018
+    },
+    "Aufhören": {
+      "origin": "artist",
+      "album": "Long Player",
+      "year": 2024
+    },
+    "Bestandsaufnahme": {
+      "origin": "artist",
+      "album": "Long Player on Tour",
+      "year": 2025
+    },
+    "Dann mach doch mal": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Der Picknicker": {
+      "origin": "artist",
+      "album": "Live und direkt",
+      "year": null
+    },
+    "Die Fantastischen Vier": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Die da!?!": {
+      "origin": "artist",
+      "album": "Mr Music Hits 1•93",
+      "year": 1993
+    },
+    "Du mich auch": {
+      "origin": "artist",
+      "album": "Die Studio-Alben-Kollektion",
+      "year": 2015
+    },
+    "Einfach sein": {
+      "origin": "artist",
+      "album": "Für immer 30 Jahre Live",
+      "year": 2022
+    },
+    "Endstation Erde": {
+      "origin": "artist",
+      "album": "Long Player",
+      "year": 2024
+    },
+    "Endzeitstimmung": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Ernten was wir säen": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Hitisn": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Le Smou": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Long Player/Neues Land": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Sie ist weg": {
+      "origin": "artist",
+      "album": "2010-11-20: \"Für dich immer noch Fanta Sie\"-Tour: Festhalle, Frankfurt, Germany",
+      "year": 2010
+    },
+    "Smudo in Zukunft": {
+      "origin": "artist",
+      "album": "2010-11-20: \"Für dich immer noch Fanta Sie\"-Tour: Festhalle, Frankfurt, Germany",
+      "year": 2010
+    },
+    "Tag am Meer": {
+      "origin": "artist",
+      "album": "Live und direkt",
+      "year": null
+    },
+    "Was man will": {
+      "origin": "artist",
+      "album": "Long Player on Tour",
+      "year": 2025
+    },
+    "Win Win Win": {
+      "origin": "artist",
+      "album": "Long Player",
+      "year": 2024
+    }
+  },
+  "johnny-marr": {
+    "Armatopia": {
+      "origin": "artist",
+      "album": "Armatopia",
+      "year": 2019
+    },
+    "Bigmouth Strikes Again": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "Easy Money": {
+      "origin": "artist",
+      "album": "Spirit Power: The Best of Johnny Marr",
+      "year": 2023
+    },
+    "Getting Away With It": {
+      "origin": "artist",
+      "album": "Adrenalin Baby - Johnny Marr Live",
+      "year": 2015
+    },
+    "Hi Hello": {
+      "origin": "artist",
+      "album": "Spirit Power: The Best of Johnny Marr",
+      "year": 2023
+    },
+    "How Soon Is Now?": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "It's Time": {
+      "origin": "artist",
+      "album": "The Age of Everything",
+      "year": 2026
+    },
+    "New Town Velocity": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "Panic": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "Please, Please, Please Let Me Get What I Want": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "Somewhere": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "Spin": {
+      "origin": "artist",
+      "album": "Spin",
+      "year": 2026
+    },
+    "Spirit Power and Soul": {
+      "origin": "artist",
+      "album": null,
+      "year": null
+    },
+    "Stop Me If You Think You've Heard This One Before": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "The Passenger (cover)": {
+      "origin": "cover",
+      "album": "Cover",
+      "by": "Unknown",
+      "year": null
+    },
+    "There Is a Light That Never Goes Out": {
+      "origin": "artist",
+      "album": "Adrenalin Baby - Johnny Marr Live",
+      "year": 2015
+    },
+    "This Charming Man": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    },
+    "Walk Into the Sea": {
+      "origin": "artist",
+      "album": "Look Out Live!",
+      "year": 2025
+    }
+  },
+  "element-of-crime": {
+    "Am Ende denk ich immer nur an dich": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Am ersten Sonntag nach dem Weltuntergang": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Bitte bleib bei mir": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Bring den Vorschlaghammer mit": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Die letzte U-Bahn geht später": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Ein Hotdog unten am Hafen": { "origin": "artist", "album": "Crime Pays", "year": 2005 },
+    "Finger weg von meiner Paranoia": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Im Himmel ist kein Platz mehr für uns zwei": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Immer da wo du bist bin ich nie": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Mehr als sie erlaubt": { "origin": "artist", "album": "Mysterie Bock", "year": 2009 },
+    "Rette mich (vor mir selber)": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Über dir der Mond": { "origin": "artist", "album": "Gossip", "year": 2001 },
+    "Vier Stunden vor Elbe 1": { "origin": "artist", "album": "Land in Sicht", "year": 2007 },
+    "Weil es schön war": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Wenn der Morgen graut": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "Wenn es dunkel und kalt wird in Berlin": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 },
+    "You Shouldn't Be Lonely": { "origin": "artist", "album": "Schafe, Monster und Mäuse", "year": 2018 }
+  },
+  "herbert-groenemeyer": {
+    "Alkohol": { "origin": "artist", "album": "Chaos", "year": 1993 },
+    "Bleibt alles anders": { "origin": "artist", "album": "12", "year": 2007 },
+    "Demo (Letzter Tag)": { "origin": "artist", "album": "12", "year": 2007 },
+    "Der Weg": { "origin": "artist", "album": "Mensch", "year": 2002 },
+    "Dort und hier": { "origin": "artist", "album": "12", "year": 2007 },
+    "Flugzeuge im Bauch": { "origin": "artist", "album": "4630 Bochum", "year": 1984 },
+    "Halt mich": { "origin": "artist", "album": "4630 Bochum", "year": 1984 },
+    "Ich dreh mich um Dich": { "origin": "artist", "album": "12", "year": 2007 },
+    "Ich hab dich bloß geliebt": { "origin": "cover", "album": "Stephan Sulke", "year": 1980 },
+    "Ich will mehr": { "origin": "artist", "album": "Mensch", "year": 2002 },
+    "Kopf hoch, tanzen": { "origin": "artist", "album": "12", "year": 2007 },
+    "Land unter": { "origin": "artist", "album": "4630 Bochum", "year": 1984 },
+    "Leb in meiner Welt": { "origin": "artist", "album": "12", "year": 2007 },
+    "Liebe liegt nicht": { "origin": "artist", "album": "12", "year": 2007 },
+    "Marlene": { "origin": "artist", "album": "Mensch", "year": 2002 },
+    "Männer": { "origin": "artist", "album": "4630 Bochum", "year": 1984 },
+    "Mensch": { "origin": "artist", "album": "Mensch", "year": 2002 },
+    "Spur": { "origin": "artist", "album": "12", "year": 2007 },
+    "Stand der Dinge": { "origin": "artist", "album": "Mensch", "year": 2002 },
+    "Stück vom Himmel": { "origin": "artist", "album": "12", "year": 2007 },
+    "Zeit, dass sich was dreht": { "origin": "artist", "album": "12", "year": 2007 },
+    "Zum Meer": { "origin": "artist", "album": "Mensch", "year": 2002 },
+    "Zur Nacht": { "origin": "artist", "album": "Luxus", "year": 2011 }
+  },
+  "u2": {
+    "The Miracle (of Joey Ramone)": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "Gloria": { "origin": "artist", "album": "October", "year": 1981 },
+    "Vertigo": { "origin": "artist", "album": "How to Dismantle an Atomic Bomb", "year": 2004 },
+    "I Will Follow": { "origin": "artist", "album": "Boy", "year": 1980 },
+    "Iris (Hold Me Close)": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "Cedarwood Road": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "Song for Someone": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "Sunday Bloody Sunday": { "origin": "artist", "album": "War", "year": 1983 },
+    "Raised by Wolves": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "Until the End of the World": { "origin": "artist", "album": "Achtung Baby", "year": 1991 },
+    "Invisible": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "Even Better Than the Real Thing": { "origin": "artist", "album": "Achtung Baby", "year": 1991 },
+    "Mysterious Ways": { "origin": "artist", "album": "Achtung Baby", "year": 1991 },
+    "Elevation": { "origin": "artist", "album": "All That You Can't Leave Behind", "year": 2000 },
+    "New Year's Day": { "origin": "artist", "album": "War", "year": 1983 },
+    "Every Breaking Wave": { "origin": "artist", "album": "Songs of Innocence", "year": 2014 },
+    "October": { "origin": "artist", "album": "October", "year": 1981 },
+    "Bullet the Blue Sky": { "origin": "artist", "album": "The Joshua Tree", "year": 1987 },
+    "Zooropa": { "origin": "artist", "album": "Zooropa", "year": 1993 },
+    "Where the Streets Have No Name": { "origin": "artist", "album": "The Joshua Tree", "year": 1987 },
+    "Pride (In the Name of Love)": { "origin": "artist", "album": "The Unforgettable Fire", "year": 1984 },
+    "With or Without You": { "origin": "artist", "album": "The Joshua Tree", "year": 1987 },
+    "City of Blinding Lights": { "origin": "artist", "album": "How to Dismantle an Atomic Bomb", "year": 2004 },
+    "Beautiful Day": { "origin": "artist", "album": "All That You Can't Leave Behind", "year": 2000 },
+    "One": { "origin": "artist", "album": "Achtung Baby", "year": 1991 }
+  },
+  "robbie-williams": {
+    "Advertising Space": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Ain't That a Kick in the Head (cover)": { "origin": "cover", "album": "This Is Dean Martin!", "year": 1965 },
+    "Angels": { "origin": "artist", "album": "Life thru a Lens", "year": 1997 },
+    "A Place to Crash": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Candy": { "origin": "artist", "album": "Take the Crown", "year": 2012 },
+    "Come Undone": { "origin": "artist", "album": "Escapology", "year": 2002 },
+    "Eternity": { "origin": "artist", "album": "Life thru a Lens", "year": 1997 },
+    "Feel": { "origin": "artist", "album": "Escapology", "year": 2002 },
+    "Ghosts": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Go Gentle": { "origin": "artist", "album": "Swings Both Ways", "year": 2013 },
+    "Hey Wow Yeah Yeah": { "origin": "artist", "album": "XXV", "year": 2022 },
+    "High Hopes (cover)": { "origin": "cover", "album": "All the Way", "year": 1961 },
+    "I Will Talk and Hollywood Will Listen": { "origin": "artist", "album": "Swings Both Ways", "year": 2013 },
+    "Ignition (cover)": { "origin": "cover", "album": "Chocolate Factory", "year": 2003 },
+    "I Wan'na Be Like You (The Monkey Song) (cover)": { "origin": "cover", "album": "The Jungle Book", "year": 1967 },
+    "Kids": { "origin": "artist", "album": "Sing When You're Winning", "year": 2000 },
+    "Language Adaptation of Comme d'habitude (cover)": { "origin": "cover", "album": "Single", "year": 1967 },
+    "Let Me Entertain You": { "origin": "artist", "album": "Life thru a Lens", "year": 1997 },
+    "Let Me Entertain You / Rock DJ / Millennium / Come Undone / Old Before I Die / Candy":
+      { "origin": "artist", "album": "Medley", "year": null },
+    "Love My Life": { "origin": "artist", "album": "The Heavy Entertainment Show", "year": 2016 },
+    "Make Me Pure": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Millennium": { "origin": "artist", "album": "I've Been Expecting You", "year": 1998 },
+    "Minnie the Moocher (cover)": { "origin": "cover", "album": "Single", "year": 1931 },
+    "Monsoon": { "origin": "artist", "album": "Rudebox", "year": 2006 },
+    "Mr. Bojangles (cover)": { "origin": "cover", "album": "Mr. Bojangles", "year": 1968 },
+    "My Way (cover)": { "origin": "cover", "album": "My Way", "year": 1969 },
+    "No One Likes a Fat Pop Star": { "origin": "artist", "album": "Swings Both Ways", "year": 2013 },
+    "No Regrets": { "origin": "artist", "album": "Life thru a Lens", "year": 1997 },
+    "Party Like a Russian": { "origin": "artist", "album": "The Heavy Entertainment Show", "year": 2016 },
+    "Puttin' On the Ritz (cover)": { "origin": "cover", "album": "Single", "year": 1929 },
+    "Radio": { "origin": "artist", "album": "Rudebox", "year": 2006 },
+    "Rock DJ": { "origin": "artist", "album": "Sing When You're Winning", "year": 2000 },
+    "Rudebox": { "origin": "artist", "album": "Rudebox", "year": 2006 },
+    "Sensational": { "origin": "artist", "album": "Take the Crown", "year": 2012 },
+    "Shine My Shoes": { "origin": "artist", "album": "Swings Both Ways", "year": 2013 },
+    "Sin Sin Sin": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Soda Pop": { "origin": "artist", "album": "Swings Both Ways", "year": 2013 },
+    "Spread Your Wings": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Strong": { "origin": "artist", "album": "Life thru a Lens", "year": 1997 },
+    "Strong / Love My Life / Candy / Feel / Rock DJ / Angels": { "origin": "artist", "album": "XXV", "year": 2022 },
+    "Supreme": { "origin": "artist", "album": "Life thru a Lens", "year": 1997 },
+    "Swings Both Ways": { "origin": "artist", "album": "Swings Both Ways", "year": 2013 },
+    "That's Amore (cover)": { "origin": "cover", "album": "Dean Martin Sings", "year": 1953 },
+    "Theme From New York, New York (cover)": { "origin": "cover", "album": "New York, New York", "year": 1977 },
+    "The Heavy Entertainment Show": { "origin": "artist", "album": "The Heavy Entertainment Show", "year": 2016 },
+    "The National Anthem of Robbie": { "origin": "artist", "album": "The Heavy Entertainment Show", "year": 2016 },
+    "The Trouble With Me": { "origin": "artist", "album": "Intensive Care", "year": 2005 },
+    "Tripping": { "origin": "artist", "album": "Escapology", "year": 2002 },
+    "Trouble / Hit the Road Jack / Reet Petite / Shout (cover)": { "origin": "cover", "album": "Medley", "year": null }
+  },
+  "olli-schulz": {
+    "Als Musik noch richtig groß war": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Bessere Version": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Die Ankunft der Marsianer": { "origin": "artist", "album": "Olli Schulz & der Hund Marie", "year": 2012 },
+    "Einfach so": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Falsch erzählt": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Hamse nich": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Ich dachte, Du bist es": { "origin": "artist", "album": "Frage des Charakters", "year": 2006 },
+    "Kommissar Ärmchen": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Koks & Nutten": { "origin": "artist", "album": "Frage des Charakters", "year": 2006 },
+    "Passt schon!": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Phase": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Phosphormann": { "origin": "artist", "album": "Frage des Charakters", "year": 2006 },
+    "Schrecklich schöne Welt": { "origin": "artist", "album": "Schrecklich schöne Welt", "year": 2009 },
+    "So muss es beginnen": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "So schreibt man seinen Song": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Spielerfrau": { "origin": "artist", "album": "Schulz und Schulz", "year": 2003 },
+    "Stadtfest in Bonn": { "origin": "artist", "album": "Vom Rand der Zeit", "year": 2024 },
+    "Wenn die Music nicht so laut wär'": { "origin": "artist", "album": "Olli Schulz & der Hund Marie", "year": 2012 },
+    "Wenn es gut ist": { "origin": "artist", "album": "Frage des Charakters", "year": 2006 }
+  }
+}

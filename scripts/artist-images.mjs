@@ -1,0 +1,55 @@
+/** Artist portrait / promo images (Wikimedia Commons or official press). */
+export const ARTIST_IMAGES = {
+  morrissey:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Morrissey_-_2004.jpg/440px-Morrissey_-_2004.jpg",
+  bilderbuch:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Bilderbuch_-_Haltestelle_%E2%80%9EHuman%22_%E2%80%93_Donauinselfest_2016_%E2%80%93_01.jpg/440px-Bilderbuch_-_Haltestelle_%E2%80%9EHuman%22_%E2%80%93_Donauinselfest_2016_%E2%80%93_01.jpg",
+  "capital-bra-samra":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Capital_Bra_2018.jpg/440px-Capital_Bra_2018.jpg",
+  "capital-bra":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Capital_Bra_2018.jpg/440px-Capital_Bra_2018.jpg",
+  "christian-steiffen":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Christian_Steiffen_2010.jpg/440px-Christian_Steiffen_2010.jpg",
+  cro: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Cro_%28rapper%29_2012.jpg/440px-Cro_%28rapper%29_2012.jpg",
+  "danger-dan":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Danger_Dan_2019.jpg/440px-Danger_Dan_2019.jpg",
+  "depeche-mode":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Depeche_Mode_-_Concert_for_Valentina_%28Crop%29.jpg/440px-Depeche_Mode_-_Concert_for_Valentina_%28Crop%29.jpg",
+  "die-fantastischen-vier":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Die_Fantastischen_Vier_%282014%29.jpg/440px-Die_Fantastischen_Vier_%282014%29.jpg",
+  "element-of-crime":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Element_of_Crime_2018.jpg/440px-Element_of_Crime_2018.jpg",
+  "herbert-groenemeyer":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Herbert_Gr%C3%B6nemeyer_2011.jpg/440px-Herbert_Gr%C3%B6nemeyer_2011.jpg",
+  "olli-schulz":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Olli_Schulz_2014.jpg/440px-Olli_Schulz_2014.jpg",
+  "jochen-distelmeyer":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Jochen_Distelmeyer_2010.jpg/440px-Jochen_Distelmeyer_2010.jpg",
+  "johnny-marr":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Johnny_Marr_%282018%29.jpg/440px-Johnny_Marr_%282018%29.jpg",
+  "loyle-carner":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Loyle_Carner_2017.jpg/440px-Loyle_Carner_2017.jpg",
+  madness:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Madness_%28band%29_2009.jpg/440px-Madness_%28band%29_2009.jpg",
+  "peter-fox":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Peter_Fox_2013.jpg/440px-Peter_Fox_2013.jpg",
+  placebo:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Placebo_-_Pal%C3%A9o_2012.jpg/440px-Placebo_-_Pal%C3%A9o_2012.jpg",
+  "robbie-williams":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Robbie_Williams_%40_Tuska_Open_Air_2024_10.jpg/440px-Robbie_Williams_%40_Tuska_Open_Air_2024_10.jpg",
+  seeed:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Seeed_2012.jpg/440px-Seeed_2012.jpg",
+  "snoop-dogg":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Snoop_Dogg_2019_by_Glenn_Francis.jpg/440px-Snoop_Dogg_2019_by_Glenn_Francis.jpg",
+  sting:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Sting_%282019%29.jpg/440px-Sting_%282019%29.jpg",
+  "the-cure":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Robert_Smith_%28The_Cure%29_-_Roskilde_Festival_2012.jpg/440px-Robert_Smith_%28The_Cure%29_-_Roskilde_Festival_2012.jpg",
+  u2: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/U2_on_Joshua_Tree_Tour_2017_Brussels_8-1-17.jpg/440px-U2_on_Joshua_Tree_Tour_2017_Brussels_8-1-17.jpg",
+  "jan-delay":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Jan_delay_2013-6.jpg/440px-Jan_delay_2013-6.jpg",
+  "voodoo-juergens":
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Voodoo_J%C3%BCrgens_2019.jpg/440px-Voodoo_J%C3%BCrgens_2019.jpg",
+  wanda:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Wanda_%28band%29_2016.jpg/440px-Wanda_%28band%29_2016.jpg",
+};

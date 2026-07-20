@@ -1,0 +1,250 @@
+:root{--bg:#0c0c0f;--surface:#16161c;--surface2:#212128;--surface3:#2a2a33;--text:#f2ede6;--muted:#a8a196;--accent:#d4ad2a;--accent-soft:rgba(212,173,42,.12);--border:#3a3a45;--highlight:#2e2618;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px);--poster-w:9.5rem}
+*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(212,173,42,.18)}
+html{-webkit-text-size-adjust:100%;font-size:17px}
+body{margin:0;font-family:Georgia,"Iowan Old Style",Palatino,serif;background:var(--bg);color:var(--text);line-height:1.6;padding-bottom:var(--safe-bottom)}
+a{color:var(--accent)}
+header{padding:calc(1.35rem + var(--safe-top)) 1.1rem 1.35rem;padding-left:calc(1.1rem + var(--safe-left));padding-right:calc(1.1rem + var(--safe-right));border-bottom:1px solid var(--border);background:linear-gradient(165deg,#1c1624 0%,var(--bg) 70%)}
+header h1{margin:0 0 .45rem;font-size:1.85rem;font-weight:400;line-height:1.15;letter-spacing:.01em}
+header p{margin:0;color:var(--muted);font-size:1rem;line-height:1.5}
+.standalone{margin-top:.75rem;padding:.65rem .8rem;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);font-size:.88rem;line-height:1.45;border-radius:0 4px 4px 0}
+nav{position:sticky;top:0;z-index:10;display:flex;gap:0;background:rgba(12,12,15,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding-left:var(--safe-left);padding-right:var(--safe-right)}
+nav a{flex:1;text-align:center;text-decoration:none;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.95rem .5rem;border-bottom:3px solid transparent;font-weight:400}
+nav a:active,nav a:hover{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+main{max-width:980px;margin:0 auto;padding:1.1rem;padding-left:calc(1.1rem + var(--safe-left));padding-right:calc(1.1rem + var(--safe-right))}
+section{margin-bottom:2.75rem}
+.section-head{border-bottom:1px solid var(--border);padding-bottom:.85rem;margin-bottom:1.15rem}
+h2{font-size:1.35rem;font-weight:400;margin:0 0 .35rem;letter-spacing:.03em;color:var(--text)}
+.section-desc{color:var(--muted);margin:0;font-size:.95rem;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.5rem}
+.stat{background:var(--surface);border:1px solid var(--border);padding:.9rem 1rem;border-radius:6px;border-top:2px solid var(--accent)}
+.stat .val{font-size:1.65rem;color:var(--accent);line-height:1;font-weight:400}
+.stat .lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:.3rem}
+.timeline{position:relative}
+.year-marker{display:flex;align-items:center;gap:.85rem;margin:2rem 0 1rem;color:var(--accent);font-size:1.1rem;letter-spacing:.02em;font-weight:400;line-height:1.35}
+.year-marker span{background:var(--bg);padding:0 .65rem}
+.year-marker::before,.year-marker::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),var(--accent),var(--border),transparent)}
+.concert-wrap{margin-bottom:.9rem;scroll-margin-top:3.75rem}
+.concert-wrap.highlight .concert{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px rgba(0,0,0,.35)}
+.concert{border:1px solid var(--border);background:var(--surface);overflow:hidden;border-radius:8px;transition:border-color .25s,box-shadow .25s;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.concert summary{cursor:pointer;padding:0;list-style:none;display:grid;grid-template-columns:var(--poster-w) 1fr 3.25rem;grid-template-areas:"poster head toggle";align-items:stretch;min-height:12.5rem}
+.concert summary::-webkit-details-marker{display:none}
+.concert-poster{grid-area:poster;width:var(--poster-w);background:#111;border-right:1px solid var(--border);overflow:hidden;align-self:stretch}
+.concert-head{grid-area:head;padding:1rem .95rem;display:flex;flex-direction:column;justify-content:center;gap:.45rem;min-width:0}
+.concert-artist{font-size:1.45rem;line-height:1.2;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:.01em}
+.concert-artist:hover,.concert-artist:active{color:var(--accent)}
+.concert-title{font-size:1.05rem;line-height:1.35;font-weight:400;color:var(--muted)}
+.concert-meta{display:flex;flex-wrap:wrap;gap:.4rem}
+.concert-toggle{grid-area:toggle;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.65rem;min-width:3.25rem;border-left:1px solid var(--border);align-self:stretch;background:var(--surface2)}
+.concert[open] .concert-toggle::after{content:"−"}
+.concert:not([open]) .concert-toggle::after{content:"+"}
+.concert[open] .concert-toggle{background:var(--accent-soft)}
+.poster-caption{font-size:.78rem;color:var(--muted);line-height:1.4;padding-top:.15rem;border-top:1px solid var(--border);margin-top:.1rem}
+.badge{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding:.22rem .5rem;border:1px solid var(--border);color:var(--muted);border-radius:3px;background:var(--surface2)}
+.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.artist{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12);text-decoration:none}.badge.artist:hover,.badge.artist:active{color:#e8dcf8}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
+.concert-body{padding:1rem .95rem 1.1rem;border-top:1px solid var(--border);background:linear-gradient(180deg,var(--surface) 0%,#131318 100%)}
+.body-label{font-size:.78rem;font-weight:400;margin:0 0 .55rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+.body-label-meta{color:var(--muted);font-size:.72rem;letter-spacing:.04em;text-transform:none}
+.concert-note{color:var(--muted);font-size:.95rem;margin:0 0 1rem;font-style:italic;line-height:1.5;padding:.65rem .75rem;background:var(--surface2);border-radius:4px;border-left:3px solid var(--border)}
+.setlist-block{margin-bottom:1rem}
+.setlist-act{margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.setlist-act:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.setlist-act-head{display:flex;align-items:baseline;justify-content:space-between;gap:.75rem;margin:0 0 .5rem;font-size:1rem;font-weight:600}
+.setlist-act-artist{color:inherit;text-decoration:none}
+.setlist-act-artist:hover{text-decoration:underline}
+.setlist-act-note,.setlist-act-link{margin:0 0 .5rem;font-size:.92rem;color:var(--muted)}
+.setlist{margin:0;padding-left:1.25rem;font-size:1.02rem;line-height:1.65}
+.setlist li{margin-bottom:.4rem;padding-right:.25rem}
+.setlist li::marker{color:var(--accent);font-size:.9em}
+.setlist a{text-decoration:underline;text-underline-offset:3px;display:inline-block;padding:.12rem 0}
+.setlist a:active{color:#f0d060}
+.song-line{display:block}
+.song-title{font-weight:inherit}
+.song-meta{display:block;font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:.12rem;font-weight:400}
+.song-meta.song-origin-smiths{color:#9eb8d4}
+.song-meta.song-origin-cover{color:#c9a87a}
+.songs-table .song-meta{margin-top:.2rem}
+.song-official-link{color:inherit;text-decoration:none;display:inline-block}
+.song-official-link .song-title{text-decoration:underline;text-underline-offset:3px}
+.song-official-link:active .song-title,.song-official-link:hover .song-title{color:var(--accent)}
+.concert-reviews{margin-bottom:1.1rem}
+.review-links{display:flex;flex-direction:column;gap:.45rem}
+.review-link{font-size:.92rem;text-decoration:none;padding:.55rem .7rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;line-height:1.4;display:block;color:var(--text)}
+.review-link:active,.review-link:hover{background:var(--highlight);border-color:var(--accent)}
+.review-source{color:var(--muted);font-size:.82rem;display:block;margin-top:.15rem}
+.concert-recordings{margin-top:.25rem;padding-top:1rem;border-top:1px solid var(--border)}
+.recordings-title{font-size:.78rem;font-weight:400;margin:0 0 .6rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+.concert-recordings ul{margin:0;padding:0;list-style:none;font-size:.95rem}
+.concert-recordings li{margin:.5rem 0;padding:.6rem .7rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;line-height:1.45}
+.concert-recordings li::before{content:"▶ ";color:var(--accent);font-size:.75rem}
+.concert-recordings a{text-decoration:underline;text-underline-offset:3px}
+.video-duration{color:var(--muted);font-size:.85rem}
+.concert-spotify{margin-bottom:1.1rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.spotify-actions{display:flex;flex-direction:column;gap:.45rem}
+.spotify-btn{font-size:.92rem;text-decoration:none;padding:.55rem .7rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;line-height:1.4;display:block;color:var(--text);text-align:left;cursor:pointer;font-family:inherit}
+.spotify-btn:active,.spotify-btn:hover{background:var(--highlight);border-color:#1db954}
+.spotify-btn-primary{border-color:#1db954;color:#1ed760}
+.spotify-hint{font-size:.82rem;color:var(--muted);margin:.45rem 0 0;line-height:1.4}
+.songs-table{width:100%;border-collapse:collapse;font-size:.95rem}
+.songs-table th,.songs-table td{padding:.6rem .45rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.songs-table th{color:var(--muted);font-weight:400;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}
+.songs-table .num{text-align:center;width:2rem;color:var(--muted);padding-left:0;font-size:.88rem}
+.songs-table .cnt{text-align:center;width:2.25rem;color:var(--accent);font-weight:500;font-size:1rem}
+.song-row{cursor:pointer}
+.song-row:active td,.song-row.open td{background:var(--highlight)}
+.song-name{font-weight:500;line-height:1.4;font-size:1rem}
+.song-hint{font-size:.78rem;color:var(--muted);display:block;margin-top:.15rem}
+.song-detail td{padding:0;background:var(--surface2)}
+.song-detail[hidden]{display:none}
+.song-appearances{margin:0;padding:.65rem .75rem .75rem 1.15rem;font-size:.92rem;list-style:none}
+.song-appearances li{margin:.45rem 0;padding:.4rem 0;border-bottom:1px solid var(--border)}
+.song-appearances li:last-child{border-bottom:none}
+.concert-link{background:none;border:none;padding:.25rem 0;color:var(--accent);cursor:pointer;font:inherit;text-decoration:underline;text-align:left;line-height:1.45;min-height:2.75rem;display:inline-block;font-size:.95rem}
+.bar{height:7px;background:linear-gradient(90deg,var(--accent),#e8c04a);border-radius:2px}
+.chart-row{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"label" "bar";gap:.35rem;margin-bottom:.65rem;font-size:.95rem;padding:.35rem 0}
+.chart-label{grid-area:label;line-height:1.4;padding:.1rem 0;font-weight:500}
+.chart-bar-wrap{grid-area:bar;height:7px;background:var(--surface3);border-radius:2px}
+.chart-bar{height:100%;background:linear-gradient(90deg,var(--accent),#e0b830);border-radius:2px}
+#song-freq-list{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem}
+footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;text-align:center;line-height:1.5}
+@media(min-width:480px){:root{--poster-w:10.5rem}}
+@media(min-width:640px){
+  html{font-size:18px}
+  header{padding:2rem 1.75rem 1.85rem}
+  header h1{font-size:2.2rem}
+  header p,.standalone{font-size:1rem;max-width:70ch}
+  nav{gap:2rem;padding:.85rem 1.75rem;justify-content:flex-start}
+  nav a{flex:none;padding:0;border-bottom:none;font-size:.85rem}
+  main{padding:1.75rem}
+  h2{font-size:1.5rem}
+  .section-desc{font-size:1rem}
+  .stats{grid-template-columns:repeat(4,1fr);gap:1rem}
+  .stat{padding:1.1rem 1.2rem}
+  .stat .val{font-size:1.85rem}
+  .concert summary{min-height:14rem}
+  .concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{min-height:14rem}
+  .concert-head{padding:1.15rem 1.2rem}
+  .concert-artist{font-size:1.65rem}
+  .concert-title{font-size:1.1rem}
+  .year-marker{font-size:1.15rem;margin:2.25rem 0 1.1rem}
+  .review-links{flex-direction:row;flex-wrap:wrap}
+  .review-link{flex:1 1 calc(50% - .45rem);min-width:14rem}
+  .setlist{columns:2;column-gap:2rem}
+  .setlist li{break-inside:avoid}
+  .songs-table{font-size:1rem}
+  .songs-table th,.songs-table td{padding:.55rem .7rem}
+  .songs-table .num{text-align:right;width:2.75rem}
+  .songs-table .cnt{width:3.25rem}
+  .song-hint{display:inline;margin-left:.35rem}
+  .song-appearances{padding:.65rem .85rem .85rem 2.25rem;list-style:disc}
+  .song-appearances li{border-bottom:none;padding:0}
+  .chart-row{font-size:1rem;margin-bottom:.55rem}
+  .chart-bar-wrap{height:8px}
+}
+@media(min-width:900px){
+  :root{--poster-w:12.5rem}
+  header{padding:2.75rem 2rem 2.25rem}
+  header h1{font-size:2.5rem}
+  nav{padding:.85rem 2rem}
+  main{padding:2rem}
+  .concert summary{min-height:16.5rem}
+  .concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{min-height:16.5rem}
+  .concert-body{padding:1.15rem 1.35rem 1.25rem}
+  .concert-head{padding:1.2rem 1.35rem}
+  .concert-toggle{font-size:1.75rem;min-width:3.5rem}
+}
+.home-link{color:var(--text);text-decoration:none}
+.home-link:hover,.home-link:active{color:var(--accent)}
+.app-shell-nav{display:flex;gap:1rem;padding:.85rem 1.1rem;padding-left:calc(1.1rem + var(--safe-left));padding-right:calc(1.1rem + var(--safe-right));background:rgba(12,12,15,.96);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.app-shell-nav a{color:var(--muted);text-decoration:none;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
+.app-shell-nav a.active,.app-shell-nav a:hover{color:var(--accent)}
+.artist-list{display:flex;flex-direction:column;gap:.65rem}
+.artist-row{display:flex;align-items:center;gap:.85rem;padding:.85rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:inherit;text-decoration:none}
+.artist-row:active{background:var(--surface2)}
+.artist-row-thumb{flex:0 0 3.25rem;width:3.25rem;height:3.25rem;border-radius:8px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.artist-row-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.artist-row-initial{font-size:1.15rem;color:var(--accent);font-weight:600}
+.artist-row-body{flex:1;min-width:0;display:flex;justify-content:space-between;align-items:center;gap:.75rem}
+.artist-row-name{font-size:1.05rem;font-weight:500}
+.artist-row-meta{color:var(--muted);font-size:.88rem;white-space:nowrap}
+.admin-form{display:flex;flex-direction:column;gap:.85rem;max-width:28rem}
+.admin-form label{display:flex;flex-direction:column;gap:.35rem;font-size:.88rem;color:var(--muted)}
+.admin-form input,.admin-form button{font:inherit;padding:.65rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
+.admin-form button{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);cursor:pointer;font-weight:600}
+.admin-msg{margin-top:1rem;padding:.75rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border);font-size:.92rem}
+.admin-poster-field{display:flex;flex-direction:column;gap:.35rem;font-size:.88rem;color:var(--muted)}
+.admin-poster-btn{display:block;width:100%;padding:0;border:1px dashed var(--border);border-radius:8px;background:var(--surface2);cursor:pointer;overflow:hidden}
+.admin-poster-btn:hover{border-color:var(--accent)}
+.admin-poster-preview{width:100%;max-height:14rem;object-fit:cover;display:block}
+.admin-poster-placeholder{display:block;padding:2rem 1rem;color:var(--muted);font-size:.85rem}
+.concert-poster-edit{display:block;width:100%;height:100%;padding:0;border:none;background:transparent;cursor:pointer}
+.concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{display:block;width:100%;height:100%}
+.concert-delete-btn{margin-left:auto;padding:.12rem .45rem;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--muted);font:inherit;font-size:.68rem;cursor:pointer;opacity:.55}
+.concert-delete-btn:hover,.concert-delete-btn:focus{opacity:1;border-color:var(--border);color:var(--text)}
+.poster-modal-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:1rem}
+.poster-modal{width:min(960px,100%);max-height:90vh;overflow:auto;margin:0;padding:1rem 1.1rem 1.25rem;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text)}
+.poster-modal-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem}
+.poster-modal-head h2{margin:0;font-size:1.05rem}
+.poster-modal-close{border:none;background:transparent;color:var(--muted);font-size:1.4rem;line-height:1;cursor:pointer}
+.poster-modal-query{margin:0 0 .75rem;font-size:.82rem;color:var(--muted)}
+.poster-modal-search{display:flex;gap:.5rem;align-items:flex-end;margin-bottom:.85rem;flex-wrap:wrap}
+.poster-modal-search-label{display:flex;flex-direction:column;gap:.3rem;flex:1;min-width:12rem;font-size:.78rem;color:var(--muted)}
+.poster-modal-search-input{width:100%;padding:.45rem .55rem;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font:inherit;font-size:.88rem}
+.poster-modal-search-input:focus{outline:none;border-color:var(--accent)}
+.poster-modal-search-btn{padding:.45rem .85rem;border:none;border-radius:6px;background:var(--accent);color:#111;font:inherit;font-size:.85rem;cursor:pointer;white-space:nowrap}
+.poster-modal-search-btn:disabled{opacity:.65;cursor:wait}
+.poster-modal-upload{display:flex;align-items:center;gap:.65rem;margin-bottom:.85rem;flex-wrap:wrap}
+.poster-modal-upload-label{font-size:.82rem;color:var(--muted)}
+.poster-modal-upload-btn{padding:.4rem .75rem;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
+.poster-modal-upload-btn:hover{border-color:var(--accent)}
+.poster-modal-upload-btn:disabled{opacity:.65;cursor:not-allowed}
+.poster-modal-upload-input{display:none}
+.poster-modal-current{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.poster-modal-current img{width:4.5rem;aspect-ratio:3/4;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.poster-modal-status,.poster-modal-error{font-size:.88rem;margin:.5rem 0}
+.poster-modal-error{color:#d08080}
+.poster-modal-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem}
+.poster-modal-option{display:flex;flex-direction:column;gap:.35rem;width:100%;padding:.35rem;border:1px solid var(--border);border-radius:8px;background:var(--surface2);cursor:pointer;text-align:left}
+.poster-modal-option:hover{border-color:var(--accent)}
+.poster-modal-option img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px;display:block;background:#111}
+.poster-modal-option-title{font-size:.72rem;line-height:1.35;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.poster-crop-frame{width:100%;height:100%;overflow:hidden;position:relative;background:#111}
+.poster-crop-frame>img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:auto;min-height:0}
+.poster-crop-stage{pointer-events:none;user-select:none}
+.poster-crop-stage img{width:100%;height:100%;display:block;object-fit:fill;aspect-ratio:auto;min-height:0}
+.poster-crop-editor{display:flex;flex-direction:column;gap:.75rem;align-items:center;width:100%}
+.poster-crop-editor-hint{margin:0;font-size:.82rem;color:var(--muted);text-align:center;max-width:28rem}
+.poster-crop-viewport{overflow:hidden;border:1px solid var(--border);border-radius:8px;cursor:grab;touch-action:none;background:#111;flex-shrink:0;position:relative}
+.poster-crop-viewport:active{cursor:grabbing}
+.poster-crop-loading{margin:0;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.82rem;color:var(--muted)}
+.poster-crop-transform{width:100%;height:100%;pointer-events:none;user-select:none}
+.poster-crop-transform img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.poster-crop-controls{display:flex;align-items:center;gap:.65rem}
+.poster-crop-zoom-btn{width:2.25rem;height:2.25rem;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-size:1.25rem;line-height:1;cursor:pointer}
+.poster-crop-zoom-label{min-width:3.5rem;text-align:center;font-size:.85rem;color:var(--muted)}
+.poster-crop-actions{display:flex;gap:.5rem;width:100%;justify-content:flex-end;flex-wrap:wrap}
+.poster-crop-primary,.poster-crop-secondary{padding:.45rem .85rem;border-radius:6px;cursor:pointer;font-size:.85rem}
+.poster-crop-primary{border:none;background:var(--accent);color:#111}
+.poster-crop-secondary{border:1px solid var(--border);background:transparent;color:var(--text)}
+.poster-crop-adjust{margin-left:auto;padding:.35rem .65rem;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-size:.78rem;cursor:pointer;white-space:nowrap}
+.poster-crop-adjust:hover{border-color:var(--accent)}
+.concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{display:block;width:100%;height:100%;min-height:12.5rem;aspect-ratio:3/4}
+.admin-poster-btn .poster-crop-frame.admin-poster-preview{width:100%;aspect-ratio:3/4;border-radius:6px}
+.concert-poster-stacked .concert summary{display:flex;flex-direction:column;min-height:auto;padding:0}
+.concert-poster-stacked .concert-poster{width:100%;border-right:none;border-bottom:1px solid var(--border)}
+.concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{width:100%;min-height:12rem;aspect-ratio:3/4}
+.concert-poster-stacked .concert-head-row{display:grid;grid-template-columns:1fr 3.25rem;width:100%}
+@media(min-width:640px){
+  .concert-poster-stacked .concert summary{display:grid;grid-template-columns:var(--poster-w) 1fr 3.25rem;grid-template-areas:"poster head toggle";min-height:14rem}
+  .concert-poster-stacked .concert-poster{grid-area:poster;width:var(--poster-w);border-right:1px solid var(--border);border-bottom:none}
+  .concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{min-height:14rem;aspect-ratio:3/4}
+  .concert-poster-stacked .concert-head-row{display:contents}
+}
+.song-meta.song-origin-artist{color:var(--muted)}
+.song-meta.song-origin-other{color:var(--muted)}
+.song-links{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem}
+.song-link-chip{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;padding:.18rem .45rem;border:1px solid var(--border);border-radius:3px;color:var(--muted);text-decoration:none;background:var(--surface2);line-height:1.3}
+.song-link-chip:hover,.song-link-chip:active{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.view-toggle{display:flex;gap:.5rem;margin-bottom:1.35rem;padding:.35rem;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.view-toggle button{flex:1;border:none;background:transparent;color:var(--muted);font:inherit;font-size:.88rem;text-transform:uppercase;letter-spacing:.07em;padding:.7rem .85rem;border-radius:8px;cursor:pointer}
+.view-toggle button.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.view-toggle button:hover:not(.active){color:var(--text);background:var(--surface2)}
