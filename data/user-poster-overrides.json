@@ -125,5 +125,25 @@
     "posterPath": "/posters/uploads/34e5e01e-3c48-4398-a5f7-d8a0f644fdf9.webp",
     "posterLabel": "Tourplakat: 220905_Cyte_10_Issue_Layout_ss_hh-4-kl7",
     "posterCropJson": "{\"zoom\":2.1,\"panX\":30.51171875,\"panY\":11.41796875,\"imageW\":1181,\"imageH\":829}"
+  },
+  "voodoo-juergens-2026-05-13": {
+    "posterPath": "/posters/uploads/f6c30bb2-347e-46e1-983c-f224aa816d56.jpg",
+    "posterLabel": "Tourplakat: medium_VJ_WEB_InstaPost_Dates",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":720,\"imageH\":720}"
+  },
+  "madness-2026-07-05": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2025/04/Madness-020.jpg",
+    "posterLabel": "Tourplakat: MADNESS Poster",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1053,\"imageH\":1500}"
+  },
+  "peter-fox-2023-08-22": {
+    "posterPath": "/posters/uploads/2d570c62-a0d4-4e84-b629-30f861d91c85.jpg",
+    "posterLabel": "Tourplakat: images (1)",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":201,\"imageH\":251}"
+  },
+  "peter-fox-2023-06-11": {
+    "posterPath": "/posters/uploads/16497dae-d6ec-4d6d-9169-b8e98130868c.jpg",
+    "posterLabel": "Tourplakat: images (1)",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":201,\"imageH\":251}"
   }
 }
