@@ -202,14 +202,14 @@ export function TourPosterEditModal({
               </button>
             </form>
             <div className="poster-modal-upload">
-              <span className="poster-modal-upload-label">oder lokale Datei</span>
+              <span className="poster-modal-upload-label">oder aus Fotobibliothek</span>
               <button
                 type="button"
                 className="poster-modal-upload-btn"
                 disabled={!!savingUrl}
                 onClick={() => fileInputRef.current?.click()}
               >
-                Bild hochladen …
+                Foto wählen …
               </button>
               <input
                 ref={fileInputRef}

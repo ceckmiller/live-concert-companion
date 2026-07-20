@@ -2,16 +2,30 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
-import { createConcert } from "@/lib/actions";
+import { useState } from "react";
+import {
+  createConcert,
+  enrichConcertPoster,
+  enrichConcertRecordings,
+  enrichConcertSetlist,
+  enrichConcertVideoSong,
+  listConcertSongsMissingVideos,
+} from "@/lib/actions";
+import { EnrichmentProgress } from "@/components/EnrichmentProgress";
 import { TourPosterEditModal, type PosterPick } from "@/components/TourPosterEditModal";
 import { PosterCropFrame } from "@/components/PosterCropFrame";
+import {
+  initialEnrichmentSteps,
+  setStepStatus,
+  type EnrichmentStep,
+} from "@/lib/enrichment-progress";
 
 export function AdminForm() {
   const router = useRouter();
   const [msg, setMsg] = useState("");
   const [link, setLink] = useState("");
-  const [pending, startTransition] = useTransition();
+  const [busy, setBusy] = useState(false);
+  const [steps, setSteps] = useState<EnrichmentStep[] | null>(null);
   const [posterOpen, setPosterOpen] = useState(false);
   const [posterPick, setPosterPick] = useState<PosterPick | null>(null);
   const [draft, setDraft] = useState({
@@ -21,11 +35,16 @@ export function AdminForm() {
     date: "",
   });
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function patchStep(id: EnrichmentStep["id"], status: EnrichmentStep["status"], detail?: string) {
+    setSteps((current) => (current ? setStepStatus(current, id, status, detail) : current));
+  }
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMsg("");
     setLink("");
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     if (posterPick) {
       fd.set("posterUrl", posterPick.url);
       fd.set("posterTitle", posterPick.title);
@@ -33,19 +52,81 @@ export function AdminForm() {
         fd.set("posterCropJson", JSON.stringify(posterPick.crop));
       }
     }
-    startTransition(async () => {
-      try {
-        const res = await createConcert(fd);
-        setMsg(`Konzert gespeichert: ${res.weekdayTime}`);
-        setLink(res.artistSlug);
-        setPosterPick(null);
-        e.currentTarget.reset();
-        setDraft({ artistName: "", tourName: "", city: "Berlin", date: "" });
-        router.refresh();
-      } catch (err) {
-        setMsg(err instanceof Error ? err.message : "Fehler beim Speichern");
+
+    const skipPoster = Boolean(posterPick?.url);
+    setSteps(initialEnrichmentSteps(skipPoster));
+    setBusy(true);
+
+    try {
+      patchStep("save", "active");
+      const res = await createConcert(fd);
+      patchStep("save", "done");
+
+      patchStep("setlist", "active");
+      const setlist = await enrichConcertSetlist(res.artistSlug, res.concertSlug);
+      patchStep(
+        "setlist",
+        setlist.songsFound ? "done" : "error",
+        setlist.songsFound
+          ? `${setlist.songsFound} Songs`
+          : "Keine Setlist auf setlist.fm gefunden",
+      );
+
+      if (!skipPoster) {
+        if (res.hadPosterFromForm) {
+          patchStep("poster", "done", "Plakat gewählt");
+        } else {
+          patchStep("poster", "active");
+          const poster = await enrichConcertPoster(res.artistSlug, res.concertSlug);
+          patchStep(
+            "poster",
+            poster.posterFound ? "done" : "error",
+            poster.posterFound ? "Tourplakat gefunden" : "Kein Tourplakat gefunden — Fotobibliothek nutzen",
+          );
+        }
       }
-    });
+
+      patchStep("videos", "active");
+      const { missing } = await listConcertSongsMissingVideos(res.artistSlug, res.concertSlug);
+      let videosFound = 0;
+      if (!missing.length) {
+        patchStep("videos", setlist.songsFound ? "skipped" : "error", "Keine Songs für Videos");
+      } else {
+        for (let i = 0; i < missing.length; i++) {
+          const song = missing[i];
+          patchStep("videos", "active", `${i + 1}/${missing.length}: ${song}`);
+          const hit = await enrichConcertVideoSong(res.artistSlug, res.concertSlug, song);
+          if (hit.found) videosFound++;
+        }
+        patchStep(
+          "videos",
+          videosFound ? "done" : "error",
+          `${videosFound}/${missing.length} YouTube-Videos`,
+        );
+      }
+
+      patchStep("recordings", "active");
+      const recordings = await enrichConcertRecordings(res.artistSlug, res.concertSlug);
+      patchStep(
+        "recordings",
+        recordings.recordingsFound ? "done" : "error",
+        recordings.recordingsFound
+          ? `${recordings.recordingsFound} Mitschnitt(e)`
+          : "Kein längerer Mitschnitt gefunden",
+      );
+
+      patchStep("done", "done");
+      setMsg(`Konzert angelegt: ${res.weekdayTime}.`);
+      setLink(res.artistSlug);
+      setPosterPick(null);
+      form.reset();
+      setDraft({ artistName: "", tourName: "", city: "Berlin", date: "" });
+      router.refresh();
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : "Fehler beim Speichern");
+    } finally {
+      setBusy(false);
+    }
   }
 
   function syncDraft(form: HTMLFormElement) {
@@ -63,7 +144,8 @@ export function AdminForm() {
         <div className="section-head">
           <h2>Konzert hinzufügen</h2>
           <p className="section-desc">
-            Künstler und Datum reichen — Ort optional. setlist.fm-Suche wird automatisch hinterlegt.
+            Künstler und Datum reichen — Setlist, Tourplakat, YouTube-Videos und Mitschnitte werden automatisch
+            gesucht.
           </p>
         </div>
         <form
@@ -73,29 +155,30 @@ export function AdminForm() {
         >
           <label>
             Künstler
-            <input name="artistName" required placeholder="z. B. Placebo" />
+            <input name="artistName" required placeholder="z. B. Placebo" disabled={busy} />
           </label>
           <label>
             Tour (optional)
-            <input name="tourName" placeholder="z. B. LIVE 2024" />
+            <input name="tourName" placeholder="z. B. LIVE 2024" disabled={busy} />
           </label>
           <label>
             Datum
-            <input name="date" type="date" required />
+            <input name="date" type="date" required disabled={busy} />
           </label>
           <label>
             Venue (optional)
-            <input name="venue" defaultValue="Berlin" placeholder="Tempodrom" />
+            <input name="venue" placeholder="Tempodrom" disabled={busy} />
           </label>
           <label>
             Stadt (optional)
-            <input name="city" defaultValue="Berlin" placeholder="Berlin" />
+            <input name="city" defaultValue="Berlin" placeholder="Berlin" disabled={busy} />
           </label>
           <div className="admin-poster-field">
             <span>Tourplakat (optional)</span>
             <button
               type="button"
               className="admin-poster-btn"
+              disabled={busy}
               onClick={() => {
                 syncDraft(document.querySelector(".admin-form") as HTMLFormElement);
                 setPosterOpen(true);
@@ -109,14 +192,15 @@ export function AdminForm() {
                   className="admin-poster-preview"
                 />
               ) : (
-                <span className="admin-poster-placeholder">Plakat suchen, hochladen &amp; wählen</span>
+                <span className="admin-poster-placeholder">Plakat suchen, aus Fotobibliothek oder wählen</span>
               )}
             </button>
           </div>
-          <button type="submit" disabled={pending}>
-            {pending ? "Speichern …" : "Konzert anlegen"}
+          <button type="submit" disabled={busy}>
+            {busy ? "Anlegen & anreichern …" : "Konzert anlegen"}
           </button>
         </form>
+        {steps ? <EnrichmentProgress steps={steps} /> : null}
         {msg && (
           <p className="admin-msg">
             {msg}

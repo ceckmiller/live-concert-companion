@@ -63,6 +63,11 @@ export async function ensureDbInitialized() {
   } catch {
     // Column already exists.
   }
+  try {
+    await db.run(sql`ALTER TABLE concerts ADD COLUMN hidden INTEGER NOT NULL DEFAULT 0`);
+  } catch {
+    // Column already exists.
+  }
 
   await db.run(sql`
     CREATE TABLE IF NOT EXISTS setlist_items (

@@ -55,6 +55,7 @@ export function buildArtistPayload(
     videos: Record<string, string>;
     reviews: { title: string; url: string; source: string }[];
     recordings: { title: string; url: string; duration: string }[];
+    festivalLabel?: string;
   }[],
   metaRows: {
     songTitle: string;
@@ -93,6 +94,7 @@ export function buildArtistPayload(
     venue: c.venue,
     tour: c.tourName,
     note: c.note || undefined,
+    festivalLabel: c.festivalLabel,
     poster: c.posterPath || undefined,
     posterCrop: parsePosterCropJson(c.posterCropJson),
     posterLabel: c.posterLabel || undefined,

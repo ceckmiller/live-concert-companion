@@ -1,6 +1,11 @@
 import { asc, eq, inArray, sql } from "drizzle-orm";
 import { filterHeadlinerArtists } from "./artist-list";
 import { buildArtistPayload } from "./compute-songs";
+import {
+  isChronologyConcert,
+  isFestivalSectionConcert,
+  shouldIncludeFestivalAct,
+} from "./festivals";
 import { getDb } from "./db";
 import { parsePosterCropJson } from "./poster-crop";
 import {
@@ -14,7 +19,57 @@ import {
   songMeta,
   tours,
 } from "./db/schema";
-import type { ArtistListItem, ArtistPayload, ConcertAct, HomePayload } from "@/types/domain";
+import type { ArtistListItem, ArtistPayload, Concert, ConcertAct, HomePayload } from "@/types/domain";
+
+function mapConcertRow(
+  c: {
+    slug: string;
+    sortDate: string;
+    dateLabel: string;
+    city: string;
+    venue: string;
+    tourName: string;
+    note: string | null;
+    posterPath: string | null;
+    posterCropJson: string | null;
+    posterLabel: string | null;
+    setlistFmUrl: string | null;
+    hidden?: boolean | null;
+  },
+  extras: {
+    setlist: string[];
+    acts?: ConcertAct[];
+    videos?: Record<string, string>;
+    reviews?: { title: string; url: string; source: string }[];
+    recordings?: { title: string; url: string; duration: string }[];
+    artistSlug?: string;
+    artistName?: string;
+    festivalLabel?: string;
+  },
+): Concert {
+  return {
+    id: c.slug,
+    sort: c.sortDate,
+    date: c.dateLabel,
+    city: c.city,
+    venue: c.venue,
+    tour: c.tourName,
+    note: c.note || undefined,
+    poster: c.posterPath || undefined,
+    posterCrop: parsePosterCropJson(c.posterCropJson),
+    posterLabel: c.posterLabel || undefined,
+    setlistFm: c.setlistFmUrl || undefined,
+    hidden: c.hidden === true,
+    festivalLabel: extras.festivalLabel,
+    setlist: extras.setlist,
+    acts: extras.acts,
+    videos: extras.videos,
+    reviews: extras.reviews,
+    recordings: extras.recordings,
+    artistSlug: extras.artistSlug,
+    artistName: extras.artistName,
+  };
+}
 
 function parseConcertActs(
   rows: {
@@ -68,7 +123,7 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
   const artist = artistRows[0];
   if (!artist) return null;
 
-  const [tourRows, concertRows, metaRows] = await Promise.all([
+  const [tourRows, concertRows, metaRows, guestActRows] = await Promise.all([
     db.select().from(tours).where(eq(tours.artistId, artist.id)).orderBy(tours.name),
     db
       .select()
@@ -76,15 +131,53 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
       .where(eq(concerts.artistId, artist.id))
       .orderBy(sql`${concerts.sortDate} DESC`),
     db.select().from(songMeta).where(eq(songMeta.artistId, artist.id)),
+    db
+      .select({
+        concertId: concertActs.concertId,
+        position: concertActs.position,
+        artistSlug: concertActs.artistSlug,
+        artistName: concertActs.artistName,
+        setlistFmUrl: concertActs.setlistFmUrl,
+        note: concertActs.note,
+        setlistComplete: concertActs.setlistComplete,
+        setlistJson: concertActs.setlistJson,
+        videosJson: concertActs.videosJson,
+        parentSlug: concerts.slug,
+        sortDate: concerts.sortDate,
+        dateLabel: concerts.dateLabel,
+        city: concerts.city,
+        venue: concerts.venue,
+        tourName: concerts.tourName,
+        parentNote: concerts.note,
+        posterPath: concerts.posterPath,
+        posterCropJson: concerts.posterCropJson,
+        posterLabel: concerts.posterLabel,
+        parentSetlistFmUrl: concerts.setlistFmUrl,
+        hidden: concerts.hidden,
+        festivalName: artists.name,
+        festivalSlug: artists.slug,
+      })
+      .from(concertActs)
+      .innerJoin(concerts, eq(concerts.id, concertActs.concertId))
+      .innerJoin(artists, eq(artists.id, concerts.artistId))
+      .where(eq(concertActs.artistSlug, slug)),
   ]);
 
-  const concertIds = concertRows.map((c) => c.id);
-  const [setlistRows, videoRows, reviewRows, recordingRows, actRows] = concertIds.length
+  const visibleHeadliners = concertRows.filter((c) => !c.hidden);
+  const guestParentIds = [
+    ...new Set(
+      guestActRows.filter((r) => !r.hidden).map((r) => r.concertId),
+    ),
+  ];
+
+  const concertIds = visibleHeadliners.map((c) => c.id);
+  const lookupIds = [...new Set([...concertIds, ...guestParentIds])];
+  const [setlistRows, videoRows, reviewRows, recordingRows, actRows] = lookupIds.length
     ? await Promise.all([
         db
           .select()
           .from(setlistItems)
-          .where(inArray(setlistItems.concertId, concertIds))
+          .where(inArray(setlistItems.concertId, lookupIds))
           .orderBy(asc(setlistItems.position)),
         db
           .select({
@@ -95,31 +188,9 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
           })
           .from(concertVideos)
           .innerJoin(concerts, eq(concerts.id, concertVideos.concertId))
-          .where(eq(concerts.artistId, artist.id)),
-        db
-          .select({
-            id: reviews.id,
-            concertId: reviews.concertId,
-            title: reviews.title,
-            url: reviews.url,
-            source: reviews.source,
-            slug: concerts.slug,
-          })
-          .from(reviews)
-          .innerJoin(concerts, eq(concerts.id, reviews.concertId))
-          .where(eq(concerts.artistId, artist.id)),
-        db
-          .select({
-            id: recordings.id,
-            concertId: recordings.concertId,
-            title: recordings.title,
-            url: recordings.url,
-            duration: recordings.duration,
-            slug: concerts.slug,
-          })
-          .from(recordings)
-          .innerJoin(concerts, eq(concerts.id, recordings.concertId))
-          .where(eq(concerts.artistId, artist.id)),
+          .where(inArray(concertVideos.concertId, lookupIds)),
+        db.select().from(reviews).where(inArray(reviews.concertId, lookupIds)),
+        db.select().from(recordings).where(inArray(recordings.concertId, lookupIds)),
         db
           .select({
             concertId: concertActs.concertId,
@@ -133,7 +204,7 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
             videosJson: concertActs.videosJson,
           })
           .from(concertActs)
-          .where(inArray(concertActs.concertId, concertIds))
+          .where(inArray(concertActs.concertId, lookupIds))
           .orderBy(asc(concertActs.position)),
       ])
     : [[], [], [], [], []];
@@ -145,26 +216,15 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
     setlistByConcert.set(row.concertId, list);
   }
 
-  const concertsPayload = concertRows.map((c) => {
+  const headlinerPayload = visibleHeadliners.map((c) => {
     const videos: Record<string, string> = {};
     for (const v of videoRows) {
       if (v.concertId === c.id) videos[v.songTitle] = v.url;
     }
     const acts = parseConcertActs(actRows, c.id);
-    const flatSetlist = setlistByConcert.get(c.id) ?? [];
-    return {
-      slug: c.slug,
-      sortDate: c.sortDate,
-      dateLabel: c.dateLabel,
-      city: c.city,
-      venue: c.venue,
-      tourName: c.tourName,
-      note: c.note,
-      posterPath: c.posterPath,
-      posterCropJson: c.posterCropJson,
-      posterLabel: c.posterLabel,
-      setlistFmUrl: c.setlistFmUrl,
-      setlist: flatSetlist,
+    const flatSetlist = (setlistByConcert.get(c.id) ?? []).map((s) => s.song);
+    return mapConcertRow(c, {
+      setlist: flatSetlist.length ? flatSetlist : acts.flatMap((act) => act.setlist),
       acts: acts.length ? acts : undefined,
       videos,
       reviews: reviewRows
@@ -173,8 +233,57 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
       recordings: recordingRows
         .filter((r) => r.concertId === c.id)
         .map(({ title, url, duration }) => ({ title, url, duration })),
-    };
+    });
   });
+
+  const headlinerForActCheck = headlinerPayload.map((c) => ({ id: c.id, sort: c.sort }));
+  const guestPayload = guestActRows
+    .filter((row) => !row.hidden)
+    .filter((row) =>
+      shouldIncludeFestivalAct(slug, row.parentSlug, row.sortDate, headlinerForActCheck),
+    )
+    .map((row) => {
+      const act: ConcertAct = {
+        artistSlug: row.artistSlug,
+        artistName: row.artistName,
+        setlist: JSON.parse(row.setlistJson) as string[],
+        videos: JSON.parse(row.videosJson) as Record<string, string>,
+        setlistFm: row.setlistFmUrl || undefined,
+        note: row.note || undefined,
+        setlistComplete: row.setlistComplete !== false,
+      };
+      return mapConcertRow(
+        {
+          slug: row.parentSlug,
+          sortDate: row.sortDate,
+          dateLabel: row.dateLabel,
+          city: row.city,
+          venue: row.venue,
+          tourName: row.tourName,
+          note: row.parentNote,
+          posterPath: row.posterPath,
+          posterCropJson: row.posterCropJson,
+          posterLabel: row.posterLabel,
+          setlistFmUrl: row.parentSetlistFmUrl,
+          hidden: false,
+        },
+        {
+          setlist: [],
+          acts: [act],
+          festivalLabel: row.festivalName,
+          reviews: reviewRows
+            .filter((r) => r.concertId === row.concertId)
+            .map(({ title, url, source }) => ({ title, url, source })),
+          recordings: recordingRows
+            .filter((r) => r.concertId === row.concertId)
+            .map(({ title, url, duration }) => ({ title, url, duration })),
+        },
+      );
+    });
+
+  const concertsPayload = [...headlinerPayload, ...guestPayload].sort((a, b) =>
+    b.sort.localeCompare(a.sort),
+  );
 
   return {
     ...buildArtistPayload(
@@ -185,7 +294,25 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
         label: t.label,
         kind: t.kind,
       })),
-      concertsPayload,
+      concertsPayload.map((c) => ({
+        slug: c.id,
+        sortDate: c.sort,
+        dateLabel: c.date,
+        city: c.city,
+        venue: c.venue,
+        tourName: c.tour,
+        note: c.note ?? null,
+        posterPath: c.poster ?? null,
+        posterCropJson: c.posterCrop ? JSON.stringify(c.posterCrop) : null,
+        posterLabel: c.posterLabel ?? null,
+        setlistFmUrl: c.setlistFm ?? null,
+        setlist: c.setlist.map((song, index) => ({ position: index + 1, song })),
+        acts: c.acts,
+        videos: c.videos ?? {},
+        reviews: c.reviews ?? [],
+        recordings: c.recordings ?? [],
+        festivalLabel: c.festivalLabel,
+      })),
       metaRows.map((m) => ({
         songTitle: m.songTitle,
         origin: m.origin,
@@ -195,7 +322,12 @@ export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | nu
         officialVideoUrl: m.officialVideoUrl,
       })),
     ),
-    artistsBySlug: await buildArtistsBySlug(db, actRows, artist.slug, metaRows),
+    artistsBySlug: await buildArtistsBySlug(
+      db,
+      [...actRows, ...guestActRows.map((r) => ({ artistSlug: r.artistSlug }))],
+      artist.slug,
+      metaRows,
+    ),
   };
 }
 
@@ -292,6 +424,7 @@ export async function loadHomeDashboard(): Promise<HomePayload> {
         posterCropJson: concerts.posterCropJson,
         posterLabel: concerts.posterLabel,
         setlistFmUrl: concerts.setlistFmUrl,
+        hidden: concerts.hidden,
         artistId: concerts.artistId,
         artistSlug: artists.slug,
         artistName: artists.name,
@@ -355,21 +488,10 @@ export async function loadHomeDashboard(): Promise<HomePayload> {
     };
   }
 
-  const timelineConcerts = concertRows.map((c) => {
+  const allConcerts = concertRows.map((c) => {
     const acts = parseConcertActs(actRows, c.id);
     const flatSetlist = (setlistByConcert.get(c.id) ?? []).map((s) => s.song);
-    return {
-      id: c.slug,
-      sort: c.sortDate,
-      date: c.dateLabel,
-      city: c.city,
-      venue: c.venue,
-      tour: c.tourName,
-      note: c.note || undefined,
-      poster: c.posterPath || undefined,
-      posterCrop: parsePosterCropJson(c.posterCropJson),
-      posterLabel: c.posterLabel || undefined,
-      setlistFm: c.setlistFmUrl || undefined,
+    return mapConcertRow(c, {
       setlist: flatSetlist.length ? flatSetlist : acts.flatMap((act) => act.setlist),
       acts: acts.length ? acts : undefined,
       videos: videosByConcert.get(c.id),
@@ -381,26 +503,33 @@ export async function loadHomeDashboard(): Promise<HomePayload> {
         .map(({ title, url, duration }) => ({ title, url, duration })),
       artistSlug: c.artistSlug,
       artistName: c.artistName,
-    };
+    });
   });
 
-  const years = new Set(timelineConcerts.map((c) => c.sort.slice(0, 4)));
+  const visibleConcerts = allConcerts.filter((c) => !c.hidden);
+  const chronologyConcerts = visibleConcerts.filter(isChronologyConcert);
+  const festivalConcerts = visibleConcerts.filter(isFestivalSectionConcert);
+  const hiddenConcerts = allConcerts.filter((c) => c.hidden);
+
+  const years = new Set(chronologyConcerts.map((c) => c.sort.slice(0, 4)));
 
   const headlinerArtists = filterHeadlinerArtists(
     artistRows.map((a) => ({
       slug: a.slug,
       name: a.name,
       image_path: a.imagePath,
-      concert_count: concertRows.filter((c) => c.artistId === a.id).length,
+      concert_count: concertRows.filter((c) => c.artistId === a.id && !c.hidden).length,
     })),
   );
 
   return {
     artists: headlinerArtists,
     artistsBySlug,
-    concerts: timelineConcerts,
+    concerts: chronologyConcerts,
+    festivals: festivalConcerts,
+    hiddenConcerts,
     stats: {
-      concerts: timelineConcerts.length,
+      concerts: chronologyConcerts.length + festivalConcerts.length,
       artists: headlinerArtists.length,
       years: years.size,
     },

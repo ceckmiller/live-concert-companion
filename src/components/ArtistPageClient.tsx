@@ -8,8 +8,9 @@ import type { ArtistPayload } from "@/types/domain";
 export function ArtistPageClient({ data }: { data: ArtistPayload }) {
   const [openConcertId, setOpenConcertId] = useState<string>();
 
-  function openConcert(id: string) {
+  function openConcert(id: string | undefined) {
     setOpenConcertId(id);
+    if (!id) return;
     requestAnimationFrame(() => {
       document.getElementById(`concert-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });

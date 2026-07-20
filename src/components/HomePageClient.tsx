@@ -12,6 +12,7 @@ const VIEW_KEY = "lkc-home-view";
 export function HomePageClient({ home }: { home: HomePayload }) {
   const [view, setView] = useState<HomeView>("timeline");
   const [openConcertId, setOpenConcertId] = useState<string>();
+  const [showHidden, setShowHidden] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(VIEW_KEY);
@@ -23,8 +24,9 @@ export function HomePageClient({ home }: { home: HomePayload }) {
     localStorage.setItem(VIEW_KEY, next);
   }
 
-  function openConcert(id: string) {
+  function openConcert(id: string | undefined) {
     setOpenConcertId(id);
+    if (!id) return;
     requestAnimationFrame(() => {
       document.getElementById(`concert-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -75,15 +77,64 @@ export function HomePageClient({ home }: { home: HomePayload }) {
       </div>
 
       {view === "timeline" ? (
-        <section id="chronologie">
-          <div className="section-head">
-            <h2>Chronologie</h2>
-            <p className="section-desc">
-              Alle Konzerte — neueste zuerst, mit Jahrestrennern. Setlists mit Album, Jahr, Video & Lyrics.
+        <>
+          <section id="chronologie">
+            <div className="section-head">
+              <h2>Chronologie</h2>
+              <p className="section-desc">
+                Solo-Konzerte — neueste zuerst. Festivals siehe unten.
+              </p>
+            </div>
+            <GlobalConcertTimeline
+              concerts={home.concerts}
+              artistsBySlug={home.artistsBySlug}
+              openId={openConcertId}
+              onOpen={openConcert}
+              allowHide
+            />
+          </section>
+
+          {home.festivals.length > 0 ? (
+            <section id="festivals">
+              <div className="section-head">
+                <h2>Festivals &amp; Multi-Act-Events</h2>
+                <p className="section-desc">
+                  Peace x Peace, Madstock, Konzert für Berlin, Heino Aid, Ferropolis …
+                </p>
+              </div>
+              <GlobalConcertTimeline
+                concerts={home.festivals}
+                artistsBySlug={home.artistsBySlug}
+                openId={openConcertId}
+                onOpen={openConcert}
+                allowHide
+              />
+            </section>
+          ) : null}
+
+          {showHidden && home.hiddenConcerts.length > 0 ? (
+            <section id="ausgeblendet">
+              <div className="section-head">
+                <h2>Ausgeblendete Konzerte</h2>
+              </div>
+              <GlobalConcertTimeline
+                concerts={home.hiddenConcerts}
+                artistsBySlug={home.artistsBySlug}
+                openId={openConcertId}
+                onOpen={openConcert}
+                hiddenView
+              />
+            </section>
+          ) : null}
+
+          {home.hiddenConcerts.length > 0 ? (
+            <p className="hidden-toggle-wrap">
+              <button type="button" className="hidden-toggle-link" onClick={() => setShowHidden((v) => !v)}>
+                {showHidden ? "Ausgeblendete verbergen" : "Ausgeblendete einblenden"}
+              </button>
             </p>
-          </div>
-          <GlobalConcertTimeline home={home} openId={openConcertId} onOpen={openConcert} />
-        </section>
+          ) : null}
+        </>
       ) : (
         <section id="kuenstler">
           <div className="section-head">

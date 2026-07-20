@@ -46,6 +46,7 @@ export const concerts = sqliteTable(
     posterLabel: text("poster_label"),
     setlistFmUrl: text("setlist_fm_url"),
     ticketImagePath: text("ticket_image_path"),
+    hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
     createdAt: text("created_at").notNull(),
   },
   (t) => [uniqueIndex("concerts_artist_slug_unique").on(t.artistId, t.slug)],

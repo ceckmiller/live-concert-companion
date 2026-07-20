@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { concertSlug, formatGermanDate, slugify } from "@/lib/slug";
+import { concertSlug, catalogConcertSlug, formatGermanDate, slugify } from "@/lib/slug";
 
 describe("companion slug helpers", () => {
   it("slugifies artist names", () => {
@@ -13,5 +13,6 @@ describe("companion slug helpers", () => {
 
   it("builds concert slugs", () => {
     expect(concertSlug("Berlin", "2022-10-06")).toBe("berlin-2022-10-06");
+    expect(catalogConcertSlug("Peter Fox", "2023-08-22")).toBe("peter-fox-2023-08-22");
   });
 });

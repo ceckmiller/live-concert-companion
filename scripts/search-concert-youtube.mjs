@@ -203,7 +203,7 @@ async function fetchVideoTitle(videoUrl) {
   }
 }
 
-async function findSongVideo(task) {
+export async function findSongVideo(task) {
   const festivalAliases = festivalAliasesForConcert(task.concertId);
   const queries = songVideoSearchQueries(task);
   for (const q of queries) {

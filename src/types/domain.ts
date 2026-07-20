@@ -37,6 +37,8 @@ export type Concert = {
   recordings?: { title: string; url: string; duration: string }[];
   artistSlug?: string;
   artistName?: string;
+  hidden?: boolean;
+  festivalLabel?: string;
 };
 
 export type ArtistContext = {
@@ -49,6 +51,8 @@ export type HomePayload = {
   artists: ArtistListItem[];
   artistsBySlug: Record<string, ArtistContext>;
   concerts: Concert[];
+  festivals: Concert[];
+  hiddenConcerts: Concert[];
   stats: {
     concerts: number;
     artists: number;

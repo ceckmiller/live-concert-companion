@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Fragment, useState, useTransition } from "react";
+import { Fragment, useEffect, useState, useTransition } from "react";
 import { TourPosterEditModal } from "@/components/TourPosterEditModal";
+import { ConcertEditModal } from "@/components/ConcertEditModal";
+import { UploadVideoModal } from "@/components/UploadVideoModal";
 import { PosterCropFrame } from "@/components/PosterCropFrame";
-import { deleteConcert, setConcertPoster } from "@/lib/actions";
+import { deleteConcert, setConcertHidden, setConcertPoster } from "@/lib/actions";
 import { showLongRecordingsSection, soleConcertRecording } from "@/lib/concert-display";
 import { buildLyricsUrl } from "@/lib/lyrics-url";
 import { setlistEntryKey } from "@/lib/setlist-keys";
@@ -120,6 +122,11 @@ function concertSongCount(c: Concert): number {
   return c.setlist.length;
 }
 
+function concertSongs(c: Concert): string[] {
+  if (c.acts?.length) return c.acts.flatMap((act) => act.setlist);
+  return c.setlist;
+}
+
 function SetlistItem({
   song,
   meta,
@@ -133,9 +140,15 @@ function SetlistItem({
 }) {
   const inner = <SongLabel song={song} meta={meta} artistName={artistName} />;
   if (videoUrl) {
+    const local = videoUrl.startsWith("/videos/");
     return (
       <li>
-        <a href={videoUrl} target="_blank" rel="noopener noreferrer" title={`YouTube: ${song}`}>
+        <a
+          href={videoUrl}
+          target={local ? undefined : "_blank"}
+          rel={local ? undefined : "noopener noreferrer"}
+          title={local ? `Eigenes Video: ${song}` : `YouTube: ${song}`}
+        >
           {inner}
         </a>
       </li>
@@ -180,17 +193,24 @@ function ConcertCard({
   onOpen,
   showArtist = false,
   artistsBySlug,
+  allowHide = false,
+  hiddenView = false,
 }: {
   c: Concert;
   data: Pick<ArtistPayload, "artist" | "tours" | "songMeta">;
   openId?: string;
-  onOpen: (id: string) => void;
+  onOpen: (id: string | undefined) => void;
   showArtist?: boolean;
   artistsBySlug?: HomePayload["artistsBySlug"];
+  allowHide?: boolean;
+  hiddenView?: boolean;
 }) {
   const router = useRouter();
   const [posterOpen, setPosterOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
   const [pending, startTransition] = useTransition();
+  const isDetail = openId === c.id;
   const p = posterInfo(c, data.tours);
   const artistLabel = c.artistName || data.artist.name;
   const artistHref = c.artistSlug || data.artist.slug;
@@ -207,25 +227,55 @@ function ConcertCard({
     });
   }
 
+  function toggleHidden(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    startTransition(async () => {
+      await setConcertHidden(artistHref, c.id, !hiddenView);
+      router.refresh();
+    });
+  }
+
+  useEffect(() => {
+    if (!isDetail) {
+      setPosterOpen(false);
+      setEditOpen(false);
+      setVideoOpen(false);
+    }
+  }, [isDetail]);
+
+  function openDetail(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    onOpen(c.id);
+  }
+
+  const canManage = isDetail && !allowHide && !hiddenView && !c.festivalLabel;
+
   return (
     <div className={`concert-wrap${openId === c.id ? " highlight" : ""}`} id={`concert-${c.id}`}>
       <details
         className="concert"
         open={openId === c.id}
         onToggle={(e) => {
-          if ((e.target as HTMLDetailsElement).open) onOpen(c.id);
+          const el = e.target as HTMLDetailsElement;
+          onOpen(el.open ? c.id : undefined);
         }}
       >
         <summary>
           <div className="concert-poster">
             <button
               type="button"
-              className="concert-poster-edit"
-              title="Tourplakat ändern"
+              className={`concert-poster-edit${isDetail ? "" : " concert-poster-open"}`}
+              title={isDetail ? "Tourplakat ändern" : "Konzert öffnen"}
               onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setPosterOpen(true);
+                if (isDetail) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setPosterOpen(true);
+                } else {
+                  openDetail(e);
+                }
               }}
             >
               {p.poster ? (
@@ -258,8 +308,45 @@ function ConcertCard({
             </span>
             <div className="concert-meta">
               <span className="badge city">{c.city}</span>
+              {c.festivalLabel ? <span className="badge tour">{c.festivalLabel}</span> : null}
               {c.tour && <span className="badge tour">{c.tour}</span>}
               <span className="badge">{concertSongCount(c)} Songs</span>
+              {allowHide || hiddenView ? (
+                <button
+                  type="button"
+                  className="concert-hide-btn"
+                  title={hiddenView ? "Konzert wieder einblenden" : "Konzert ausblenden"}
+                  disabled={pending}
+                  onClick={toggleHidden}
+                >
+                  {hiddenView ? "einblenden" : "ausblenden"}
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <span className="concert-toggle" />
+        </summary>
+        <div className="concert-body">
+          {canManage ? (
+            <div className="concert-detail-actions">
+              <button
+                type="button"
+                className="concert-icon-btn"
+                title="Konzert bearbeiten"
+                disabled={pending}
+                onClick={() => setEditOpen(true)}
+              >
+                ✎ Bearbeiten
+              </button>
+              <button
+                type="button"
+                className="concert-icon-btn"
+                title="Eigenes Video hochladen"
+                disabled={pending}
+                onClick={() => setVideoOpen(true)}
+              >
+                + Video
+              </button>
               <button
                 type="button"
                 className="concert-delete-btn"
@@ -270,10 +357,7 @@ function ConcertCard({
                 entfernen
               </button>
             </div>
-          </div>
-          <span className="concert-toggle" />
-        </summary>
-        <div className="concert-body">
+          ) : null}
           {c.note && <p className="concert-note">{c.note}</p>}
           {c.reviews && c.reviews.length > 0 && (
             <div className="concert-reviews">
@@ -354,27 +438,50 @@ function ConcertCard({
           )}
         </div>
       </details>
-      <TourPosterEditModal
-        open={posterOpen}
-        onClose={() => setPosterOpen(false)}
-        artistName={artistLabel}
-        tourName={c.tour || artistLabel}
-        city={c.city}
-        year={c.sort.slice(0, 4)}
-        currentPoster={p.poster}
-        currentCrop={p.crop}
-        onPick={async (pick) => {
-          await setConcertPoster({
-            artistSlug: artistHref,
-            concertSlug: c.id,
-            posterUrl: pick.url,
-            posterTitle: pick.title,
-            tourName: c.tour || artistLabel,
-            posterCrop: pick.crop ?? null,
-          });
-          router.refresh();
-        }}
-      />
+      {isDetail ? (
+        <>
+          <TourPosterEditModal
+            open={posterOpen}
+            onClose={() => setPosterOpen(false)}
+            artistName={artistLabel}
+            tourName={c.tour || artistLabel}
+            city={c.city}
+            year={c.sort.slice(0, 4)}
+            currentPoster={p.poster}
+            currentCrop={p.crop}
+            onPick={async (pick) => {
+              await setConcertPoster({
+                artistSlug: artistHref,
+                concertSlug: c.id,
+                posterUrl: pick.url,
+                posterTitle: pick.title,
+                tourName: c.tour || artistLabel,
+                posterCrop: pick.crop ?? null,
+              });
+              router.refresh();
+            }}
+          />
+          <ConcertEditModal
+            open={editOpen}
+            onClose={() => setEditOpen(false)}
+            artistSlug={artistHref}
+            concertSlug={c.id}
+            artistName={artistLabel}
+            date={c.sort}
+            venue={c.venue}
+            city={c.city}
+            tourName={c.tour}
+            note={c.note}
+          />
+          <UploadVideoModal
+            open={videoOpen}
+            onClose={() => setVideoOpen(false)}
+            artistSlug={artistHref}
+            concertSlug={c.id}
+            songs={concertSongs(c)}
+          />
+        </>
+      ) : null}
     </div>
   );
 }
@@ -386,7 +493,7 @@ export function ConcertTimeline({
 }: {
   data: ArtistPayload;
   openId?: string;
-  onOpen: (id: string) => void;
+  onOpen: (id: string | undefined) => void;
 }) {
   let lastYear = "";
   return (
@@ -490,27 +597,35 @@ function artistPayloadFromContext(ctx: ArtistContext): Pick<ArtistPayload, "arti
 }
 
 export function GlobalConcertTimeline({
-  home,
+  concerts,
+  artistsBySlug,
   openId,
   onOpen,
+  showArtist = true,
+  allowHide = false,
+  hiddenView = false,
 }: {
-  home: HomePayload;
+  concerts: Concert[];
+  artistsBySlug: HomePayload["artistsBySlug"];
   openId?: string;
-  onOpen: (id: string) => void;
+  onOpen: (id: string | undefined) => void;
+  showArtist?: boolean;
+  allowHide?: boolean;
+  hiddenView?: boolean;
 }) {
   let lastYear = "";
   return (
     <div className="timeline concert-poster-stacked">
-      {home.concerts.map((c) => {
+      {concerts.map((c) => {
         const year = c.sort.slice(0, 4);
         const marker =
           year !== lastYear ? (
-            <div className="year-marker" key={`y-${year}`}>
+            <div className="year-marker" key={`y-${year}-${c.id}`}>
               <span>{year}</span>
             </div>
           ) : null;
         lastYear = year;
-        const ctx = c.artistSlug ? home.artistsBySlug[c.artistSlug] : null;
+        const ctx = c.artistSlug ? artistsBySlug[c.artistSlug] : null;
         if (!ctx) return null;
         return (
           <div key={`${c.artistSlug}-${c.id}`}>
@@ -520,8 +635,10 @@ export function GlobalConcertTimeline({
               data={artistPayloadFromContext(ctx)}
               openId={openId}
               onOpen={onOpen}
-              showArtist
-              artistsBySlug={home.artistsBySlug}
+              showArtist={showArtist}
+              artistsBySlug={artistsBySlug}
+              allowHide={allowHide}
+              hiddenView={hiddenView}
             />
           </div>
         );

@@ -45,6 +45,11 @@ export function concertSlug(city: string, isoDate: string): string {
   return `${cityPart}-${isoDate}`;
 }
 
+/** Same id scheme as seeded concerts in OTHER_CONCERTS (`artist-slug-YYYY-MM-DD`). */
+export function catalogConcertSlug(artistName: string, isoDate: string): string {
+  return `${slugify(artistName)}-${isoDate}`;
+}
+
 export function setlistFmSearchUrl(artistName: string, city: string, isoDate: string): string {
   const q = encodeURIComponent(`${artistName} ${city} ${isoDate}`);
   return `https://www.setlist.fm/search?query=${q}`;
