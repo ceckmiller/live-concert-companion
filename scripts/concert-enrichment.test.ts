@@ -276,7 +276,16 @@ describe("concert enrichment data", () => {
     const morrissey = madstock?.acts?.find((a) => a.artistId === "morrissey");
     expect(morrissey?.setlist?.length).toBe(9);
     expect(morrissey?.videos?.["Suedehead"]).toMatch(/youtube\.com/);
+    const madness = madstock?.acts?.find((a) => a.artistId === "madness");
+    expect(madness?.setlist?.length).toBeGreaterThan(20);
+    expect(Object.keys(madness?.videos ?? {}).length).toBeGreaterThan(15);
     expect(madstock?.acts?.some((a) => a.artistId === "madness" && (a.setlist?.length ?? 0) > 20)).toBe(true);
+  });
+
+  it("links Voodoo Jürgens Astra 2026 tour footage", () => {
+    const voodoo = enrichmentEntries()["voodoo-juergens-2026-05-13"];
+    expect(Object.keys(voodoo?.videos ?? {}).length).toBeGreaterThan(10);
+    expect(voodoo?.videos?.["Heite grob ma Tote aus"]).toMatch(/youtube\.com/);
   });
 
   it("documents Depeche Mode ticket corrections for 1998 and 2006", () => {

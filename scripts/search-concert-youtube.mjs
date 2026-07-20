@@ -167,12 +167,27 @@ async function searchYouTube(query) {
   }
 }
 
-export function songVideoSearchQueries({ artistName, city, venue, sort, song }) {
+export function songVideoSearchQueries({ artistName, city, venue, sort, song, concertId = "" }) {
   const year = sort.slice(0, 4);
   const [y, m, d] = sort.split("-");
   const stripped = song.replace(/\s*\([^)]*\)\s*$/g, "").trim();
   const locations = [...new Set([venue, city].filter(Boolean))];
   const queries = [];
+  if (concertId.includes("madstock")) {
+    queries.push(
+      `${artistName} ${stripped} Live at Madstock 1992`,
+      `${artistName} ${stripped} Madstock 1992`,
+      `${artistName} ${stripped} Madstock Finsbury Park`,
+    );
+  }
+  if (concertId.includes("voodoo-juergens")) {
+    queries.push(
+      `${artistName} ${stripped} live Astra Berlin 2026`,
+      `${artistName} ${stripped} live Hamburg Mojo 2026`,
+      `${artistName} ${stripped} live Dresden Beatpol 2026`,
+      `${artistName} ${stripped} Ansa Panier live 2026`,
+    );
+  }
   for (const loc of locations) {
     queries.push(
       `${artistName} ${stripped} ${d}.${m}.${y} live ${loc}`,

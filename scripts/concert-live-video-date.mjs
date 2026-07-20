@@ -59,6 +59,9 @@ export function concertDateMatchPatterns(sort) {
 
 export function festivalAliasesForConcert(concertId) {
   if (concertId.includes("madstock")) return ["madstock", "finsbury park"];
+  if (concertId.startsWith("voodoo-juergens-2026")) {
+    return ["ansa panier", "astra", "mojo", "beatpol", "berlin", "hamburg", "dresden"];
+  }
   return [];
 }
 
@@ -83,6 +86,13 @@ export function textMatchesConcertDate(text, sort, { festivalAliases = [] } = {}
 
   for (const alias of festivalAliases) {
     const aliasLower = alias.toLowerCase();
+    if (
+      aliasLower === "madstock" &&
+      lower.includes("madstock") &&
+      (lower.includes(String(y)) || lower.includes("live at madstock"))
+    ) {
+      return true;
+    }
     if (aliasLower === "madstock" && (lower.includes("(madstock)") || lower.includes("madstock festival"))) {
       return true;
     }
@@ -97,12 +107,16 @@ export function textMatchesConcertDate(text, sort, { festivalAliases = [] } = {}
   for (const alias of festivalAliases) {
     const aliasLower = alias.toLowerCase();
     if (!lower.includes(aliasLower)) continue;
-    const hasDay = new RegExp(`\\b${d}\\b`).test(lower) || lower.includes(`${d}.`) || lower.includes(`${d}/`);
-    const hasMonth =
-      lower.includes(String(m)) ||
-      lower.includes(MONTHS_DE[m - 1]) ||
-      lower.includes(MONTHS_EN[m - 1]);
-    if (hasDay && hasMonth) return true;
+    if (aliasLower === "madstock" || aliasLower === "finsbury park") {
+      const hasDay = new RegExp(`\\b${d}\\b`).test(lower) || lower.includes(`${d}.`) || lower.includes(`${d}/`);
+      const hasMonth =
+        lower.includes(String(m)) ||
+        lower.includes(MONTHS_DE[m - 1]) ||
+        lower.includes(MONTHS_EN[m - 1]);
+      if (hasDay && hasMonth) return true;
+      continue;
+    }
+    if (lower.includes(String(y))) return true;
   }
 
   return false;

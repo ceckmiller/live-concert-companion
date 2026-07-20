@@ -24,6 +24,11 @@ describe("concert live video date matching", () => {
         festivalAliases: aliases,
       }),
     ).toBe(true);
+    expect(
+      textMatchesConcertDate("Madness - Our House (Live at Madstock 1992)", "1992-08-08", {
+        festivalAliases: aliases,
+      }),
+    ).toBe(true);
   });
 
   it("rejects full-show links without the song title for per-song slots", () => {
