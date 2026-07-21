@@ -152,6 +152,13 @@ export const slugAliases = sqliteTable(
   (t) => [uniqueIndex("slug_aliases_old_slug_unique").on(t.oldSlug)],
 );
 
+/** Catalog concert slugs the user deleted — seed must never re-insert them. */
+export const catalogExclusions = sqliteTable("catalog_exclusions", {
+  catalogSlug: text("catalog_slug").primaryKey(),
+  excludedAt: text("excluded_at").notNull(),
+  reason: text("reason"),
+});
+
 export type Artist = typeof artists.$inferSelect;
 export type Concert = typeof concerts.$inferSelect;
 export type Tour = typeof tours.$inferSelect;

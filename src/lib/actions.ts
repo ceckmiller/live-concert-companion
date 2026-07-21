@@ -8,6 +8,7 @@ import { getDb } from "./db";
 import { ensureDbInitialized } from "./init-db";
 import {
   artists,
+  catalogExclusions,
   concerts,
   concertVideos,
   recordings,
@@ -740,12 +741,24 @@ export async function deleteConcert(
   concertIdOrArtistSlug: string,
   concertSlugValue?: string,
 ): Promise<void> {
+  await ensureDbInitialized();
   const { db, artist, concert } = concertSlugValue
     ? await resolveConcertRef({
         artistSlug: concertIdOrArtistSlug,
         concertSlug: concertSlugValue,
       })
     : await resolveConcertRef({ concertId: concertIdOrArtistSlug });
+
+  // Persist exclusion so seed/catalog cannot resurrect this concert.
+  await db
+    .insert(catalogExclusions)
+    .values({
+      catalogSlug: concert.slug,
+      excludedAt: new Date().toISOString(),
+      reason: "user-deleted",
+    })
+    .onConflictDoNothing();
+
   await db.delete(concerts).where(eq(concerts.id, concert.id));
   revalidateConcertPaths({
     artistIds: [artist.id],

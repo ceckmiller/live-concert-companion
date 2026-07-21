@@ -27,7 +27,9 @@ TURSO_DATABASE_URL=libsql://... TURSO_AUTH_TOKEN=... npm run db:seed
 
 `db:seed` erstellt alle Tabellen selbst — kein separates `db:push` nötig.
 
-**Wichtig:** Niemals Seed auf Prod ohne vorheriges `npm run db:posters:export`. Seed löscht Konzerte/Künstler, erhält aber `poster_uploads` und `slug_aliases`. Nach dem Seed läuft automatisch `db:posters:sync`.
+**Wichtig:** Niemals Seed auf Prod ohne vorheriges `npm run db:posters:export`. Seed löscht Konzerte/Künstler, erhält aber `poster_uploads`, `slug_aliases` und `catalog_exclusions` (manuell gelöschte Katalog-Events). Nach dem Seed läuft automatisch `db:posters:sync` — der überschreibt bestehende `/api/posters/`-Uploads **nicht**, außer mit `--force`.
+
+Gelöschte Konzerte bleiben über `catalog_exclusions` dauerhaft draußen (z. B. Peace x Peace 2016).
 
 ## 3. Netlify-Site
 

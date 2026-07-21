@@ -91,6 +91,19 @@ export async function ensureDbInitialized() {
   `);
   await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS slug_aliases_old_slug_unique ON slug_aliases(old_slug)`);
 
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS catalog_exclusions (
+      catalog_slug TEXT PRIMARY KEY,
+      excluded_at TEXT NOT NULL,
+      reason TEXT
+    )
+  `);
+  // User-deleted catalog events that must never return via seed
+  await db.run(sql`
+    INSERT OR IGNORE INTO catalog_exclusions (catalog_slug, excluded_at, reason)
+    VALUES ('peace-by-peace-2016-06-05', ${new Date().toISOString()}, 'user-deleted')
+  `);
+
   await migrateKnownEventKinds(db);
 
   await db.run(sql`

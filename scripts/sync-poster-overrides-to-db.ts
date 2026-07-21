@@ -7,6 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { concerts, tours } from "../src/lib/db/schema";
+import { shouldApplyPosterOverride } from "../src/lib/poster-source-rank";
 import type { UserPosterOverride } from "../src/lib/user-poster-overrides";
 
 /** Legacy slug keys in overrides JSON → current concert slug in DB. */
@@ -60,6 +61,7 @@ async function resolveConcert(overrideKey: string): Promise<{ id: string; slug: 
 async function applyOverride(
   concert: { id: string; slug: string },
   override: UserPosterOverride,
+  force: boolean,
 ) {
   const row = (
     await db
@@ -67,6 +69,7 @@ async function applyOverride(
         id: concerts.id,
         tourName: concerts.tourName,
         artistId: concerts.artistId,
+        posterPath: concerts.posterPath,
       })
       .from(concerts)
       .where(eq(concerts.id, concert.id))
@@ -74,6 +77,18 @@ async function applyOverride(
   )[0];
   if (!row) {
     console.warn("skip (concert missing):", concert.slug);
+    return;
+  }
+
+  if (!shouldApplyPosterOverride(row.posterPath, override.posterPath, force)) {
+    console.log(
+      "keep live poster",
+      concert.slug,
+      row.posterPath,
+      "(skip JSON",
+      override.posterPath,
+      ")",
+    );
     return;
   }
 
@@ -90,13 +105,13 @@ async function applyOverride(
   if (tourName) {
     const tourMatch = (
       await db
-        .select({ id: tours.id, label: tours.label })
+        .select({ id: tours.id, label: tours.label, posterPath: tours.posterPath })
         .from(tours)
         .where(and(eq(tours.artistId, row.artistId), eq(tours.name, tourName)))
         .limit(1)
     )[0];
 
-    if (tourMatch) {
+    if (tourMatch && shouldApplyPosterOverride(tourMatch.posterPath, override.posterPath, force)) {
       await db
         .update(tours)
         .set({
@@ -111,15 +126,19 @@ async function applyOverride(
   console.log("updated", concert.slug, override.posterPath, override.posterCropJson ? "crop" : "");
 }
 
-async function syncPosterOverridesFromJson() {
+async function syncPosterOverridesFromJson(options: { force?: boolean } = {}) {
+  const force = Boolean(options.force || process.argv.includes("--force"));
   const overrides = loadOverrides();
+  const seenConcertIds = new Set<string>();
   for (const [overrideKey, override] of Object.entries(overrides)) {
     const concert = await resolveConcert(overrideKey);
     if (!concert) {
       console.warn("skip (no concert):", overrideKey);
       continue;
     }
-    await applyOverride(concert, override);
+    if (seenConcertIds.has(concert.id)) continue;
+    seenConcertIds.add(concert.id);
+    await applyOverride(concert, override, force);
   }
 }
 
@@ -127,7 +146,7 @@ async function main() {
   await syncPosterOverridesFromJson();
 }
 
-export { syncPosterOverridesFromJson };
+export { syncPosterOverridesFromJson, shouldApplyPosterOverride };
 
 const isMain = process.argv[1]?.includes("sync-poster-overrides-to-db");
 if (isMain) {

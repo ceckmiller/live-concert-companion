@@ -15,7 +15,7 @@ export const OTHER_CONCERTS = [
   { id: "wanda-2016-03-01", artistId: "wanda", artistName: "Wanda", title: "Wanda", sort: "2016-03-01", time: "20:30" },
   { id: "jochen-distelmeyer-2016-05-11", artistId: "jochen-distelmeyer", artistName: "Jochen Distelmeyer", title: "Jochen Distelmeyer", sort: "2016-05-11", time: "20:00" },
   { id: "cro-2016-05-20", artistId: "cro", artistName: "CRO", title: "CRO: MTV unplugged Open Air Tour 2016 - Zusatzshow", sort: "2016-05-20", time: "19:30" },
-  { id: "peace-by-peace-2016-06-05", artistId: "peace-by-peace", artistName: "Peace x Peace", title: "Peace x Peace Festival", eventTitle: "Peace x Peace", sort: "2016-06-05", time: "17:00", venue: "Waldbühne", city: "Berlin" },
+  // peace-by-peace-2016-06-05 intentionally removed (user-deleted; also in catalog_exclusions)
   { id: "peace-by-peace-2017-06-18", artistId: "peace-by-peace", artistName: "Peace x Peace", title: "Peace x Peace Festival 2017", eventTitle: "Peace x Peace", sort: "2017-06-18", time: "17:00", venue: "Waldbühne", city: "Berlin" },
   { id: "madness-2016-10-03", artistId: "madness", artistName: "Madness", title: "Madness", sort: "2016-10-03", time: "20:00" },
   { id: "the-cure-2016-10-18", artistId: "the-cure", artistName: "The Cure", title: "The Cure", sort: "2016-10-18", time: "19:30" },

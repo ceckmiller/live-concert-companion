@@ -191,6 +191,17 @@ async function main() {
     )
   `);
   await db.run(sql`
+    CREATE TABLE IF NOT EXISTS catalog_exclusions (
+      catalog_slug TEXT PRIMARY KEY,
+      excluded_at TEXT NOT NULL,
+      reason TEXT
+    )
+  `);
+  await db.run(sql`
+    INSERT OR IGNORE INTO catalog_exclusions (catalog_slug, excluded_at, reason)
+    VALUES ('peace-by-peace-2016-06-05', ${new Date().toISOString()}, 'user-deleted')
+  `);
+  await db.run(sql`
     CREATE TABLE IF NOT EXISTS setlist_items (
       concert_id TEXT NOT NULL REFERENCES concerts(id) ON DELETE CASCADE,
       position INTEGER NOT NULL,
@@ -259,7 +270,12 @@ async function main() {
     console.warn("Pre-seed poster export skipped:", e);
   }
 
-  // Preserve poster_uploads + slug_aliases across re-seeds (binary blobs / rename history).
+  // Preserve poster_uploads + slug_aliases + catalog_exclusions across re-seeds.
+  const excludedRows = await db.run(sql`SELECT catalog_slug FROM catalog_exclusions`);
+  const excludedSlugs = new Set(
+    (excludedRows.rows as { catalog_slug?: string }[]).map((r) => String(r.catalog_slug || "")).filter(Boolean),
+  );
+
   await db.run(sql`DELETE FROM recordings`);
   await db.run(sql`DELETE FROM reviews`);
   await db.run(sql`DELETE FROM concert_videos`);
@@ -297,6 +313,10 @@ async function main() {
   }
 
   for (const c of DATA.concerts) {
+    if (excludedSlugs.has(c.id)) {
+      console.log("skip excluded catalog concert:", c.id);
+      continue;
+    }
     const defaultPoster =
       manifest.morrisseyTours[c.tour] ||
       (c.poster || DATA.tours[c.tour]?.poster || "").replace(/^morrissey-posters\//, "/posters/");
@@ -416,6 +436,10 @@ async function main() {
   }
 
   for (const c of OTHER_CONCERTS) {
+    if (excludedSlugs.has(c.id)) {
+      console.log("skip excluded catalog concert:", c.id);
+      continue;
+    }
     const enrichment = enrichmentById[c.id] || {};
     const aid = await ensureArtist(c.artistId, c.artistName);
 
@@ -472,7 +496,6 @@ async function main() {
         ? "festival_slot"
         : [
               "madstock-1992-08-08",
-              "peace-by-peace-2016-06-05",
               "peace-by-peace-2017-06-18",
               "konzert-fuer-berlin-1989-11-12",
               "benefizkonzert-fur-den-wahren-heino-1986-10-18",
