@@ -11,10 +11,13 @@ afterEach(() => {
   process.chdir(originalCwd);
   if (tempDir) fs.rmSync(tempDir, { recursive: true, force: true });
   tempDir = "";
+  delete process.env.NETLIFY;
+  delete process.env.TURSO_DATABASE_URL;
 });
 
 describe("user poster overrides", () => {
   it("restores uploaded poster paths after seed defaults", () => {
+    process.env.TURSO_DATABASE_URL = "file:./local.db";
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "poster-overrides-"));
     process.chdir(tempDir);
     fs.mkdirSync(path.join(tempDir, "data"), { recursive: true });
@@ -38,7 +41,7 @@ describe("user poster overrides", () => {
   });
 
   it("skips saving on serverless hosts", () => {
-    process.env.NETLIFY = "true";
+    process.env.TURSO_DATABASE_URL = "libsql://example.turso.io";
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "poster-overrides-"));
     process.chdir(tempDir);
     fs.mkdirSync(path.join(tempDir, "data"), { recursive: true });
@@ -48,6 +51,5 @@ describe("user poster overrides", () => {
     });
 
     expect(loadUserPosterOverrides()).toEqual({});
-    delete process.env.NETLIFY;
   });
 });

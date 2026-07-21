@@ -39,7 +39,7 @@ h2{font-size:1.35rem;font-weight:400;margin:0 0 .35rem;letter-spacing:.03em;colo
 .concert[open] .concert-toggle{background:var(--accent-soft)}
 .poster-caption{font-size:.78rem;color:var(--muted);line-height:1.4;padding-top:.15rem;border-top:1px solid var(--border);margin-top:.1rem}
 .badge{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding:.22rem .5rem;border:1px solid var(--border);color:var(--muted);border-radius:3px;background:var(--surface2)}
-.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
+.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.multi-act{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12)}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
 .concert-body{padding:1rem .95rem 1.1rem;border-top:1px solid var(--border);background:linear-gradient(180deg,var(--surface) 0%,#131318 100%)}
 .body-label{font-size:.78rem;font-weight:400;margin:0 0 .55rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
 .body-label-meta{color:var(--muted);font-size:.72rem;letter-spacing:.04em;text-transform:none}

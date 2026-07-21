@@ -61,6 +61,7 @@ export const ARTIST_WIKI = {
   "red-hot-chili-peppers": [{ lang: "en", title: "Red Hot Chili Peppers" }],
   "robbie-williams": [{ lang: "en", title: "Robbie Williams" }],
   seeed: [{ lang: "de", title: "Seeed" }],
+  "simply-red": [{ lang: "en", title: "Simply Red" }],
   silly: [{ lang: "de", title: "Silly (Band)" }],
   "stereo-mcs": [{ lang: "en", title: "Stereo MC's" }],
   "snoop-dogg": [{ lang: "en", title: "Snoop Dogg" }],
@@ -163,6 +164,9 @@ export const TOUR_WIKI = {
   seeed: {
     "Ferropolis Open Air 2014": { lang: "de", title: "BAM BÚ (Seeed-Album)" },
     "Live 20>21>22": { lang: "de", title: "Bam Bam (Seeed-Album)" },
+  },
+  "simply-red": {
+    "Farewell – The Final Tour": { lang: "en", title: "Stars (Simply Red album)" },
   },
   "iggy-pop": { "Naughty Little Doggie Tour": { lang: "en", title: "Naughty Little Doggie" } },
   "stereo-mcs": { "Connected Tour": { lang: "en", title: "Connected (Stereo MC's album)" } },

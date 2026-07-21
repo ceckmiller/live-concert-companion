@@ -6,8 +6,10 @@ import type { PosterCrop } from "@/lib/poster-crop";
 import { defaultPosterSearchQuery } from "@/lib/poster-search-query";
 import {
   isAllowedPosterUpload,
+  isBlobPosterUrl,
   posterTitleFromFilename,
 } from "@/lib/poster-upload";
+import { posterUploadErrorMessage, preparePosterUploadFile } from "@/lib/poster-upload-client";
 import { TourPosterCropEditor } from "@/components/TourPosterCropEditor";
 
 export type PosterPick = { url: string; title: string; crop?: PosterCrop };
@@ -130,20 +132,28 @@ export function TourPosterEditModal({
       setError("Nur JPG, PNG, WebP oder GIF bis 10 MB.");
       return;
     }
-    revokePreview();
-    const objectUrl = URL.createObjectURL(file);
-    previewUrlRef.current = objectUrl;
-    setUploadFile(file);
-    openCrop(
-      {
-        url: objectUrl,
-        title: posterTitleFromFilename(file.name),
-        width: 0,
-        height: 0,
-        score: 0,
-      },
-      null,
-    );
+    setError("");
+    startTransition(async () => {
+      try {
+        const prepared = await preparePosterUploadFile(file);
+        revokePreview();
+        const objectUrl = URL.createObjectURL(prepared);
+        previewUrlRef.current = objectUrl;
+        setUploadFile(prepared);
+        openCrop(
+          {
+            url: objectUrl,
+            title: posterTitleFromFilename(prepared.name),
+            width: 0,
+            height: 0,
+            score: 0,
+          },
+          null,
+        );
+      } catch (err) {
+        setError(posterUploadErrorMessage(err));
+      }
+    });
   }
 
   function confirmCrop(crop: PosterCrop) {
@@ -159,11 +169,15 @@ export function TourPosterEditModal({
           const uploaded = await uploadConcertPosterFile(fd);
           url = uploaded.url;
           title = uploaded.title;
+        } else if (isBlobPosterUrl(url)) {
+          throw new Error(
+            "Dieses Bild ist nur lokal in der Vorschau. Bitte erneut aus der Fotobibliothek wählen oder online ein Plakat per Suche nutzen.",
+          );
         }
         await onPick({ url, title, crop });
         onClose();
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Speichern fehlgeschlagen");
+        setError(posterUploadErrorMessage(err));
       } finally {
         setSavingUrl("");
       }

@@ -21,7 +21,7 @@ export function ArtistPageClient({ data }: { data: ArtistPayload }) {
   return (
     <>
       <nav>
-        <Link href="/">← Alle Künstler</Link>
+        <Link href="/?view=artists">← Alle Künstler</Link>
         <a href="#konzerte">Konzerte</a>
         {data.songs.length > 0 ? <a href="#songs">Songs</a> : null}
       </nav>

@@ -365,6 +365,39 @@ describe("concert enrichment data", () => {
     expect(seeed?.acts?.some((a) => a.artistId === "bilderbuch" && (a.setlist?.length ?? 0) > 0)).toBe(true);
     expect(seeed?.acts?.some((a) => a.artistId === "janelle-monae")).toBe(true);
     expect(seeed?.acts?.some((a) => a.artistId === "seeed" && a.setlist?.includes("Augenbling"))).toBe(true);
+    expect(OTHER_CONCERTS.some((c) => c.id === "seeed-2022-08-13")).toBe(true);
+    const wuhlheide = enrichmentData["seeed-2022-08-13"] as {
+      venue: string;
+      tour: string;
+      setlistComplete: boolean;
+      setlist: string[];
+    };
+    expect(wuhlheide.venue).toBe("Parkbühne Wuhlheide");
+    expect(wuhlheide.tour).toBe("Live 20>21>22");
+    expect(wuhlheide.setlistComplete).toBe(false);
+    expect(wuhlheide.setlist).toContain("Seeeds Haus");
+    expect(wuhlheide.setlist).toContain("G€LD");
+    expect(OTHER_CONCERTS.some((c) => c.id === "seeed-2022-09-09")).toBe(true);
+    const waldbuehne = enrichmentData["seeed-2022-09-09"] as {
+      venue: string;
+      tour: string;
+      setlistComplete: boolean;
+      setlist: string[];
+    };
+    expect(waldbuehne.venue).toBe("Waldbühne");
+    expect(waldbuehne.setlistComplete).toBe(true);
+    expect(waldbuehne.setlist).toContain("Hale-Bopp");
+    expect(waldbuehne.setlist).toContain("Aufstehn!");
+    expect(OTHER_CONCERTS.some((c) => c.id === "simply-red-2010-11-13")).toBe(true);
+    const simplyRed = enrichmentData["simply-red-2010-11-13"] as {
+      venue: string;
+      tour: string;
+      setlist: string[];
+    };
+    expect(simplyRed.venue).toBe("O2 World");
+    expect(simplyRed.tour).toBe("Farewell – The Final Tour");
+    expect(simplyRed.setlist).toContain("Fairground");
+    expect(simplyRed.setlist).toContain("If You Don't Know Me by Now");
     const iggy = enrichmentData["iggy-pop-1998-03-07"] as { venue: string; tour: string; note: string };
     expect(iggy.venue).toBe("Columbiahalle");
     expect(iggy.tour).toBe("Naughty Little Doggie Tour");
@@ -382,7 +415,7 @@ describe("concert enrichment data", () => {
   it("includes Tempodrom concerts from user list", () => {
     expect(OTHER_CONCERTS.some((c) => c.id === "the-pogues-1988-04-28")).toBe(true);
     expect(OTHER_CONCERTS.some((c) => c.id === "heroes-del-silencio-1992-06-14")).toBe(true);
-    expect(OTHER_CONCERTS.some((c) => c.id === "heino-aid-1986-10-18")).toBe(true);
+    expect(OTHER_CONCERTS.some((c) => c.id === "benefizkonzert-fur-den-wahren-heino-1986-10-18")).toBe(true);
     expect(OTHER_CONCERTS.some((c) => c.id === "die-toten-hosen-1987-09-05")).toBe(true);
     expect(OTHER_CONCERTS.some((c) => c.id === "poems-for-laila-1991-07-06")).toBe(true);
 
@@ -443,7 +476,7 @@ describe("concert enrichment data", () => {
     expect(heroes.setlist[0]).toBe("Nuestros nombres");
     expect(heroes.setlist.at(-1)).toBe("Con nombre de guerra");
 
-    const heinoAid = enrichmentEntries()["heino-aid-1986-10-18"];
+    const heinoAid = enrichmentEntries()["benefizkonzert-fur-den-wahren-heino-1986-10-18"];
     expect(heinoAid?.acts?.some((a) => a.artistId === "die-toten-hosen")).toBe(true);
     expect(heinoAid?.acts?.some((a) => a.artistId === "die-aerzte")).toBe(true);
     expect(heinoAid?.note).toMatch(/Benefiz/i);

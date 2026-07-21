@@ -19,6 +19,8 @@ import morrisseyLiveVideos from "../data/morrissey-live-videos.json" with { type
 import assetManifest from "../data/asset-manifest.json" with { type: "json" };
 import searchCache from "../data/tour-poster-search-cache.json" with { type: "json" };
 import { applyUserPosterOverride } from "../src/lib/user-poster-overrides.ts";
+import { exportPosterOverridesFromDb } from "./export-poster-overrides-from-db.ts";
+import { syncPosterOverridesFromJson } from "./sync-poster-overrides-to-db.ts";
 // @ts-expect-error ESM metadata module
 import { SONG_META } from "./morrissey-song-meta.mjs";
 
@@ -160,6 +162,34 @@ async function main() {
   } catch {
     // Column already exists.
   }
+  try {
+    await db.run(sql`ALTER TABLE concerts ADD COLUMN event_kind TEXT NOT NULL DEFAULT 'solo'`);
+  } catch {
+    // Column already exists.
+  }
+  try {
+    await db.run(sql`ALTER TABLE concerts ADD COLUMN event_title TEXT`);
+  } catch {
+    // Column already exists.
+  }
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS slug_aliases (
+      id TEXT PRIMARY KEY,
+      entity_type TEXT NOT NULL,
+      entity_id TEXT NOT NULL,
+      old_slug TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `);
+  await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS slug_aliases_old_slug_unique ON slug_aliases(old_slug)`);
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS poster_uploads (
+      id TEXT PRIMARY KEY,
+      mime_type TEXT NOT NULL,
+      data_base64 TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `);
   await db.run(sql`
     CREATE TABLE IF NOT EXISTS setlist_items (
       concert_id TEXT NOT NULL REFERENCES concerts(id) ON DELETE CASCADE,
@@ -221,6 +251,15 @@ async function main() {
     )
   `);
 
+  // Backup poster overrides from DB before wiping concerts (poster_uploads stay).
+  try {
+    const exported = await exportPosterOverridesFromDb();
+    console.log("Pre-seed poster export:", exported.count, "→", exported.outFile);
+  } catch (e) {
+    console.warn("Pre-seed poster export skipped:", e);
+  }
+
+  // Preserve poster_uploads + slug_aliases across re-seeds (binary blobs / rename history).
   await db.run(sql`DELETE FROM recordings`);
   await db.run(sql`DELETE FROM reviews`);
   await db.run(sql`DELETE FROM concert_videos`);
@@ -267,8 +306,8 @@ async function main() {
     });
     const concertId = crypto.randomUUID();
     await db.run(
-      sql`INSERT INTO concerts (id, artist_id, slug, sort_date, date_label, city, venue, tour_name, note, poster_path, poster_label, setlist_fm_url, created_at)
-          VALUES (${concertId}, ${artistId}, ${c.id}, ${c.sort}, ${c.date}, ${c.city}, ${c.venue}, ${c.tour}, ${c.note ?? null}, ${posterFields.posterPath}, ${posterFields.posterLabel}, ${c.setlistFm ?? null}, ${now})`,
+      sql`INSERT INTO concerts (id, artist_id, slug, sort_date, date_label, city, venue, tour_name, note, poster_path, poster_label, poster_crop_json, setlist_fm_url, created_at)
+          VALUES (${concertId}, ${artistId}, ${c.id}, ${c.sort}, ${c.date}, ${c.city}, ${c.venue}, ${c.tour}, ${c.note ?? null}, ${posterFields.posterPath}, ${posterFields.posterLabel}, ${posterFields.posterCropJson}, ${c.setlistFm ?? null}, ${now})`,
     );
     for (let i = 0; i < c.setlist.length; i++) {
       await db.run(
@@ -392,6 +431,7 @@ async function main() {
     });
     const posterPath = posterFields.posterPath;
     const posterLabel = posterFields.posterLabel;
+    const posterCropJson = posterFields.posterCropJson;
     const posterKind = tourInfo?.kind || "album";
     const tourKey = `${aid}:${tourName}`;
     if (posterPath && !artistTourKeys.has(tourKey)) {
@@ -427,9 +467,25 @@ async function main() {
     const concertId = crypto.randomUUID();
     const insertedVideoSongs = new Set<string>();
 
+    const eventKind =
+      c.id === "bilderbuch-2017-06-18"
+        ? "festival_slot"
+        : [
+              "madstock-1992-08-08",
+              "peace-by-peace-2016-06-05",
+              "peace-by-peace-2017-06-18",
+              "konzert-fuer-berlin-1989-11-12",
+              "benefizkonzert-fur-den-wahren-heino-1986-10-18",
+              "seeed-2014-08-22",
+            ].includes(c.id)
+          ? "multi_act"
+          : "solo";
+    const eventTitle =
+      eventKind === "multi_act" ? (c.eventTitle ?? c.artistName ?? null) : null;
+
     await db.run(
-      sql`INSERT INTO concerts (id, artist_id, slug, sort_date, date_label, city, venue, tour_name, note, poster_path, poster_label, setlist_fm_url, ticket_image_path, created_at)
-          VALUES (${concertId}, ${aid}, ${c.id}, ${c.sort}, ${dateLabel}, ${city}, ${venue}, ${tourName}, ${note}, ${posterPath}, ${posterLabel}, ${setlistFm}, ${null}, ${now})`,
+      sql`INSERT INTO concerts (id, artist_id, slug, sort_date, date_label, city, venue, tour_name, note, poster_path, poster_label, poster_crop_json, setlist_fm_url, ticket_image_path, event_kind, event_title, created_at)
+          VALUES (${concertId}, ${aid}, ${c.id}, ${c.sort}, ${dateLabel}, ${city}, ${venue}, ${tourName}, ${note}, ${posterPath}, ${posterLabel}, ${posterCropJson}, ${setlistFm}, ${null}, ${eventKind}, ${eventTitle}, ${now})`,
     );
 
     for (const r of [...(reviewsById[c.id] || []), ...(enrichment.reviews || [])]) {
@@ -497,6 +553,8 @@ async function main() {
   const artistCount = (await db.select({ n: sql<number>`count(*)` }).from(artists))[0]?.n ?? 0;
   const concertCount = (await db.select({ n: sql<number>`count(*)` }).from(concerts))[0]?.n ?? 0;
   console.log("Seeded companion DB:", { artists: artistCount, concerts: concertCount });
+  console.log("Syncing poster overrides from data/user-poster-overrides.json …");
+  await syncPosterOverridesFromJson();
 }
 
 main().catch((e) => {

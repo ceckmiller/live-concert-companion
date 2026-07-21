@@ -8,6 +8,7 @@ import { isAllowedVideoUpload } from "@/lib/video-upload";
 type UploadVideoModalProps = {
   open: boolean;
   onClose: () => void;
+  concertId?: string;
   artistSlug: string;
   concertSlug: string;
   songs: string[];
@@ -16,6 +17,7 @@ type UploadVideoModalProps = {
 export function UploadVideoModal({
   open,
   onClose,
+  concertId,
   artistSlug,
   concertSlug,
   songs,
@@ -63,6 +65,7 @@ export function UploadVideoModal({
     startTransition(async () => {
       try {
         const fd = new FormData();
+        if (concertId) fd.set("concertId", concertId);
         fd.set("artistSlug", artistSlug);
         fd.set("concertSlug", concertSlug);
         fd.set("songTitle", songTitle);

@@ -3,11 +3,35 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GlobalConcertTimeline } from "@/components/ArtistSections";
-import type { HomePayload } from "@/types/domain";
+import type { ArtistListItem, HomePayload } from "@/types/domain";
 
 type HomeView = "timeline" | "artists";
 
 const VIEW_KEY = "lkc-home-view";
+
+function ArtistRows({ artists }: { artists: ArtistListItem[] }) {
+  return (
+    <div className="artist-list">
+      {artists.map((a) => (
+        <Link key={a.id} className="artist-row" href={`/artist/${a.id}`}>
+          <span className="artist-row-thumb">
+            {a.image_path ? (
+              <img src={a.image_path} alt="" loading="lazy" />
+            ) : (
+              <span className="artist-row-initial">{a.name.charAt(0)}</span>
+            )}
+          </span>
+          <span className="artist-row-body">
+            <span className="artist-row-name">{a.name}</span>
+            <span className="artist-row-meta">
+              {a.concert_count} Konzert{a.concert_count === 1 ? "" : "e"}
+            </span>
+          </span>
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 export function HomePageClient({ home }: { home: HomePayload }) {
   const [view, setView] = useState<HomeView>("timeline");
@@ -15,8 +39,25 @@ export function HomePageClient({ home }: { home: HomePayload }) {
   const [showHidden, setShowHidden] = useState(false);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("view") === "artists") {
+      setView("artists");
+      return;
+    }
     const saved = localStorage.getItem(VIEW_KEY);
     if (saved === "timeline" || saved === "artists") setView(saved);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash.startsWith("concert-")) return;
+    const id = hash.slice("concert-".length);
+    if (!id) return;
+    setOpenConcertId(id);
+    requestAnimationFrame(() => {
+      document.getElementById(`concert-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }, []);
 
   function switchView(next: HomeView) {
@@ -43,7 +84,7 @@ export function HomePageClient({ home }: { home: HomePayload }) {
         </div>
         <div className="stat">
           <div className="val">{s.artists}</div>
-          <div className="lbl">Künstler</div>
+          <div className="lbl">Künstler (Solo)</div>
         </div>
         <div className="stat">
           <div className="val">{s.years}</div>
@@ -82,7 +123,7 @@ export function HomePageClient({ home }: { home: HomePayload }) {
             <div className="section-head">
               <h2>Chronologie</h2>
               <p className="section-desc">
-                Solo-Konzerte — neueste zuerst. Festivals siehe unten.
+                Alle Konzerte &amp; Multi-Act-Events — neueste zuerst.
               </p>
             </div>
             <GlobalConcertTimeline
@@ -93,24 +134,6 @@ export function HomePageClient({ home }: { home: HomePayload }) {
               allowHide
             />
           </section>
-
-          {home.festivals.length > 0 ? (
-            <section id="festivals">
-              <div className="section-head">
-                <h2>Festivals &amp; Multi-Act-Events</h2>
-                <p className="section-desc">
-                  Peace x Peace, Madstock, Konzert für Berlin, Heino Aid, Ferropolis …
-                </p>
-              </div>
-              <GlobalConcertTimeline
-                concerts={home.festivals}
-                artistsBySlug={home.artistsBySlug}
-                openId={openConcertId}
-                onOpen={openConcert}
-                allowHide
-              />
-            </section>
-          ) : null}
 
           {showHidden && home.hiddenConcerts.length > 0 ? (
             <section id="ausgeblendet">
@@ -136,31 +159,29 @@ export function HomePageClient({ home }: { home: HomePayload }) {
           ) : null}
         </>
       ) : (
-        <section id="kuenstler">
-          <div className="section-head">
-            <h2>Alle Künstler</h2>
-            <p className="section-desc">Alphabetisch — für Setlists, Song-Statistik & Tourplakate pro Künstler</p>
-          </div>
-          <div className="artist-list">
-            {home.artists.map((a) => (
-              <Link key={a.slug} className="artist-row" href={`/artist/${a.slug}`}>
-                <span className="artist-row-thumb">
-                  {a.image_path ? (
-                    <img src={a.image_path} alt="" loading="lazy" />
-                  ) : (
-                    <span className="artist-row-initial">{a.name.charAt(0)}</span>
-                  )}
-                </span>
-                <span className="artist-row-body">
-                  <span className="artist-row-name">{a.name}</span>
-                  <span className="artist-row-meta">
-                    {a.concert_count} Konzert{a.concert_count === 1 ? "" : "e"}
-                  </span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <>
+          <section id="kuenstler-solo">
+            <div className="section-head">
+              <h2>Einzelkonzerte</h2>
+              <p className="section-desc">
+                Künstler, bei denen du auf Solo-Konzerten warst — alphabetisch
+              </p>
+            </div>
+            <ArtistRows artists={home.artists} />
+          </section>
+
+          {home.festivalGuestArtists.length > 0 ? (
+            <section id="kuenstler-festival">
+              <div className="section-head">
+                <h2>Nur bei Multi-Act-Events gesehen</h2>
+                <p className="section-desc">
+                  Künstler, die nur als Acts auf Multi-Act-Events in deiner Liste stehen
+                </p>
+              </div>
+              <ArtistRows artists={home.festivalGuestArtists} />
+            </section>
+          ) : null}
+        </>
       )}
     </main>
   );

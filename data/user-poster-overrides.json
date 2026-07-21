@@ -1,143 +1,456 @@
 {
-  "heino-aid-1986-10-18": {
-    "posterPath": "/posters/uploads/75593991-0035-4a0d-a2b4-4803c7817e65.jpg",
-    "posterLabel": "Tourplakat: Wir lassen uns das Singen nicht verbieten"
-  },
-  "les-negresses-vertes-1992-03-19": {
-    "posterPath": "/posters/uploads/5c1b7062-d29a-4e6a-a428-9785a4b571eb.jpg",
-    "posterLabel": "Tourplakat: Les Négresses Vertes — Die Halle 1992"
-  },
-  "red-hot-chili-peppers-1992-03-22": {
-    "posterPath": "/posters/uploads/bbd4dfe1-63ed-48ee-afb0-0fa8c1947074.jpg",
-    "posterLabel": "Tourplakat: Blood Sugar Sex Magik Tour 1992"
-  },
-  "the-pogues-1988-04-28": {
-    "posterPath": "/posters/uploads/89da637c-a8d6-478c-9029-2ec81cb98192.png",
-    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 13.55.27",
-    "posterCropJson": null
+  "cf5387a5-f0b4-4883-b0f4-6769894e2a3c": {
+    "posterPath": "/api/posters/7e32934d-776d-4a9b-8cbf-27162ac87496.jpg",
+    "posterLabel": "Tourplakat: 300px-Morrissey_1991",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":300,\"imageH\":464}"
   },
   "berlin-1991": {
-    "posterPath": "https://musicpostershop.com/cdn/shop/files/MorrisseyKillUnclePoster.jpg?v=1736756656",
-    "posterLabel": "Tourplakat: Morrissey - Poster Kill Uncle 1991 - Music Poster Shop - Ireland",
-    "posterCropJson": "{\"zoom\":1.1,\"panX\":-3.7578125,\"panY\":-1.8984375}"
+    "posterPath": "/api/posters/7e32934d-776d-4a9b-8cbf-27162ac87496.jpg",
+    "posterLabel": "Tourplakat: 300px-Morrissey_1991",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":300,\"imageH\":464}"
   },
-  "die-toten-hosen-1987-09-05": {
-    "posterPath": "https://www.dth-dta.de/images/material/1987_ein-bunter-abend-fuer-eine-schwarze-republik/1987_ein-bunter-abend-fuer-eine-schwarze-republik_poster_01.jpg",
-    "posterLabel": "Tourplakat: Die Toten Hosen Ein bunter Abend für eine schwarze Republik Tour 1987",
-    "posterCropJson": "{\"zoom\":1.4,\"panX\":0,\"panY\":0}"
-  },
-  "the-toy-dolls-1989-10-25": {
-    "posterPath": "/posters/uploads/b5a9b233-49ae-4621-8a15-b3f01689a33a.png",
-    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.13.55",
-    "posterCropJson": "{\"zoom\":1.1,\"panX\":-2.49609375,\"panY\":-18.700000000000017}"
-  },
-  "konzert-fuer-berlin-1989-11-12": {
-    "posterPath": "/posters/uploads/0abd7657-99b2-485e-b163-a2249fe859e5.jpg",
-    "posterLabel": "Tourplakat: 81ehicWyPPL._SX522_",
-    "posterCropJson": null
-  },
-  "screaming-blue-messiahs-1989-12-13": {
-    "posterPath": "/posters/uploads/5c560ae4-373d-4f6c-bb66-43a889d0a9b4.jpg",
-    "posterLabel": "Tourplakat: images",
-    "posterCropJson": "{\"zoom\":1.1,\"panX\":14.000000000000012,\"panY\":-18.700000000000017}"
-  },
-  "stereo-mcs-1993-04-05": {
-    "posterPath": "/posters/uploads/96de7d8d-730c-4602-b371-fe0ca5415d18.png",
-    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.38.51",
-    "posterCropJson": "{\"zoom\":1.1,\"panX\":2.6953125,\"panY\":18.700000000000017,\"imageW\":522,\"imageH\":792}"
-  },
-  "madstock-1992-08-08": {
-    "posterPath": "/posters/uploads/997609f5-4ab7-4875-b822-e9535f461fe9.jpg",
-    "posterLabel": "Tourplakat: Aktuelles Plakat",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1109,\"imageH\":878}"
-  },
-  "iggy-pop-1998-03-07": {
-    "posterPath": "/posters/iggy-pop--naughty-little-doggie-tour.jpg",
-    "posterLabel": "Tourplakat: Aktuelles Plakat",
-    "posterCropJson": "{\"zoom\":1.3,\"panX\":32.82421875,\"panY\":41.35546875,\"imageW\":1080,\"imageH\":1434}"
-  },
-  "tom-jones-2000-04-25": {
-    "posterPath": "/posters/tom-jones--reload-tour.jpg",
-    "posterLabel": "Tourplakat: Aktuelles Plakat",
-    "posterCropJson": "{\"zoom\":1.4,\"panX\":-0.390625,\"panY\":14.2421875,\"imageW\":268,\"imageH\":400}"
+  "f1a5c596-965c-4a60-b56a-f3271daed38c": {
+    "posterPath": "/posters/uploads/e27759be-ffb8-4a88-a9e6-6f00aa2cd612.jpg",
+    "posterLabel": "Tourplakat: OyeEstebanTour",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-2.560137499999996,\"panY\":18.700000000000017,\"imageW\":353,\"imageH\":500}"
   },
   "berlin-1999": {
     "posterPath": "/posters/uploads/e27759be-ffb8-4a88-a9e6-6f00aa2cd612.jpg",
     "posterLabel": "Tourplakat: OyeEstebanTour",
     "posterCropJson": "{\"zoom\":1.1,\"panX\":-2.560137499999996,\"panY\":18.700000000000017,\"imageW\":353,\"imageH\":500}"
   },
-  "depeche-mode-1998-09-18": {
-    "posterPath": "/posters/uploads/018cb7f7-467c-4f7c-8e12-d3bd552984ac.jpg",
-    "posterLabel": "Tourplakat: 600px-Depeche_Mode_1998",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":867}"
+  "5963ba99-7fe3-4061-9a2a-3aa591b1ce8b": {
+    "posterPath": "/api/posters/c910fec2-2da9-4a37-a26a-ac62b4c137e1.jpg",
+    "posterLabel": "Tourplakat: morrissey-ringleader-berlin-2006-konzertplakat",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0,\"panY\":0,\"imageW\":373,\"imageH\":530}"
   },
   "berlin-2006": {
-    "posterPath": "/posters/uploads/bf363ef0-e621-40db-8c1a-ece6280de0b6.jpg",
-    "posterLabel": "Tourplakat: Touroftormentors",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":393,\"imageH\":500}"
+    "posterPath": "/api/posters/c910fec2-2da9-4a37-a26a-ac62b4c137e1.jpg",
+    "posterLabel": "Tourplakat: morrissey-ringleader-berlin-2006-konzertplakat",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0,\"panY\":0,\"imageW\":373,\"imageH\":530}"
   },
-  "herbert-groenemeyer-2007-09-12": {
-    "posterPath": "/posters/uploads/51b4b34b-2026-4cdf-a054-138237a0ef89.png",
-    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.49.12",
-    "posterCropJson": "{\"zoom\":1.2,\"panX\":-4.5234375,\"panY\":-6.271794871794867,\"imageW\":1170,\"imageH\":1346}"
-  },
-  "berlin-2009-nov": {
-    "posterPath": "/posters/uploads/0bb8dd49-83bf-435e-b09b-ad1f3213728a.jpg",
-    "posterLabel": "Tourplakat: 600px-Morrissey_2009",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":856}"
+  "6ee59b38-ce81-4d34-903e-3b23b9e3ba24": {
+    "posterPath": "/posters/uploads/b5e82262-4e37-41ba-8040-10c8538d6c66.jpg",
+    "posterLabel": "Tourplakat: 600px-Morrissey_2009-06",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":844}"
   },
   "berlin-2009-jun": {
     "posterPath": "/posters/uploads/b5e82262-4e37-41ba-8040-10c8538d6c66.jpg",
     "posterLabel": "Tourplakat: 600px-Morrissey_2009-06",
     "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":844}"
   },
-  "the-specials-2011-09-20": {
-    "posterPath": "/posters/uploads/456cf1cd-0514-41b2-b943-89ddc110ea29.png",
-    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.55.38",
-    "posterCropJson": "{\"zoom\":1.2,\"panX\":1.1286746987951801,\"panY\":27.121875000000017,\"imageW\":522,\"imageH\":830}"
+  "c333bc98-d9b0-4520-8d1a-793470c4ba4b": {
+    "posterPath": "/posters/uploads/0bb8dd49-83bf-435e-b09b-ad1f3213728a.jpg",
+    "posterLabel": "Tourplakat: 600px-Morrissey_2009",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":856}"
   },
-  "robbie-williams-2005-10-09": {
-    "posterPath": "/posters/uploads/9d6e0a51-e738-4de7-ad5a-8e0752ff0081.jpg",
-    "posterLabel": "Tourplakat: gettyimages-544287773-1024x1024",
-    "posterCropJson": "{\"zoom\":1.1,\"panX\":-10.2265625,\"panY\":26.739837398373965,\"imageW\":984,\"imageH\":1024}"
+  "berlin-2009-nov": {
+    "posterPath": "/posters/uploads/0bb8dd49-83bf-435e-b09b-ad1f3213728a.jpg",
+    "posterLabel": "Tourplakat: 600px-Morrissey_2009",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":856}"
   },
-  "seeed-2014-08-22": {
-    "posterPath": "/posters/uploads/12ee8c58-79b8-464e-91c8-e224eb60dab8.png",
-    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 15.02.02",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":906,\"imageH\":636}"
+  "9f813294-edd6-452c-a66c-a7a8c1593c45": {
+    "posterPath": "/posters/uploads/71f1f4e2-7289-43c7-8ea7-baf53503c7cd.jpg",
+    "posterLabel": "Tourplakat: morrissey-world-piece-berlin-2014-konzertplakat",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0.21484375,\"panY\":10.90625,\"imageW\":753,\"imageH\":1060}"
   },
   "berlin-2014": {
     "posterPath": "/posters/uploads/71f1f4e2-7289-43c7-8ea7-baf53503c7cd.jpg",
     "posterLabel": "Tourplakat: morrissey-world-piece-berlin-2014-konzertplakat",
     "posterCropJson": "{\"zoom\":1.1,\"panX\":0.21484375,\"panY\":10.90625,\"imageW\":753,\"imageH\":1060}"
   },
-  "die-fantastischen-vier-2015-01-26": {
-    "posterPath": "/posters/uploads/77314235-7578-4ae0-b2cb-b2ac31011367.jpg",
-    "posterLabel": "Tourplakat: Die-Fantastischen-Vier-Rekord-Live-in-Wien",
-    "posterCropJson": "{\"zoom\":1.1,\"panX\":0.1171875,\"panY\":18.700000000000017,\"imageW\":718,\"imageH\":1024}"
+  "0a3e9c46-10b7-449d-b913-60a27c478355": {
+    "posterPath": "/api/posters/f21077c2-e2ac-45af-9e67-3917523eb638.jpg",
+    "posterLabel": "Tourplakat: 41u39jXy7-L._AC_UF894,1000_QL80_",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":696,\"imageH\":1000}"
+  },
+  "berlin-2016": {
+    "posterPath": "/api/posters/f21077c2-e2ac-45af-9e67-3917523eb638.jpg",
+    "posterLabel": "Tourplakat: 41u39jXy7-L._AC_UF894,1000_QL80_",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":696,\"imageH\":1000}"
+  },
+  "33b7a0e1-7755-42ca-a719-12618fd38779": {
+    "posterPath": "/api/posters/3f7cc7cd-fd2a-403e-932d-997637666622.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.52.06",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1438,\"imageH\":1428}"
+  },
+  "rah-2018": {
+    "posterPath": "/api/posters/3f7cc7cd-fd2a-403e-932d-997637666622.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.52.06",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1438,\"imageH\":1428}"
+  },
+  "4d2aa92b-5b40-4d6d-88f3-b9e4021df98d": {
+    "posterPath": "/api/posters/e91fdb00-313f-4ef2-8b7f-e86561d62613.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.52.06",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0,\"panY\":0,\"imageW\":1438,\"imageH\":1428}"
+  },
+  "ally-pally-2018": {
+    "posterPath": "/api/posters/e91fdb00-313f-4ef2-8b7f-e86561d62613.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.52.06",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0,\"panY\":0,\"imageW\":1438,\"imageH\":1428}"
+  },
+  "62d41cf0-a752-4f42-9217-6c75c4a46fc1": {
+    "posterPath": "/api/posters/e5cb7274-4521-4870-91c7-ee7f638d032e.jpg",
+    "posterLabel": "Tourplakat: morrissey-tour-2020",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":500,\"imageH\":500}"
+  },
+  "koeln-2020": {
+    "posterPath": "/api/posters/e5cb7274-4521-4870-91c7-ee7f638d032e.jpg",
+    "posterLabel": "Tourplakat: morrissey-tour-2020",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":500,\"imageH\":500}"
+  },
+  "38de7142-502e-409c-b056-ebd2c82a5dd4": {
+    "posterPath": "/api/posters/887734ae-da05-445a-8345-a6021434bba2.jpg",
+    "posterLabel": "Tourplakat: images (2)",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":399,\"imageH\":501}"
+  },
+  "hamburg-2026": {
+    "posterPath": "/api/posters/887734ae-da05-445a-8345-a6021434bba2.jpg",
+    "posterLabel": "Tourplakat: images (2)",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":399,\"imageH\":501}"
+  },
+  "61187679-f103-489e-af85-8768c373fefb": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2026/02/Morrissey-028.jpg",
+    "posterLabel": "Tourplakat: MORRISSEY Make-up Is A Lie 2026 Tour ZENITH De Lille Poster",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":-1,\"panY\":24.333333333333258,\"imageW\":1054,\"imageH\":1500}"
+  },
+  "berlin-2026": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2026/02/Morrissey-028.jpg",
+    "posterLabel": "Tourplakat: MORRISSEY Make-up Is A Lie 2026 Tour ZENITH De Lille Poster",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":-1,\"panY\":24.333333333333258,\"imageW\":1054,\"imageH\":1500}"
+  },
+  "8a4295f2-31c4-4ecd-bf5c-df54cc4f070a": {
+    "posterPath": "/posters/uploads/5c1b7062-d29a-4e6a-a428-9785a4b571eb.jpg",
+    "posterLabel": "Tourplakat: Les Négresses Vertes — Die Halle 1992",
+    "posterCropJson": null
+  },
+  "les-negresses-vertes-1992-03-19": {
+    "posterPath": "/posters/uploads/5c1b7062-d29a-4e6a-a428-9785a4b571eb.jpg",
+    "posterLabel": "Tourplakat: Les Négresses Vertes — Die Halle 1992",
+    "posterCropJson": null
+  },
+  "4e2d2e53-8b0a-4374-9f60-b5ccaa414cd8": {
+    "posterPath": "/posters/uploads/bbd4dfe1-63ed-48ee-afb0-0fa8c1947074.jpg",
+    "posterLabel": "Tourplakat: Blood Sugar Sex Magik Tour 1992",
+    "posterCropJson": null
+  },
+  "red-hot-chili-peppers-1992-03-22": {
+    "posterPath": "/posters/uploads/bbd4dfe1-63ed-48ee-afb0-0fa8c1947074.jpg",
+    "posterLabel": "Tourplakat: Blood Sugar Sex Magik Tour 1992",
+    "posterCropJson": null
+  },
+  "1fcb24c4-f35e-4656-99a6-8033f740d16f": {
+    "posterPath": "/posters/uploads/96de7d8d-730c-4602-b371-fe0ca5415d18.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.38.51",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":2.6953125,\"panY\":18.700000000000017,\"imageW\":522,\"imageH\":792}"
+  },
+  "stereo-mcs-1993-04-05": {
+    "posterPath": "/posters/uploads/96de7d8d-730c-4602-b371-fe0ca5415d18.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.38.51",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":2.6953125,\"panY\":18.700000000000017,\"imageW\":522,\"imageH\":792}"
+  },
+  "206c9792-5265-46d3-b67f-19d2310fea24": {
+    "posterPath": "/posters/uploads/b5a9b233-49ae-4621-8a15-b3f01689a33a.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.13.55",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-2.49609375,\"panY\":-18.700000000000017}"
+  },
+  "the-toy-dolls-1989-10-25": {
+    "posterPath": "/posters/uploads/b5a9b233-49ae-4621-8a15-b3f01689a33a.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.13.55",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-2.49609375,\"panY\":-18.700000000000017}"
+  },
+  "18a68b7a-e390-445b-bd9c-b017213d1b84": {
+    "posterPath": "/posters/uploads/0abd7657-99b2-485e-b163-a2249fe859e5.jpg",
+    "posterLabel": "Tourplakat: 81ehicWyPPL._SX522_",
+    "posterCropJson": null
+  },
+  "konzert-fuer-berlin-1989-11-12": {
+    "posterPath": "/posters/uploads/0abd7657-99b2-485e-b163-a2249fe859e5.jpg",
+    "posterLabel": "Tourplakat: 81ehicWyPPL._SX522_",
+    "posterCropJson": null
+  },
+  "7288d272-2b40-4d3c-aba1-ccac05c585c1": {
+    "posterPath": "/posters/iggy-pop--naughty-little-doggie-tour.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":32.82421875,\"panY\":41.35546875,\"imageW\":1080,\"imageH\":1434}"
+  },
+  "iggy-pop-1998-03-07": {
+    "posterPath": "/posters/iggy-pop--naughty-little-doggie-tour.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":32.82421875,\"panY\":41.35546875,\"imageW\":1080,\"imageH\":1434}"
+  },
+  "df92bbc8-0cc3-4cd5-93a3-b213683d8c03": {
+    "posterPath": "/posters/uploads/997609f5-4ab7-4875-b822-e9535f461fe9.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1109,\"imageH\":878}"
+  },
+  "madstock-1992-08-08": {
+    "posterPath": "/posters/uploads/997609f5-4ab7-4875-b822-e9535f461fe9.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1109,\"imageH\":878}"
+  },
+  "6d744091-1dd2-4e22-9a98-fee37b86efa0": {
+    "posterPath": "/posters/uploads/57387e61-fe75-4e7b-ae41-10b2253fe4a6.jpg",
+    "posterLabel": "Tourplakat: wanda-bussi-baby-vinyl(1)",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":-38.6875,\"panY\":-0.5625,\"imageW\":1200,\"imageH\":1200}"
   },
   "wanda-2016-03-01": {
     "posterPath": "/posters/uploads/57387e61-fe75-4e7b-ae41-10b2253fe4a6.jpg",
     "posterLabel": "Tourplakat: wanda-bussi-baby-vinyl(1)",
     "posterCropJson": "{\"zoom\":1.4,\"panX\":-38.6875,\"panY\":-0.5625,\"imageW\":1200,\"imageH\":1200}"
   },
+  "efb4a08b-6313-47a3-a16e-79ba94e52167": {
+    "posterPath": "/posters/uploads/34e5e01e-3c48-4398-a5f7-d8a0f644fdf9.webp",
+    "posterLabel": "Tourplakat: 220905_Cyte_10_Issue_Layout_ss_hh-4-kl7",
+    "posterCropJson": "{\"zoom\":2.1,\"panX\":30.51171875,\"panY\":11.41796875,\"imageW\":1181,\"imageH\":829}"
+  },
   "jochen-distelmeyer-2016-05-11": {
     "posterPath": "/posters/uploads/34e5e01e-3c48-4398-a5f7-d8a0f644fdf9.webp",
     "posterLabel": "Tourplakat: 220905_Cyte_10_Issue_Layout_ss_hh-4-kl7",
     "posterCropJson": "{\"zoom\":2.1,\"panX\":30.51171875,\"panY\":11.41796875,\"imageW\":1181,\"imageH\":829}"
   },
-  "voodoo-juergens-2026-05-13": {
-    "posterPath": "/posters/uploads/f6c30bb2-347e-46e1-983c-f224aa816d56.jpg",
-    "posterLabel": "Tourplakat: medium_VJ_WEB_InstaPost_Dates",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":720,\"imageH\":720}"
+  "49d2135c-5b4e-4036-869a-8bdfdac7fa3e": {
+    "posterPath": "/api/posters/0ce8a6b9-a9ba-437c-a14d-8d9f8ab8d951.jpg",
+    "posterLabel": "Tourplakat: PxP-17-Plakat",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":468,\"imageH\":690}"
   },
-  "madness-2026-07-05": {
-    "posterPath": "https://www.prints4u.net/wp-content/uploads/2025/04/Madness-020.jpg",
-    "posterLabel": "Tourplakat: MADNESS Poster",
-    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1053,\"imageH\":1500}"
+  "peace-by-peace-2017-06-18": {
+    "posterPath": "/api/posters/0ce8a6b9-a9ba-437c-a14d-8d9f8ab8d951.jpg",
+    "posterLabel": "Tourplakat: PxP-17-Plakat",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":468,\"imageH\":690}"
   },
-  "peter-fox-2023-08-22": {
-    "posterPath": "/posters/uploads/2d570c62-a0d4-4e84-b629-30f861d91c85.jpg",
+  "d7532dd1-2d4f-4a80-ae07-6e34d3a74ab5": {
+    "posterPath": "https://image.musicdope80s.com/wp-media-folder-musicdope80s-com/wp-content/uploads/2023/05/The_Cure_Shows_Of_A_Lost_World_Tour_2023_Poster_Dusk_-_Melrose_Colorway_Poster_Canvas_kekzej.jpg",
+    "posterLabel": "Tourplakat: The Cure Shows Of A Lost World Tour 2023 Poster Dusk - Melrose Colorway ...",
+    "posterCropJson": "{\"zoom\":2.4,\"panX\":-1.6666666666666856,\"panY\":63.33333333333394,\"imageW\":1000,\"imageH\":1000}"
+  },
+  "the-cure-2022-10-18": {
+    "posterPath": "https://image.musicdope80s.com/wp-media-folder-musicdope80s-com/wp-content/uploads/2023/05/The_Cure_Shows_Of_A_Lost_World_Tour_2023_Poster_Dusk_-_Melrose_Colorway_Poster_Canvas_kekzej.jpg",
+    "posterLabel": "Tourplakat: The Cure Shows Of A Lost World Tour 2023 Poster Dusk - Melrose Colorway ...",
+    "posterCropJson": "{\"zoom\":2.4,\"panX\":-1.6666666666666856,\"panY\":63.33333333333394,\"imageW\":1000,\"imageH\":1000}"
+  },
+  "dc576a02-243a-4a8e-ab60-4ea875a98579": {
+    "posterPath": "/posters/tom-jones--reload-tour.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":-0.390625,\"panY\":14.2421875,\"imageW\":268,\"imageH\":400}"
+  },
+  "tom-jones-2000-04-25": {
+    "posterPath": "/posters/tom-jones--reload-tour.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":-0.390625,\"panY\":14.2421875,\"imageW\":268,\"imageH\":400}"
+  },
+  "5707a2a7-5814-4fd3-83a6-18bca2539d6d": {
+    "posterPath": "https://www.madonnatribe.com/images4/dwt_berlinposter_big.jpg",
+    "posterLabel": "Tourplakat: Tour Memories: Drowned World Tour 2001 in Germany - MadonnaTribe Decade",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":800,\"imageH\":1110}"
+  },
+  "madonna-2001-06-20": {
+    "posterPath": "https://www.madonnatribe.com/images4/dwt_berlinposter_big.jpg",
+    "posterLabel": "Tourplakat: Tour Memories: Drowned World Tour 2001 in Germany - MadonnaTribe Decade",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":800,\"imageH\":1110}"
+  },
+  "d7bf43dd-ab2e-423a-ad1b-027210902346": {
+    "posterPath": "/api/posters/c83250b9-6880-4b89-874c-00ca8675d990.jpg",
+    "posterLabel": "Tourplakat: 173339521",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0.33012499999998113,\"panY\":-11.640625,\"imageW\":377,\"imageH\":550}"
+  },
+  "david-bowie-2002-09-22": {
+    "posterPath": "/api/posters/c83250b9-6880-4b89-874c-00ca8675d990.jpg",
+    "posterLabel": "Tourplakat: 173339521",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0.33012499999998113,\"panY\":-11.640625,\"imageW\":377,\"imageH\":550}"
+  },
+  "25b96042-8d14-4dd6-a1b7-add4b89772af": {
+    "posterPath": "/posters/uploads/018cb7f7-467c-4f7c-8e12-d3bd552984ac.jpg",
+    "posterLabel": "Tourplakat: 600px-Depeche_Mode_1998",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":867}"
+  },
+  "depeche-mode-1998-09-18": {
+    "posterPath": "/posters/uploads/018cb7f7-467c-4f7c-8e12-d3bd552984ac.jpg",
+    "posterLabel": "Tourplakat: 600px-Depeche_Mode_1998",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":867}"
+  },
+  "f463797a-cce5-4df8-88de-a55e622b7401": {
+    "posterPath": "https://www.depmode.com/images/Depeche_Mode_Tourbook/Depeche_Mode_Global_Spirit_Tour_2017-2018/Depeche_Mode_Global_Spirit_Tour.png",
+    "posterLabel": "Tourplakat: Depeche Mode \"Global Spirit Tour\" Promo 2017",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":739}"
+  },
+  "depeche-mode-2017-05-27": {
+    "posterPath": "https://www.depmode.com/images/Depeche_Mode_Tourbook/Depeche_Mode_Global_Spirit_Tour_2017-2018/Depeche_Mode_Global_Spirit_Tour.png",
+    "posterLabel": "Tourplakat: Depeche Mode \"Global Spirit Tour\" Promo 2017",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":739}"
+  },
+  "2cd1c491-39af-46bd-82f2-32df095f7c8a": {
+    "posterPath": "https://www.depmode.com/images/Depeche_Mode_Tourbook/Depeche_Mode_Global_Spirit_Tour_2017-2018/Depeche_Mode_Global_Spirit_Tour30.png",
+    "posterLabel": "Tourplakat: Depeche Mode \"Global Spirit Tour\" 2017-2018",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":808}"
+  },
+  "depeche-mode-2017-11-24": {
+    "posterPath": "https://www.depmode.com/images/Depeche_Mode_Tourbook/Depeche_Mode_Global_Spirit_Tour_2017-2018/Depeche_Mode_Global_Spirit_Tour30.png",
+    "posterLabel": "Tourplakat: Depeche Mode \"Global Spirit Tour\" 2017-2018",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":600,\"imageH\":808}"
+  },
+  "c11d9f18-e34f-48b6-a344-35c2da12f554": {
+    "posterPath": "/posters/uploads/12ee8c58-79b8-464e-91c8-e224eb60dab8.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 15.02.02",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":906,\"imageH\":636}"
+  },
+  "seeed-2014-08-22": {
+    "posterPath": "/posters/uploads/12ee8c58-79b8-464e-91c8-e224eb60dab8.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 15.02.02",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":906,\"imageH\":636}"
+  },
+  "5bdfeb18-e827-449e-9228-4453f1eaeb3c": {
+    "posterPath": "/api/posters/42a3944d-8f1b-4a80-83a5-c6dcde87d782.jpg",
+    "posterLabel": "Tourplakat: headline_image-default-1",
+    "posterCropJson": "{\"zoom\":1.7,\"panX\":0,\"panY\":0,\"imageW\":720,\"imageH\":404}"
+  },
+  "cro-2018-02-25": {
+    "posterPath": "/api/posters/42a3944d-8f1b-4a80-83a5-c6dcde87d782.jpg",
+    "posterLabel": "Tourplakat: headline_image-default-1",
+    "posterCropJson": "{\"zoom\":1.7,\"panX\":0,\"panY\":0,\"imageW\":720,\"imageH\":404}"
+  },
+  "14ee9607-8751-4701-aa75-edbb77d72bdc": {
+    "posterPath": "/api/posters/bbcfc504-ffff-474c-8f41-a5b9d1a2f7f9.jpg",
+    "posterLabel": "Tourplakat: BungalowCoverohneX",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":0,\"panY\":0,\"imageW\":500,\"imageH\":751}"
+  },
+  "bilderbuch-2018-04-22": {
+    "posterPath": "/api/posters/bbcfc504-ffff-474c-8f41-a5b9d1a2f7f9.jpg",
+    "posterLabel": "Tourplakat: BungalowCoverohneX",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":0,\"panY\":0,\"imageW\":500,\"imageH\":751}"
+  },
+  "cd6b47be-ee40-4c71-ad93-fc134d042538": {
+    "posterPath": "/posters/uploads/456cf1cd-0514-41b2-b943-89ddc110ea29.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.55.38",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":1.1286746987951801,\"panY\":27.121875000000017,\"imageW\":522,\"imageH\":830}"
+  },
+  "the-specials-2011-09-20": {
+    "posterPath": "/posters/uploads/456cf1cd-0514-41b2-b943-89ddc110ea29.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.55.38",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":1.1286746987951801,\"panY\":27.121875000000017,\"imageW\":522,\"imageH\":830}"
+  },
+  "356c12e4-b14f-4d7b-96d9-832edd04c46b": {
+    "posterPath": "/api/posters/f1020340-b382-423b-ac0f-794b388ded5b.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.47.29",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":0,\"panY\":0,\"imageW\":690,\"imageH\":758}"
+  },
+  "cro-2019-08-18": {
+    "posterPath": "/api/posters/f1020340-b382-423b-ac0f-794b388ded5b.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.47.29",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":0,\"panY\":0,\"imageW\":690,\"imageH\":758}"
+  },
+  "8aeb36a7-d683-4b26-8ef6-07ac95345fd3": {
+    "posterPath": "/api/posters/936aa1ae-ba9d-40d6-a09d-45adeabb441d.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.40.42",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0.2776523702031568,\"panY\":0,\"imageW\":1324,\"imageH\":1772}"
+  },
+  "capital-bra-2019-05-07": {
+    "posterPath": "/api/posters/936aa1ae-ba9d-40d6-a09d-45adeabb441d.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.40.42",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0.2776523702031568,\"panY\":0,\"imageW\":1324,\"imageH\":1772}"
+  },
+  "ddff6be7-915f-4b4d-8f2b-162ecf738df7": {
+    "posterPath": "/posters/uploads/9d6e0a51-e738-4de7-ad5a-8e0752ff0081.jpg",
+    "posterLabel": "Tourplakat: gettyimages-544287773-1024x1024",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-10.2265625,\"panY\":26.739837398373965,\"imageW\":984,\"imageH\":1024}"
+  },
+  "robbie-williams-2005-10-09": {
+    "posterPath": "/posters/uploads/9d6e0a51-e738-4de7-ad5a-8e0752ff0081.jpg",
+    "posterLabel": "Tourplakat: gettyimages-544287773-1024x1024",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-10.2265625,\"panY\":26.739837398373965,\"imageW\":984,\"imageH\":1024}"
+  },
+  "d582d3bd-ca7c-4872-933b-2c12ffa2842a": {
+    "posterPath": "/api/posters/287edc73-4d6b-475b-8162-e679f910da89.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 02.10.42",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-0.1640625,\"panY\":11.2734375,\"imageW\":1084,\"imageH\":1522}"
+  },
+  "robbie-williams-2006-07-28": {
+    "posterPath": "/api/posters/287edc73-4d6b-475b-8162-e679f910da89.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 02.10.42",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-0.1640625,\"panY\":11.2734375,\"imageW\":1084,\"imageH\":1522}"
+  },
+  "c11706ce-a7fb-47cb-98d0-4be98afb30e0": {
+    "posterPath": "https://www.eventim.de/magazin/fileadmin/user_upload/robbie-xxv-cover.jpg",
+    "posterLabel": "Tourplakat: „25 Years of Hits\": ROBBIE WILLIAMS kündigt „XXV Tour 2023\" an ...",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":0,\"panY\":0,\"imageW\":750,\"imageH\":750}"
+  },
+  "robbie-williams-2023-02-21": {
+    "posterPath": "https://www.eventim.de/magazin/fileadmin/user_upload/robbie-xxv-cover.jpg",
+    "posterLabel": "Tourplakat: „25 Years of Hits\": ROBBIE WILLIAMS kündigt „XXV Tour 2023\" an ...",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":0,\"panY\":0,\"imageW\":750,\"imageH\":750}"
+  },
+  "a4cfbb9b-3d91-484a-ab03-8050d56dc722": {
+    "posterPath": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8a/Simply_Red_-_Stars.png/440px-Simply_Red_-_Stars.png",
+    "posterLabel": "Tour: Farewell – The Final Tour",
+    "posterCropJson": null
+  },
+  "simply-red-2010-11-13": {
+    "posterPath": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8a/Simply_Red_-_Stars.png/440px-Simply_Red_-_Stars.png",
+    "posterLabel": "Tour: Farewell – The Final Tour",
+    "posterCropJson": null
+  },
+  "3230c34a-ed7f-4cea-ae0b-62942c5daabe": {
+    "posterPath": "/api/posters/0390c78a-60c3-4fbb-b073-2b34397942eb.jpg",
+    "posterLabel": "Tourplakat: Specials_Tourplan_2019",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":-3.5809375000000045,\"panY\":36.8359375,\"imageW\":567,\"imageH\":960}"
+  },
+  "the-specials-2019-04-03": {
+    "posterPath": "/api/posters/0390c78a-60c3-4fbb-b073-2b34397942eb.jpg",
+    "posterLabel": "Tourplakat: Specials_Tourplan_2019",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":-3.5809375000000045,\"panY\":36.8359375,\"imageW\":567,\"imageH\":960}"
+  },
+  "8ccf9da0-c7aa-4e80-be1b-5da4323df5ce": {
+    "posterPath": "https://cdn.printerval.com/image/960x960/poster-set-set-of-2-vertical-4,light-blue,print-2023-09-16+d0725d60-e91e-45fd-ab99-d27a835d0a84:print-2023-09-16+33e1fe31-0708-42a9-ba39-7da0e0e611c8,a4c8e1.jpeg",
+    "posterLabel": "Tourplakat: STING MY SONGS Tour 2023 Poster Set , Sting Music Poster Set sold by ...",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":30,\"panY\":1,\"imageW\":960,\"imageH\":960}"
+  },
+  "sting-2022-07-28": {
+    "posterPath": "https://cdn.printerval.com/image/960x960/poster-set-set-of-2-vertical-4,light-blue,print-2023-09-16+d0725d60-e91e-45fd-ab99-d27a835d0a84:print-2023-09-16+33e1fe31-0708-42a9-ba39-7da0e0e611c8,a4c8e1.jpeg",
+    "posterLabel": "Tourplakat: STING MY SONGS Tour 2023 Poster Set , Sting Music Poster Set sold by ...",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":30,\"panY\":1,\"imageW\":960,\"imageH\":960}"
+  },
+  "f547d0b8-565e-4b05-9c50-10b1cb902fd7": {
+    "posterPath": "/posters/snoop-dogg--i-wanna-thank-me-tour.jpg",
+    "posterLabel": "Tourplakat: I Wanna Thank Me Tour (2022)",
+    "posterCropJson": "{\"zoom\":1.6,\"panX\":0,\"panY\":0,\"imageW\":750,\"imageH\":1000}"
+  },
+  "snoop-dogg-2022-02-25": {
+    "posterPath": "/posters/snoop-dogg--i-wanna-thank-me-tour.jpg",
+    "posterLabel": "Tourplakat: I Wanna Thank Me Tour (2022)",
+    "posterCropJson": "{\"zoom\":1.6,\"panX\":0,\"panY\":0,\"imageW\":750,\"imageH\":1000}"
+  },
+  "b2932d1c-9666-4fc4-8f7c-9cf277e0d91c": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2023/06/Placebo-017.jpg",
+    "posterLabel": "Tourplakat: PLACEBO Never Let Me Go 2023 UK Tour Poster Print",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1060,\"imageH\":1500}"
+  },
+  "placebo-2022-10-06": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2023/06/Placebo-017.jpg",
+    "posterLabel": "Tourplakat: PLACEBO Never Let Me Go 2023 UK Tour Poster Print",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1060,\"imageH\":1500}"
+  },
+  "8d52f4c9-bae8-443b-9ac3-e4ae0e40bcd3": {
+    "posterPath": "/api/posters/ae0b56af-b1f7-42c7-9e5d-414a028e6dba.jpg",
+    "posterLabel": "Tourplakat: images (3)",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-0.109375,\"panY\":-2.57421875,\"imageW\":466,\"imageH\":659}"
+  },
+  "paul-weller-2023-05-15": {
+    "posterPath": "/api/posters/ae0b56af-b1f7-42c7-9e5d-414a028e6dba.jpg",
+    "posterLabel": "Tourplakat: images (3)",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":-0.109375,\"panY\":-2.57421875,\"imageW\":466,\"imageH\":659}"
+  },
+  "54594cd1-a284-4dba-a31e-531215968c4f": {
+    "posterPath": "/api/posters/38d4c255-5359-4c90-a37a-5a0a730ca3a6.jpg",
+    "posterLabel": "Tourplakat: thumb_390_430_0_0_0_auto",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":0,\"panY\":0,\"imageW\":430,\"imageH\":764}"
+  },
+  "danger-dan-2023-06-02": {
+    "posterPath": "/api/posters/38d4c255-5359-4c90-a37a-5a0a730ca3a6.jpg",
+    "posterLabel": "Tourplakat: thumb_390_430_0_0_0_auto",
+    "posterCropJson": "{\"zoom\":1.3,\"panX\":0,\"panY\":0,\"imageW\":430,\"imageH\":764}"
+  },
+  "22b07601-b39b-4231-9d5a-a08a93f490e6": {
+    "posterPath": "/posters/uploads/16497dae-d6ec-4d6d-9169-b8e98130868c.jpg",
     "posterLabel": "Tourplakat: images (1)",
     "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":201,\"imageH\":251}"
   },
@@ -145,5 +458,125 @@
     "posterPath": "/posters/uploads/16497dae-d6ec-4d6d-9169-b8e98130868c.jpg",
     "posterLabel": "Tourplakat: images (1)",
     "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":201,\"imageH\":251}"
+  },
+  "cca8d9c2-002e-473a-b04c-d1e2e8b9d6f2": {
+    "posterPath": "/posters/uploads/2d570c62-a0d4-4e84-b629-30f861d91c85.jpg",
+    "posterLabel": "Tourplakat: images (1)",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":201,\"imageH\":251}"
+  },
+  "peter-fox-2023-08-22": {
+    "posterPath": "/posters/uploads/2d570c62-a0d4-4e84-b629-30f861d91c85.jpg",
+    "posterLabel": "Tourplakat: images (1)",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":201,\"imageH\":251}"
+  },
+  "26966c06-b205-4ec2-8cbd-bf82402f3ed4": {
+    "posterPath": "/posters/uploads/77314235-7578-4ae0-b2cb-b2ac31011367.jpg",
+    "posterLabel": "Tourplakat: Die-Fantastischen-Vier-Rekord-Live-in-Wien",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0.1171875,\"panY\":18.700000000000017,\"imageW\":718,\"imageH\":1024}"
+  },
+  "die-fantastischen-vier-2015-01-26": {
+    "posterPath": "/posters/uploads/77314235-7578-4ae0-b2cb-b2ac31011367.jpg",
+    "posterLabel": "Tourplakat: Die-Fantastischen-Vier-Rekord-Live-in-Wien",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":0.1171875,\"panY\":18.700000000000017,\"imageW\":718,\"imageH\":1024}"
+  },
+  "644c1915-b647-40bd-aca2-5397c07bfc05": {
+    "posterPath": "/posters/uploads/f6c30bb2-347e-46e1-983c-f224aa816d56.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":9.599999999999994,\"panY\":-5,\"imageW\":800,\"imageH\":1200}"
+  },
+  "voodoo-juergens-2026-05-13": {
+    "posterPath": "/posters/uploads/f6c30bb2-347e-46e1-983c-f224aa816d56.jpg",
+    "posterLabel": "Tourplakat: Aktuelles Plakat",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":9.599999999999994,\"panY\":-5,\"imageW\":800,\"imageH\":1200}"
+  },
+  "d1bc69e6-1c3e-4052-b484-e86c40cc5ab9": {
+    "posterPath": "/api/posters/a086043a-069a-44e2-afc1-101513283b9c.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.33.24",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":860,\"imageH\":1168}"
+  },
+  "element-of-crime-2021-08-25": {
+    "posterPath": "/api/posters/a086043a-069a-44e2-afc1-101513283b9c.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 01.33.24",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":860,\"imageH\":1168}"
+  },
+  "a23253d1-f454-475d-adf8-15ae858e905f": {
+    "posterPath": "/posters/uploads/51b4b34b-2026-4cdf-a054-138237a0ef89.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.49.12",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":-4.5234375,\"panY\":-6.271794871794867,\"imageW\":1170,\"imageH\":1346}"
+  },
+  "herbert-groenemeyer-2007-09-12": {
+    "posterPath": "/posters/uploads/51b4b34b-2026-4cdf-a054-138237a0ef89.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 14.49.12",
+    "posterCropJson": "{\"zoom\":1.2,\"panX\":-4.5234375,\"panY\":-6.271794871794867,\"imageW\":1170,\"imageH\":1346}"
+  },
+  "070c5a6e-f2f4-478c-968f-49fba388a27a": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2025/04/Madness-020.jpg",
+    "posterLabel": "Tourplakat: MADNESS Poster",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1053,\"imageH\":1500}"
+  },
+  "madness-2026-07-05": {
+    "posterPath": "https://www.prints4u.net/wp-content/uploads/2025/04/Madness-020.jpg",
+    "posterLabel": "Tourplakat: MADNESS Poster",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1053,\"imageH\":1500}"
+  },
+  "4b9d92f0-a9ce-41d8-b470-e13d9609d191": {
+    "posterPath": "/posters/uploads/75593991-0035-4a0d-a2b4-4803c7817e65.jpg",
+    "posterLabel": "Tourplakat: Wir lassen uns das Singen nicht verbieten",
+    "posterCropJson": null
+  },
+  "benefizkonzert-fur-den-wahren-heino-1986-10-18": {
+    "posterPath": "/posters/uploads/75593991-0035-4a0d-a2b4-4803c7817e65.jpg",
+    "posterLabel": "Tourplakat: Wir lassen uns das Singen nicht verbieten",
+    "posterCropJson": null
+  },
+  "ff2b9a5a-6031-4ffb-af3f-867ae4d6ebda": {
+    "posterPath": "https://www.dth-dta.de/images/material/1987_ein-bunter-abend-fuer-eine-schwarze-republik/1987_ein-bunter-abend-fuer-eine-schwarze-republik_poster_01.jpg",
+    "posterLabel": "Tourplakat: Die Toten Hosen Ein bunter Abend für eine schwarze Republik Tour 1987",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":0,\"panY\":0}"
+  },
+  "die-toten-hosen-1987-09-05": {
+    "posterPath": "https://www.dth-dta.de/images/material/1987_ein-bunter-abend-fuer-eine-schwarze-republik/1987_ein-bunter-abend-fuer-eine-schwarze-republik_poster_01.jpg",
+    "posterLabel": "Tourplakat: Die Toten Hosen Ein bunter Abend für eine schwarze Republik Tour 1987",
+    "posterCropJson": "{\"zoom\":1.4,\"panX\":0,\"panY\":0}"
+  },
+  "d0745003-42af-46dc-895c-25245fcd27cc": {
+    "posterPath": "/posters/uploads/89da637c-a8d6-478c-9029-2ec81cb98192.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 13.55.27",
+    "posterCropJson": null
+  },
+  "the-pogues-1988-04-28": {
+    "posterPath": "/posters/uploads/89da637c-a8d6-478c-9029-2ec81cb98192.png",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-19 um 13.55.27",
+    "posterCropJson": null
+  },
+  "41d0f8ca-f821-4555-8228-16a76bb6b3b3": {
+    "posterPath": "/api/posters/afaae5c2-bd83-403c-9263-50fabe41a765.jpg",
+    "posterLabel": "Tourplakat: 220px-Héroes_del_Silencio_1992-06-14",
+    "posterCropJson": "{\"zoom\":1,\"panX\":3.8359375,\"panY\":0,\"imageW\":220,\"imageH\":434}"
+  },
+  "heroes-del-silencio-1992-06-14": {
+    "posterPath": "/api/posters/afaae5c2-bd83-403c-9263-50fabe41a765.jpg",
+    "posterLabel": "Tourplakat: 220px-Héroes_del_Silencio_1992-06-14",
+    "posterCropJson": "{\"zoom\":1,\"panX\":3.8359375,\"panY\":0,\"imageW\":220,\"imageH\":434}"
+  },
+  "061db60e-5cf8-4e0d-9eeb-66c766051fc0": {
+    "posterPath": "/api/posters/44fc218b-b6c3-4962-ac32-2bf788f57101.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 02.18.00",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1026,\"imageH\":1414}"
+  },
+  "poems-for-laila-1991-07-06": {
+    "posterPath": "/api/posters/44fc218b-b6c3-4962-ac32-2bf788f57101.jpg",
+    "posterLabel": "Tourplakat: Bildschirmfoto 2026-07-21 um 02.18.00",
+    "posterCropJson": "{\"zoom\":1,\"panX\":0,\"panY\":0,\"imageW\":1026,\"imageH\":1414}"
+  },
+  "a9ce4430-98c8-462e-86fe-2940e816d96f": {
+    "posterPath": "/posters/uploads/5c560ae4-373d-4f6c-bb66-43a889d0a9b4.jpg",
+    "posterLabel": "Tourplakat: images",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":14.000000000000012,\"panY\":-18.700000000000017}"
+  },
+  "screaming-blue-messiahs-1989-12-13": {
+    "posterPath": "/posters/uploads/5c560ae4-373d-4f6c-bb66-43a889d0a9b4.jpg",
+    "posterLabel": "Tourplakat: images",
+    "posterCropJson": "{\"zoom\":1.1,\"panX\":14.000000000000012,\"panY\":-18.700000000000017}"
   }
 }

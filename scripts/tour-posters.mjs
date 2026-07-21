@@ -276,6 +276,14 @@ export const TOUR_POSTERS = {
       kind: "poster",
     },
   },
+  "simply-red": {
+    "Farewell – The Final Tour": {
+      poster:
+        "https://upload.wikimedia.org/wikipedia/en/thumb/8/8a/Simply_Red_-_Stars.png/440px-Simply_Red_-_Stars.png",
+      label: "Tour: Farewell – The Final Tour",
+      kind: "poster",
+    },
+  },
   "iggy-pop": {
     "Naughty Little Doggie Tour": {
       poster:

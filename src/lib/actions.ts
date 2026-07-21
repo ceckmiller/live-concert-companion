@@ -5,7 +5,16 @@ import path from "path";
 import { and, asc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "./db";
-import { artists, concerts, concertVideos, recordings, setlistItems, tours } from "./db/schema";
+import { ensureDbInitialized } from "./init-db";
+import {
+  artists,
+  concerts,
+  concertVideos,
+  recordings,
+  reviews,
+  setlistItems,
+  tours,
+} from "./db/schema";
 import {
   formatGermanDate,
   formatWeekdayTime,
@@ -15,13 +24,25 @@ import {
 } from "./slug";
 import { parsePosterCropJson, serializePosterCropJson, type PosterCrop } from "./poster-crop";
 import {
-  isAllowedPosterUpload,
+  findConcertById,
+  findConcertBySlugs as resolveConcertBySlugs,
+  recordSlugAlias,
+} from "./concert-lookup";
+import {
+  assertConcertSlugAvailable,
+  computeUpdatedConcertSlug,
+} from "./festival-concert-update";
+import { isMultiActConcert } from "./festivals";
+import {
   isValidPosterPath,
   posterTitleFromFilename,
   posterUploadExtension,
+  readPosterUploadFromFormData,
+  resolvePosterLabel,
 } from "./poster-upload";
 import { hasWritableAppDataDir } from "./runtime-env";
 import { fetchSetlistFromSetlistFm } from "./setlist-fm-fetch";
+import { savePosterUploadToDb } from "./poster-storage";
 import { saveUserPosterOverride } from "./user-poster-overrides";
 import {
   isAllowedVideoUpload,
@@ -30,7 +51,9 @@ import {
 } from "./video-upload";
 
 export type CreateConcertResult = {
+  artistId: string;
   artistSlug: string;
+  concertId: string;
   concertSlug: string;
   setlistFmUrl: string;
   weekdayTime: string;
@@ -50,7 +73,9 @@ export type EnrichVideosResult = {
 };
 
 export type UpdateConcertResult = {
+  artistId: string;
   artistSlug: string;
+  concertId: string;
   concertSlug: string;
 };
 
@@ -62,32 +87,48 @@ export type PosterCandidate = {
   score: number;
 };
 
-function revalidateConcertPaths(artistSlug: string) {
+function revalidateConcertPaths(ids: {
+  artistIds?: string[];
+  concertIds?: string[];
+  artistSlugs?: string[];
+}) {
   revalidatePath("/");
-  revalidatePath(`/artist/${artistSlug}`);
   revalidatePath("/admin");
+  for (const id of new Set(ids.artistIds ?? [])) {
+    revalidatePath(`/artist/${id}`);
+  }
+  for (const id of new Set(ids.concertIds ?? [])) {
+    revalidatePath(`/concert/${id}`);
+  }
+  for (const slug of new Set(ids.artistSlugs ?? [])) {
+    revalidatePath(`/artist/${slug}`);
+  }
 }
 
-async function findArtistBySlug(artistSlug: string) {
+async function resolveConcertRef(input: {
+  concertId?: string;
+  artistSlug?: string;
+  concertSlug?: string;
+}) {
   const db = getDb();
-  const artist = (
-    await db.select().from(artists).where(eq(artists.slug, artistSlug)).limit(1)
-  )[0];
-  if (!artist) throw new Error("Künstler nicht gefunden");
-  return { db, artist };
+  if (input.concertId) {
+    const { artist, concert } = await findConcertById(db, input.concertId);
+    return { db, artist, concert };
+  }
+  if (input.artistSlug && input.concertSlug) {
+    const { artist, concert } = await resolveConcertBySlugs(
+      db,
+      input.artistSlug,
+      input.concertSlug,
+    );
+    return { db, artist, concert };
+  }
+  throw new Error("Konzert-Referenz fehlt (concertId oder artistSlug+concertSlug)");
 }
 
+/** @deprecated prefer resolveConcertRef with concertId */
 async function findConcertBySlugs(artistSlug: string, concertSlugValue: string) {
-  const { db, artist } = await findArtistBySlug(artistSlug);
-  const concert = (
-    await db
-      .select()
-      .from(concerts)
-      .where(and(eq(concerts.artistId, artist.id), eq(concerts.slug, concertSlugValue)))
-      .limit(1)
-  )[0];
-  if (!concert) throw new Error("Konzert nicht gefunden");
-  return { db, artist, concert };
+  return resolveConcertRef({ artistSlug, concertSlug: concertSlugValue });
 }
 
 export async function searchConcertPosters(input: {
@@ -111,32 +152,43 @@ export async function searchConcertPosters(input: {
 export async function uploadConcertPosterFile(
   formData: FormData,
 ): Promise<{ url: string; title: string }> {
-  const file = formData.get("file");
-  if (!(file instanceof File)) throw new Error("Keine Datei ausgewählt");
-  if (!isAllowedPosterUpload(file.type, file.size)) {
-    throw new Error("Ungültiges Bild (JPG, PNG, WebP oder GIF, max. 10 MB)");
-  }
-  if (!hasWritableAppDataDir()) {
+  try {
+    await ensureDbInitialized();
+    const { name, type, buffer } = await readPosterUploadFromFormData(formData);
+    if (!hasWritableAppDataDir()) {
+      return savePosterUploadToDb(buffer, type, name);
+    }
+
+    const ext = posterUploadExtension(type, name);
+    const filename = `${crypto.randomUUID()}${ext}`;
+    const uploadDir = path.join(process.cwd(), "public", "posters", "uploads");
+    await mkdir(uploadDir, { recursive: true });
+    await writeFile(path.join(uploadDir, filename), buffer);
+
+    return {
+      url: `/posters/uploads/${filename}`,
+      title: posterTitleFromFilename(name),
+    };
+  } catch (err) {
+    console.error("uploadConcertPosterFile failed", err);
+    if (err instanceof Error) {
+      if (err.message.includes("EROFS") || err.message.includes("read-only file system")) {
+        throw new Error("Plakat-Upload ist auf dem Server nicht verfügbar. Bitte Seite neu laden.");
+      }
+      if (!err.message.includes("Server Components render")) {
+        throw err;
+      }
+    }
     throw new Error(
-      "Datei-Upload ist online nicht verfügbar. Bitte ein Plakat per Suche oder externe URL wählen.",
+      "Plakat-Upload fehlgeschlagen. Bitte Seite neu laden und erneut versuchen.",
     );
   }
-
-  const ext = posterUploadExtension(file.type, file.name);
-  const filename = `${crypto.randomUUID()}${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "posters", "uploads");
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(path.join(uploadDir, filename), Buffer.from(await file.arrayBuffer()));
-
-  return {
-    url: `/posters/uploads/${filename}`,
-    title: posterTitleFromFilename(file.name),
-  };
 }
 
 export async function setConcertPoster(input: {
-  artistSlug: string;
-  concertSlug: string;
+  concertId?: string;
+  artistSlug?: string;
+  concertSlug?: string;
   posterUrl: string;
   posterTitle?: string;
   tourName?: string;
@@ -145,21 +197,31 @@ export async function setConcertPoster(input: {
   const posterUrl = input.posterUrl.trim();
   if (!isValidPosterPath(posterUrl)) throw new Error("Ungültige Poster-URL");
 
-  const { db, artist, concert } = await findConcertBySlugs(input.artistSlug, input.concertSlug);
+  const { db, artist, concert } = await resolveConcertRef(input);
   const tourName = (input.tourName || concert.tourName || artist.name).trim();
-  const posterLabel = input.posterTitle?.trim()
-    ? `Tourplakat: ${input.posterTitle.trim()}`
-    : `Tourplakat: ${tourName}`;
+  const posterLabel = resolvePosterLabel({
+    posterTitle: input.posterTitle,
+    tourName,
+    posterUrl,
+    existingPosterPath: concert.posterPath,
+    existingPosterLabel: concert.posterLabel,
+  });
   const posterCropJson =
     input.posterCrop === undefined && posterUrl === concert.posterPath
       ? concert.posterCropJson
       : serializePosterCropJson(input.posterCrop);
 
-    await db
+  await db
     .update(concerts)
     .set({ posterPath: posterUrl, posterLabel, tourName, posterCropJson })
     .where(eq(concerts.id, concert.id));
 
+  saveUserPosterOverride(concert.id, {
+    posterPath: posterUrl,
+    posterLabel,
+    posterCropJson,
+  });
+  // Keep slug key for seed compatibility until JSON is fully migrated.
   saveUserPosterOverride(concert.slug, {
     posterPath: posterUrl,
     posterLabel,
@@ -190,17 +252,40 @@ export async function setConcertPoster(input: {
     });
   }
 
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({
+    artistIds: [artist.id],
+    concertIds: [concert.id],
+    artistSlugs: [artist.slug],
+  });
 }
 
 export async function setConcertHidden(
-  artistSlug: string,
-  concertSlugValue: string,
-  hidden: boolean,
+  concertIdOrArtistSlug: string,
+  concertSlugOrHidden?: string | boolean,
+  hiddenMaybe?: boolean,
 ): Promise<void> {
-  const { db, artist, concert } = await findConcertBySlugs(artistSlug, concertSlugValue);
+  // New: setConcertHidden(concertId, hidden)
+  // Legacy: setConcertHidden(artistSlug, concertSlug, hidden)
+  let db;
+  let artist;
+  let concert;
+  let hidden: boolean;
+  if (typeof concertSlugOrHidden === "boolean") {
+    ({ db, artist, concert } = await resolveConcertRef({ concertId: concertIdOrArtistSlug }));
+    hidden = concertSlugOrHidden;
+  } else {
+    ({ db, artist, concert } = await resolveConcertRef({
+      artistSlug: concertIdOrArtistSlug,
+      concertSlug: String(concertSlugOrHidden),
+    }));
+    hidden = Boolean(hiddenMaybe);
+  }
   await db.update(concerts).set({ hidden }).where(eq(concerts.id, concert.id));
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({
+    artistIds: [artist.id],
+    concertIds: [concert.id],
+    artistSlugs: [artist.slug],
+  });
 }
 
 async function applyPosterToConcert(input: {
@@ -241,13 +326,17 @@ async function applyPosterToConcert(input: {
   }
 }
 
+function concertSearchName(artist: { name: string }, concert: { eventTitle?: string | null }) {
+  return concert.eventTitle?.trim() || artist.name;
+}
+
 export async function enrichConcertSetlist(
   artistSlug: string,
   concertSlugValue: string,
 ): Promise<EnrichSetlistResult> {
   const { db, artist, concert } = await findConcertBySlugs(artistSlug, concertSlugValue);
   const fetched = await fetchSetlistFromSetlistFm({
-    artistName: artist.name,
+    artistName: concertSearchName(artist, concert),
     city: concert.city,
     date: concert.sortDate,
     venue: concert.venue,
@@ -271,7 +360,7 @@ export async function enrichConcertSetlist(
       .where(eq(concerts.id, concert.id));
   }
 
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
   return {
     songsFound: fetched.songs.length,
     setlistFmUrl: fetched.setlistFmUrl,
@@ -300,7 +389,7 @@ export async function enrichConcertPoster(
   );
 
   if (!candidates[0]?.url) {
-    revalidateConcertPaths(artist.slug);
+    revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
     return { posterFound: false };
   }
 
@@ -314,7 +403,7 @@ export async function enrichConcertPoster(
     tourName,
   });
 
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
   return { posterFound: true };
 }
 
@@ -353,7 +442,7 @@ export async function enrichConcertVideoSong(
   const { findSongVideo } = await import("../../scripts/search-concert-youtube.mjs");
   const url = await findSongVideo({
     concertId: concert.slug,
-    artistName: artist.name,
+    artistName: concertSearchName(artist, concert),
     city: concert.city,
     venue: concert.venue,
     sort: concert.sortDate,
@@ -372,25 +461,27 @@ export async function enrichConcertVideoSong(
       set: { url },
     });
 
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
   return { found: true, url };
 }
 
 export async function enrichConcertRecordings(
   artistSlug: string,
   concertSlugValue: string,
-): Promise<{ recordingsFound: number }> {
+  options: { force?: boolean } = {},
+): Promise<{ recordingsFound: number; added: number }> {
   const { db, artist, concert } = await findConcertBySlugs(artistSlug, concertSlugValue);
   const existing = await db.select().from(recordings).where(eq(recordings.concertId, concert.id));
-  if (existing.length) {
-    return { recordingsFound: existing.length };
+  if (existing.length && !options.force) {
+    return { recordingsFound: existing.length, added: 0 };
   }
 
   const { findConcertRecording } = await import("../../scripts/search-concert-recordings.mjs");
-  const title = `${artist.name} — ${concert.dateLabel}, ${concert.city}`;
+  const searchName = concertSearchName(artist, concert);
+  const title = `${searchName} — ${concert.dateLabel}, ${concert.city}`;
   const hit = await findConcertRecording({
     concertId: concert.slug,
-    artistName: artist.name,
+    artistName: searchName,
     title,
     city: concert.city,
     venue: concert.venue,
@@ -399,8 +490,12 @@ export async function enrichConcertRecordings(
   });
 
   if (!hit) {
-    revalidateConcertPaths(artist.slug);
-    return { recordingsFound: 0 };
+    revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
+    return { recordingsFound: existing.length, added: 0 };
+  }
+
+  if (existing.some((r) => r.url === hit.url)) {
+    return { recordingsFound: existing.length, added: 0 };
   }
 
   await db.insert(recordings).values({
@@ -411,8 +506,42 @@ export async function enrichConcertRecordings(
     duration: hit.duration || "",
   });
 
-  revalidateConcertPaths(artist.slug);
-  return { recordingsFound: 1 };
+  revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
+  return { recordingsFound: existing.length + 1, added: 1 };
+}
+
+export async function enrichConcertReviews(
+  artistSlug: string,
+  concertSlugValue: string,
+): Promise<{ reviewsFound: number; added: number }> {
+  const { db, artist, concert } = await findConcertBySlugs(artistSlug, concertSlugValue);
+  const existing = await db.select().from(reviews).where(eq(reviews.concertId, concert.id));
+  const haveUrls = new Set(existing.map((r) => r.url));
+
+  const { findConcertReviews } = await import("../../scripts/search-concert-reviews.mjs");
+  const found = await findConcertReviews({
+    artistName: concertSearchName(artist, concert),
+    city: concert.city,
+    venue: concert.venue,
+    sort: concert.sortDate,
+  });
+
+  let added = 0;
+  for (const hit of found) {
+    if (haveUrls.has(hit.url)) continue;
+    await db.insert(reviews).values({
+      id: crypto.randomUUID(),
+      concertId: concert.id,
+      title: hit.title,
+      url: hit.url,
+      source: hit.source || "",
+    });
+    haveUrls.add(hit.url);
+    added++;
+  }
+
+  revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
+  return { reviewsFound: existing.length + added, added };
 }
 
 export async function uploadConcertVideoFile(
@@ -437,8 +566,9 @@ export async function uploadConcertVideoFile(
 }
 
 export async function setConcertVideo(input: {
-  artistSlug: string;
-  concertSlug: string;
+  concertId?: string;
+  artistSlug?: string;
+  concertSlug?: string;
   songTitle: string;
   videoUrl: string;
 }): Promise<void> {
@@ -447,7 +577,7 @@ export async function setConcertVideo(input: {
   if (!songTitle) throw new Error("Song auswählen");
   if (!isValidVideoPath(videoUrl)) throw new Error("Ungültige Video-URL");
 
-  const { db, artist, concert } = await findConcertBySlugs(input.artistSlug, input.concertSlug);
+  const { db, artist, concert } = await resolveConcertRef(input);
   await db
     .insert(concertVideos)
     .values({ concertId: concert.id, songTitle, url: videoUrl })
@@ -456,63 +586,105 @@ export async function setConcertVideo(input: {
       set: { url: videoUrl },
     });
 
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({ artistIds: [artist.id], concertIds: [concert.id], artistSlugs: [artist.slug] });
 }
 
 export async function uploadConcertVideoForSong(formData: FormData): Promise<void> {
+  const concertId = String(formData.get("concertId") || "").trim();
   const artistSlug = String(formData.get("artistSlug") || "").trim();
   const concertSlug = String(formData.get("concertSlug") || "").trim();
   const songTitle = String(formData.get("songTitle") || "").trim();
-  if (!artistSlug || !concertSlug || !songTitle) {
+  if ((!concertId && (!artistSlug || !concertSlug)) || !songTitle) {
     throw new Error("Konzert und Song sind erforderlich");
   }
 
   const uploaded = await uploadConcertVideoFile(formData);
   await setConcertVideo({
-    artistSlug,
-    concertSlug,
+    concertId: concertId || undefined,
+    artistSlug: artistSlug || undefined,
+    concertSlug: concertSlug || undefined,
     songTitle,
     videoUrl: uploaded.url,
   });
 }
 
 export async function updateConcert(input: {
-  artistSlug: string;
-  concertSlug: string;
+  concertId?: string;
+  artistSlug?: string;
+  concertSlug?: string;
   artistName?: string;
   date?: string;
   venue?: string;
   city?: string;
   tourName?: string;
   note?: string;
+  /** When set, switches event between solo and multi_act. */
+  multiAct?: boolean;
 }): Promise<UpdateConcertResult> {
-  const { db, artist, concert } = await findConcertBySlugs(input.artistSlug, input.concertSlug);
+  const { db, artist, concert } = await resolveConcertRef(input);
+  const previousArtistId = artist.id;
+  const previousArtistSlug = artist.slug;
+  const previousConcertSlug = concert.slug;
+  const wasMultiAct = isMultiActConcert({
+    id: concert.id,
+    slug: concert.slug,
+    eventKind: concert.eventKind,
+  });
+  const isMultiAct = input.multiAct !== undefined ? Boolean(input.multiAct) : wasMultiAct;
 
   let artistSlug = artist.slug;
+  let artistId = artist.id;
   let concertSlug = concert.slug;
+  const eventNameInput = input.artistName?.trim();
+  const nameChanged = Boolean(
+    eventNameInput &&
+      eventNameInput !== (isMultiAct ? concert.eventTitle || artist.name : artist.name),
+  );
+  let dateChanged = false;
+  let sortDate = concert.sortDate;
 
-  if (input.artistName?.trim()) {
-    const name = input.artistName.trim();
-    const nextArtistSlug = slugify(name);
-    if (nextArtistSlug !== artist.slug) {
-      const clash = (
-        await db.select().from(artists).where(eq(artists.slug, nextArtistSlug)).limit(1)
-      )[0];
-      if (clash && clash.id !== artist.id) {
-        throw new Error("Ein anderer Künstler mit diesem Namen existiert bereits");
+  const patch: Partial<typeof concerts.$inferInsert> = {};
+
+  if (isMultiAct !== wasMultiAct) {
+    patch.eventKind = isMultiAct ? "multi_act" : "solo";
+    if (isMultiAct) {
+      patch.eventTitle = eventNameInput || concert.eventTitle || artist.name;
+    } else {
+      patch.eventTitle = null;
+    }
+  }
+
+  if (eventNameInput) {
+    if (isMultiAct) {
+      // Multi-act: rename only event_title — artist UUID/slug stay stable for URLs.
+      patch.eventTitle = eventNameInput;
+      patch.eventKind = "multi_act";
+    } else {
+      const nextArtistSlug = slugify(eventNameInput);
+      if (nextArtistSlug !== artist.slug) {
+        const clash = (
+          await db.select().from(artists).where(eq(artists.slug, nextArtistSlug)).limit(1)
+        )[0];
+        if (clash && clash.id !== artist.id) {
+          throw new Error("Ein anderer Künstler mit diesem Namen existiert bereits");
+        }
+        await recordSlugAlias(db, "artist", artist.id, artist.slug);
+        await db
+          .update(artists)
+          .set({ name: eventNameInput, slug: nextArtistSlug })
+          .where(eq(artists.id, artist.id));
+        artistSlug = nextArtistSlug;
+      } else if (eventNameInput !== artist.name) {
+        await db.update(artists).set({ name: eventNameInput }).where(eq(artists.id, artist.id));
       }
-      await db.update(artists).set({ name, slug: nextArtistSlug }).where(eq(artists.id, artist.id));
-      artistSlug = nextArtistSlug;
-    } else if (name !== artist.name) {
-      await db.update(artists).set({ name }).where(eq(artists.id, artist.id));
     }
   }
 
   const nextArtist = (
-    await db.select().from(artists).where(eq(artists.slug, artistSlug)).limit(1)
+    await db.select().from(artists).where(eq(artists.id, artistId)).limit(1)
   )[0]!;
+  artistSlug = nextArtist.slug;
 
-  const patch: Partial<typeof concerts.$inferInsert> = {};
   if (input.venue !== undefined) patch.venue = input.venue.trim();
   if (input.city !== undefined) patch.city = input.city.trim() || "Berlin";
   if (input.tourName !== undefined) patch.tourName = input.tourName.trim() || nextArtist.name;
@@ -521,38 +693,65 @@ export async function updateConcert(input: {
   if (input.date?.trim()) {
     const date = input.date.trim();
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("Datum muss YYYY-MM-DD sein");
-    const nextSlug = catalogConcertSlug(nextArtist.name, date);
-    if (nextSlug !== concert.slug) {
-      const clash = (
-        await db
-          .select()
-          .from(concerts)
-          .where(and(eq(concerts.artistId, nextArtist.id), eq(concerts.slug, nextSlug)))
-          .limit(1)
-      )[0];
-      if (clash && clash.id !== concert.id) {
-        throw new Error("Für dieses Datum existiert bereits ein Konzert-Eintrag");
-      }
-      patch.slug = nextSlug;
-      concertSlug = nextSlug;
-    }
+    dateChanged = date !== concert.sortDate;
+    sortDate = date;
     patch.sortDate = date;
     patch.dateLabel = formatGermanDate(date);
-    patch.setlistFmUrl = setlistFmSearchUrl(nextArtist.name, patch.city ?? concert.city, date);
+    const searchName = isMultiAct
+      ? eventNameInput || concert.eventTitle || nextArtist.name
+      : nextArtist.name;
+    patch.setlistFmUrl = setlistFmSearchUrl(searchName, patch.city ?? concert.city, date);
+  }
+
+  const displayName =
+    (isMultiAct
+      ? eventNameInput || concert.eventTitle || nextArtist.name
+      : eventNameInput || nextArtist.name) ?? nextArtist.name;
+  const nextSlug = computeUpdatedConcertSlug(displayName, sortDate, {
+    isFestivalEvent: isMultiAct,
+    nameChanged,
+    dateChanged,
+  });
+  if (nextSlug && nextSlug !== concert.slug) {
+    await assertConcertSlugAvailable(db, nextArtist.id, nextSlug, concert.id);
+    await recordSlugAlias(db, "concert", concert.id, previousConcertSlug);
+    patch.slug = nextSlug;
+    concertSlug = nextSlug;
   }
 
   if (Object.keys(patch).length) {
     await db.update(concerts).set(patch).where(eq(concerts.id, concert.id));
   }
 
-  revalidateConcertPaths(artistSlug);
-  return { artistSlug, concertSlug };
+  revalidateConcertPaths({
+    artistIds: [previousArtistId, artistId],
+    concertIds: [concert.id],
+    artistSlugs: [previousArtistSlug, artistSlug],
+  });
+  return {
+    artistId,
+    artistSlug,
+    concertId: concert.id,
+    concertSlug,
+  };
 }
 
-export async function deleteConcert(artistSlug: string, concertSlugValue: string): Promise<void> {
-  const { db, artist, concert } = await findConcertBySlugs(artistSlug, concertSlugValue);
+export async function deleteConcert(
+  concertIdOrArtistSlug: string,
+  concertSlugValue?: string,
+): Promise<void> {
+  const { db, artist, concert } = concertSlugValue
+    ? await resolveConcertRef({
+        artistSlug: concertIdOrArtistSlug,
+        concertSlug: concertSlugValue,
+      })
+    : await resolveConcertRef({ concertId: concertIdOrArtistSlug });
   await db.delete(concerts).where(eq(concerts.id, concert.id));
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({
+    artistIds: [artist.id],
+    concertIds: [concert.id],
+    artistSlugs: [artist.slug],
+  });
 }
 
 export async function createConcert(formData: FormData): Promise<CreateConcertResult> {
@@ -567,9 +766,17 @@ export async function createConcert(formData: FormData): Promise<CreateConcertRe
   const posterCropJson = serializePosterCropJson(
     parsePosterCropJson(String(formData.get("posterCropJson") || "")),
   );
+  const multiAct =
+    formData.get("multiAct") === "on" ||
+    formData.get("multiAct") === "true" ||
+    formData.get("multiAct") === "1";
 
   if (!artistName || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    throw new Error("Künstler und Datum (YYYY-MM-DD) sind erforderlich");
+    throw new Error(
+      multiAct
+        ? "Event-Name und Datum (YYYY-MM-DD) sind erforderlich"
+        : "Künstler und Datum (YYYY-MM-DD) sind erforderlich",
+    );
   }
 
   const db = getDb();
@@ -602,6 +809,9 @@ export async function createConcert(formData: FormData): Promise<CreateConcertRe
     .where(eq(concerts.artistId, artist.id))
     .then((rows) => rows.find((r) => r.slug === cSlug));
 
+  const eventKind = multiAct ? "multi_act" : "solo";
+  const eventTitle = multiAct ? artistName : null;
+
   let concertDbId: string;
   if (!existing) {
     concertDbId = crypto.randomUUID();
@@ -620,6 +830,8 @@ export async function createConcert(formData: FormData): Promise<CreateConcertRe
       posterLabel,
       setlistFmUrl: setlistFm,
       hidden: false,
+      eventKind,
+      eventTitle,
       createdAt: new Date().toISOString(),
     });
   } else {
@@ -635,6 +847,8 @@ export async function createConcert(formData: FormData): Promise<CreateConcertRe
         note,
         setlistFmUrl: setlistFm,
         hidden: false,
+        eventKind,
+        eventTitle,
         posterPath: posterPath ?? existing.posterPath,
         posterCropJson: posterPath ? posterCropJson : existing.posterCropJson,
         posterLabel: posterLabel ?? existing.posterLabel,
@@ -665,18 +879,27 @@ export async function createConcert(formData: FormData): Promise<CreateConcertRe
         kind: "poster",
       });
     }
-  } else {
-    // Poster enrichment runs as a separate step from AdminForm (with progress UI).
+    saveUserPosterOverride(concertDbId, {
+      posterPath,
+      posterLabel: posterLabel || undefined,
+      posterCropJson,
+    });
   }
 
-  revalidateConcertPaths(artist.slug);
+  revalidateConcertPaths({
+    artistIds: [artist.id],
+    concertIds: [concertDbId],
+    artistSlugs: [artist.slug],
+  });
 
   const updated = (
     await db.select().from(concerts).where(eq(concerts.id, concertDbId)).limit(1)
   )[0];
 
   return {
+    artistId: artist.id,
     artistSlug: artist.slug,
+    concertId: concertDbId,
     concertSlug: cSlug,
     setlistFmUrl: setlistFm,
     weekdayTime: formatWeekdayTime(date, time),

@@ -47,6 +47,10 @@ export const concerts = sqliteTable(
     setlistFmUrl: text("setlist_fm_url"),
     ticketImagePath: text("ticket_image_path"),
     hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
+    /** solo | multi_act | festival_slot (legacy: festival → multi_act) */
+    eventKind: text("event_kind").notNull().default("solo"),
+    /** Display name for multi-act events (independent of artist rename). */
+    eventTitle: text("event_title"),
     createdAt: text("created_at").notNull(),
   },
   (t) => [uniqueIndex("concerts_artist_slug_unique").on(t.artistId, t.slug)],
@@ -127,6 +131,26 @@ export const concertActs = sqliteTable("concert_acts", {
   setlistJson: text("setlist_json").notNull(),
   videosJson: text("videos_json").notNull().default("{}"),
 });
+
+export const posterUploads = sqliteTable("poster_uploads", {
+  id: text("id").primaryKey(),
+  mimeType: text("mime_type").notNull(),
+  dataBase64: text("data_base64").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
+/** Maps old artist/concert slugs to stable UUIDs after rename. */
+export const slugAliases = sqliteTable(
+  "slug_aliases",
+  {
+    id: text("id").primaryKey(),
+    entityType: text("entity_type").notNull(),
+    entityId: text("entity_id").notNull(),
+    oldSlug: text("old_slug").notNull(),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [uniqueIndex("slug_aliases_old_slug_unique").on(t.oldSlug)],
+);
 
 export type Artist = typeof artists.$inferSelect;
 export type Concert = typeof concerts.$inferSelect;

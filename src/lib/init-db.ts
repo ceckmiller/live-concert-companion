@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { randomUUID } from "crypto";
 import { getDb } from "./db";
 
 let initialized = false;
@@ -68,6 +69,29 @@ export async function ensureDbInitialized() {
   } catch {
     // Column already exists.
   }
+  try {
+    await db.run(sql`ALTER TABLE concerts ADD COLUMN event_kind TEXT NOT NULL DEFAULT 'solo'`);
+  } catch {
+    // Column already exists.
+  }
+  try {
+    await db.run(sql`ALTER TABLE concerts ADD COLUMN event_title TEXT`);
+  } catch {
+    // Column already exists.
+  }
+
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS slug_aliases (
+      id TEXT PRIMARY KEY,
+      entity_type TEXT NOT NULL,
+      entity_id TEXT NOT NULL,
+      old_slug TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `);
+  await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS slug_aliases_old_slug_unique ON slug_aliases(old_slug)`);
+
+  await migrateKnownEventKinds(db);
 
   await db.run(sql`
     CREATE TABLE IF NOT EXISTS setlist_items (
@@ -135,5 +159,67 @@ export async function ensureDbInitialized() {
     )
   `);
 
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS poster_uploads (
+      id TEXT PRIMARY KEY,
+      mime_type TEXT NOT NULL,
+      data_base64 TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `);
+
   initialized = true;
+}
+
+async function migrateKnownEventKinds(db: ReturnType<typeof getDb>) {
+  // Rename legacy festival → multi_act
+  await db.run(sql`UPDATE concerts SET event_kind = 'multi_act' WHERE event_kind = 'festival'`);
+
+  const multiActSlugs = [
+    "madstock-1992-08-08",
+    "peace-by-peace-2016-06-05",
+    "peace-by-peace-2017-06-18",
+    "konzert-fuer-berlin-1989-11-12",
+    "benefizkonzert-fur-den-wahren-heino-1986-10-18",
+    "heino-aid-1986-10-18",
+    "seeed-2014-08-22",
+    "ferropolis-open-air-2014-08-22",
+  ];
+  for (const slug of multiActSlugs) {
+    await db.run(sql`UPDATE concerts SET event_kind = 'multi_act' WHERE slug = ${slug}`);
+  }
+  await db.run(
+    sql`UPDATE concerts SET event_kind = 'festival_slot' WHERE slug = 'bilderbuch-2017-06-18'`,
+  );
+
+  // Backfill event_title from owning artist name for multi_act rows missing it
+  await db.run(sql`
+    UPDATE concerts
+    SET event_title = (
+      SELECT artists.name FROM artists WHERE artists.id = concerts.artist_id
+    )
+    WHERE event_kind = 'multi_act' AND (event_title IS NULL OR event_title = '')
+  `);
+
+  const now = new Date().toISOString();
+  const ferropolisArtist = (
+    await db.run(sql`SELECT id FROM artists WHERE slug = 'ferropolis-open-air' LIMIT 1`)
+  ).rows[0] as unknown as { id: string } | undefined;
+  let ferropolisId = ferropolisArtist?.id;
+  if (!ferropolisId) {
+    ferropolisId = randomUUID();
+    await db.run(
+      sql`INSERT INTO artists (id, slug, name, created_at) VALUES (${ferropolisId}, 'ferropolis-open-air', 'Ferropolis Open Air', ${now})`,
+    );
+  }
+  await db.run(
+    sql`UPDATE concerts SET artist_id = ${ferropolisId}, event_kind = 'multi_act', event_title = COALESCE(event_title, 'Ferropolis Open Air') WHERE slug = 'seeed-2014-08-22'`,
+  );
+
+  await db.run(
+    sql`UPDATE artists SET slug = 'benefizkonzert-fur-den-wahren-heino', name = 'Benefizkonzert für den wahren Heino' WHERE slug = 'heino-aid'`,
+  );
+  await db.run(
+    sql`UPDATE concerts SET slug = 'benefizkonzert-fur-den-wahren-heino-1986-10-18', event_kind = 'multi_act', event_title = COALESCE(event_title, 'Benefizkonzert für den wahren Heino') WHERE slug = 'heino-aid-1986-10-18'`,
+  );
 }

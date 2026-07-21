@@ -41,6 +41,7 @@ export const TOUR_ITUNES = {
   "loyle-carner:Yesterday's Gone Tour": "Loyle Carner Yesterdays Gone",
   "voodoo-juergens:Ansa Panier live 2026": "Voodoo Jürgens",
   "seeed:Live 20>21>22": "Seeed Bam Bam",
+  "simply-red:Farewell – The Final Tour": "Simply Red Stars",
   "snoop-dogg:I Wanna Thank Me Tour": "Snoop Dogg I Wanna Thank Me",
   "sting:My Songs Tour": "Sting My Songs",
   "red-hot-chili-peppers:Blood Sugar Sex Magik Tour": "Red Hot Chili Peppers Blood Sugar Sex Magik",

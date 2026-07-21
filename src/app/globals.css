@@ -40,7 +40,7 @@ h2{font-size:1.35rem;font-weight:400;margin:0 0 .35rem;letter-spacing:.03em;colo
 .concert[open] .concert-toggle{background:var(--accent-soft)}
 .poster-caption{font-size:.78rem;color:var(--muted);line-height:1.4;padding-top:.15rem;border-top:1px solid var(--border);margin-top:.1rem}
 .badge{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding:.22rem .5rem;border:1px solid var(--border);color:var(--muted);border-radius:3px;background:var(--surface2)}
-.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.artist{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12);text-decoration:none}.badge.artist:hover,.badge.artist:active{color:#e8dcf8}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
+.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.artist{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12);text-decoration:none}.badge.artist:hover,.badge.artist:active{color:#e8dcf8}.badge.multi-act{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12)}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
 .concert-body{padding:1rem .95rem 1.1rem;border-top:1px solid var(--border);background:linear-gradient(180deg,var(--surface) 0%,#131318 100%)}
 .body-label{font-size:.78rem;font-weight:400;margin:0 0 .55rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
 .body-label-meta{color:var(--muted);font-size:.72rem;letter-spacing:.04em;text-transform:none}
@@ -170,14 +170,17 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
 .admin-form label{display:flex;flex-direction:column;gap:.35rem;font-size:.88rem;color:var(--muted)}
 .admin-form input,.admin-form button{font:inherit;padding:.65rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
 .admin-form button{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);cursor:pointer;font-weight:600}
+.admin-form .admin-check,.concert-edit-form .concert-edit-check{flex-direction:row;align-items:center;gap:.55rem;cursor:pointer}
+.admin-form .admin-check input,.concert-edit-form .concert-edit-check input{width:auto;padding:0;accent-color:var(--accent)}
+.admin-hint,.concert-edit-hint{margin:0;font-size:.8rem;line-height:1.4;color:var(--muted)}
 .admin-msg{margin-top:1rem;padding:.75rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border);font-size:.92rem}
 .admin-poster-field{display:flex;flex-direction:column;gap:.35rem;font-size:.88rem;color:var(--muted)}
 .admin-poster-btn{display:block;width:100%;padding:0;border:1px dashed var(--border);border-radius:8px;background:var(--surface2);cursor:pointer;overflow:hidden}
 .admin-poster-btn:hover{border-color:var(--accent)}
 .admin-poster-preview{width:100%;max-height:14rem;object-fit:cover;display:block}
 .admin-poster-placeholder{display:block;padding:2rem 1rem;color:var(--muted);font-size:.85rem}
-.concert-poster-edit{display:block;width:100%;height:100%;padding:0;border:none;background:transparent;cursor:pointer}
-.concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{display:block;width:100%;height:100%}
+.concert-poster-edit{display:block;width:100%;padding:0;border:none;background:transparent;cursor:pointer}
+.concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{display:block;width:100%;aspect-ratio:3/4;min-height:12.5rem;height:auto}
 .concert-delete-btn,.concert-hide-btn{margin-left:auto;padding:.12rem .45rem;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--muted);font:inherit;font-size:.68rem;cursor:pointer;opacity:.55}
 .concert-delete-btn:hover,.concert-delete-btn:focus,.concert-hide-btn:hover,.concert-hide-btn:focus{opacity:1;border-color:var(--border);color:var(--text)}
 .hidden-toggle-wrap{margin:1.5rem 0 2rem;text-align:center}
@@ -209,7 +212,7 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
 .poster-modal-option:hover{border-color:var(--accent)}
 .poster-modal-option img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px;display:block;background:#111}
 .poster-modal-option-title{font-size:.72rem;line-height:1.35;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.poster-crop-frame{width:100%;height:100%;overflow:hidden;position:relative;background:#111}
+.poster-crop-frame{width:100%;aspect-ratio:3/4;min-height:12rem;height:auto;overflow:hidden;position:relative;background:#111}
 .poster-crop-frame>img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:auto;min-height:0}
 .poster-crop-stage{pointer-events:none;user-select:none}
 .poster-crop-stage img{width:100%;height:100%;display:block;object-fit:fill;aspect-ratio:auto;min-height:0}
@@ -229,7 +232,7 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
 .poster-crop-secondary{border:1px solid var(--border);background:transparent;color:var(--text)}
 .poster-crop-adjust{margin-left:auto;padding:.35rem .65rem;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-size:.78rem;cursor:pointer;white-space:nowrap}
 .poster-crop-adjust:hover{border-color:var(--accent)}
-.concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{display:block;width:100%;height:100%;min-height:12.5rem;aspect-ratio:3/4}
+.concert-poster-edit .poster-crop-frame,.concert-poster-edit .card-placeholder{display:block;width:100%;min-height:12.5rem;aspect-ratio:3/4;height:auto}
 .admin-poster-btn .poster-crop-frame.admin-poster-preview{width:100%;aspect-ratio:3/4;border-radius:6px}
 .enrichment-progress{list-style:none;margin:1rem 0 0;padding:0;display:flex;flex-direction:column;gap:.45rem;max-width:28rem}
 .enrichment-step{display:flex;align-items:baseline;gap:.5rem;font-size:.88rem;color:var(--muted)}
@@ -247,14 +250,19 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
 .concert-edit-form label,.upload-video-form label{display:flex;flex-direction:column;gap:.35rem;font-size:.82rem;color:var(--muted)}
 .concert-edit-form input,.concert-edit-form textarea,.upload-video-form select{font:inherit;padding:.55rem .65rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
 .concert-edit-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.25rem}
+.concert-edit-refresh{display:flex;flex-direction:column;gap:.35rem;padding-top:.25rem;border-top:1px solid var(--border)}
+.concert-edit-refresh-btn{font:inherit;padding:.6rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;text-align:left}
+.concert-edit-refresh-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.concert-edit-refresh-btn:disabled{opacity:.65;cursor:wait}
+.concert-edit-modal .enrichment-progress{max-width:none;margin-top:.35rem}
 .concert-poster-stacked .concert summary{display:flex;flex-direction:column;min-height:auto;padding:0}
 .concert-poster-stacked .concert-poster{width:100%;border-right:none;border-bottom:1px solid var(--border)}
-.concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{width:100%;min-height:12rem;aspect-ratio:3/4}
+.concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{width:100%;min-height:12rem;aspect-ratio:3/4;height:auto}
 .concert-poster-stacked .concert-head-row{display:grid;grid-template-columns:1fr 3.25rem;width:100%}
 @media(min-width:640px){
   .concert-poster-stacked .concert summary{display:grid;grid-template-columns:var(--poster-w) 1fr 3.25rem;grid-template-areas:"poster head toggle";min-height:14rem}
   .concert-poster-stacked .concert-poster{grid-area:poster;width:var(--poster-w);border-right:1px solid var(--border);border-bottom:none}
-  .concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{min-height:14rem;aspect-ratio:3/4}
+  .concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{min-height:14rem;aspect-ratio:3/4;height:auto}
   .concert-poster-stacked .concert-head-row{display:contents}
 }
 .song-meta.song-origin-artist{color:var(--muted)}

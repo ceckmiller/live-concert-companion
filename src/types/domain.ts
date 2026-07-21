@@ -1,4 +1,5 @@
 import type { PosterCrop } from "@/lib/poster-crop";
+import type { ConcertEventKind } from "@/lib/festivals";
 
 export type SongMeta = {
   origin: string;
@@ -11,6 +12,7 @@ export type SongMeta = {
 export type ConcertAct = {
   artistSlug: string;
   artistName: string;
+  artistId?: string;
   setlist: string[];
   videos?: Record<string, string>;
   setlistFm?: string;
@@ -19,7 +21,10 @@ export type ConcertAct = {
 };
 
 export type Concert = {
+  /** Stable DB UUID. */
   id: string;
+  /** Catalog/display slug — may change on rename. */
+  slug: string;
   sort: string;
   date: string;
   city: string;
@@ -35,8 +40,11 @@ export type Concert = {
   videos?: Record<string, string>;
   reviews?: { title: string; url: string; source: string }[];
   recordings?: { title: string; url: string; duration: string }[];
+  artistId?: string;
   artistSlug?: string;
   artistName?: string;
+  eventKind?: ConcertEventKind;
+  eventTitle?: string;
   hidden?: boolean;
   festivalLabel?: string;
 };
@@ -49,9 +57,11 @@ export type ArtistContext = {
 
 export type HomePayload = {
   artists: ArtistListItem[];
+  festivalGuestArtists: ArtistListItem[];
   artistsBySlug: Record<string, ArtistContext>;
+  artistsById: Record<string, ArtistContext>;
+  /** Unified timeline: solo + multi_act. */
   concerts: Concert[];
-  festivals: Concert[];
   hiddenConcerts: Concert[];
   stats: {
     concerts: number;
@@ -82,7 +92,16 @@ export type ArtistPayload = {
   };
 };
 
+export type ConcertPayload = {
+  concert: Concert;
+  artist: { id: string; slug: string; name: string };
+  tours: Record<string, { poster: string; label: string; kind: string }>;
+  songMeta: Record<string, SongMeta>;
+  artistsBySlug: Record<string, Pick<ArtistContext, "artist" | "songMeta">>;
+};
+
 export type ArtistListItem = {
+  id: string;
   slug: string;
   name: string;
   image_path: string | null;

@@ -22,12 +22,13 @@ export function loadUserPosterOverrides(): Record<string, UserPosterOverride> {
   }
 }
 
-export function saveUserPosterOverride(concertSlug: string, override: UserPosterOverride): void {
+/** Persist override keyed by concert UUID (preferred) and/or catalog slug. */
+export function saveUserPosterOverride(concertId: string, override: UserPosterOverride): void {
   if (!hasWritableAppDataDir()) return;
 
   const file = overridesFile();
   const current = loadUserPosterOverrides();
-  current[concertSlug] = override;
+  current[concertId] = override;
   try {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, `${JSON.stringify(current, null, 2)}\n`);
@@ -36,11 +37,16 @@ export function saveUserPosterOverride(concertSlug: string, override: UserPoster
   }
 }
 
+/** Apply override by concert UUID and/or catalog slug (both keys supported). */
 export function applyUserPosterOverride(
-  concertSlug: string,
+  concertKey: string,
   defaults: { posterPath: string | null; posterLabel: string | null; posterCropJson?: string | null },
+  alternateKeys: string[] = [],
 ): { posterPath: string | null; posterLabel: string | null; posterCropJson: string | null } {
-  const override = loadUserPosterOverrides()[concertSlug];
+  const overrides = loadUserPosterOverrides();
+  const override =
+    overrides[concertKey] ??
+    alternateKeys.map((k) => overrides[k]).find(Boolean);
   if (!override) {
     return {
       posterPath: defaults.posterPath,

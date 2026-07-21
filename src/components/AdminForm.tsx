@@ -3,14 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  createConcert,
-  enrichConcertPoster,
-  enrichConcertRecordings,
-  enrichConcertSetlist,
-  enrichConcertVideoSong,
-  listConcertSongsMissingVideos,
-} from "@/lib/actions";
+import { createConcert } from "@/lib/actions";
 import { EnrichmentProgress } from "@/components/EnrichmentProgress";
 import { TourPosterEditModal, type PosterPick } from "@/components/TourPosterEditModal";
 import { PosterCropFrame } from "@/components/PosterCropFrame";
@@ -19,6 +12,7 @@ import {
   setStepStatus,
   type EnrichmentStep,
 } from "@/lib/enrichment-progress";
+import { runConcertInternetEnrichment } from "@/lib/run-concert-enrichment";
 
 export function AdminForm() {
   const router = useRouter();
@@ -28,6 +22,7 @@ export function AdminForm() {
   const [steps, setSteps] = useState<EnrichmentStep[] | null>(null);
   const [posterOpen, setPosterOpen] = useState(false);
   const [posterPick, setPosterPick] = useState<PosterPick | null>(null);
+  const [multiAct, setMultiAct] = useState(false);
   const [draft, setDraft] = useState({
     artistName: "",
     tourName: "",
@@ -35,7 +30,11 @@ export function AdminForm() {
     date: "",
   });
 
-  function patchStep(id: EnrichmentStep["id"], status: EnrichmentStep["status"], detail?: string) {
+  function patchStep(
+    id: EnrichmentStep["id"],
+    status: EnrichmentStep["status"],
+    detail?: string,
+  ) {
     setSteps((current) => (current ? setStepStatus(current, id, status, detail) : current));
   }
 
@@ -45,6 +44,7 @@ export function AdminForm() {
     setLink("");
     const form = e.currentTarget;
     const fd = new FormData(form);
+    if (multiAct) fd.set("multiAct", "true");
     if (posterPick) {
       fd.set("posterUrl", posterPick.url);
       fd.set("posterTitle", posterPick.title);
@@ -62,64 +62,24 @@ export function AdminForm() {
       const res = await createConcert(fd);
       patchStep("save", "done");
 
-      patchStep("setlist", "active");
-      const setlist = await enrichConcertSetlist(res.artistSlug, res.concertSlug);
-      patchStep(
-        "setlist",
-        setlist.songsFound ? "done" : "error",
-        setlist.songsFound
-          ? `${setlist.songsFound} Songs`
-          : "Keine Setlist auf setlist.fm gefunden",
+      await runConcertInternetEnrichment(
+        { artistSlug: res.artistSlug, concertSlug: res.concertSlug },
+        {
+          includePoster: !skipPoster,
+          hadPosterFromForm: res.hadPosterFromForm,
+          patchStep,
+        },
       );
 
-      if (!skipPoster) {
-        if (res.hadPosterFromForm) {
-          patchStep("poster", "done", "Plakat gewählt");
-        } else {
-          patchStep("poster", "active");
-          const poster = await enrichConcertPoster(res.artistSlug, res.concertSlug);
-          patchStep(
-            "poster",
-            poster.posterFound ? "done" : "error",
-            poster.posterFound ? "Tourplakat gefunden" : "Kein Tourplakat gefunden — Fotobibliothek nutzen",
-          );
-        }
-      }
-
-      patchStep("videos", "active");
-      const { missing } = await listConcertSongsMissingVideos(res.artistSlug, res.concertSlug);
-      let videosFound = 0;
-      if (!missing.length) {
-        patchStep("videos", setlist.songsFound ? "skipped" : "error", "Keine Songs für Videos");
-      } else {
-        for (let i = 0; i < missing.length; i++) {
-          const song = missing[i];
-          patchStep("videos", "active", `${i + 1}/${missing.length}: ${song}`);
-          const hit = await enrichConcertVideoSong(res.artistSlug, res.concertSlug, song);
-          if (hit.found) videosFound++;
-        }
-        patchStep(
-          "videos",
-          videosFound ? "done" : "error",
-          `${videosFound}/${missing.length} YouTube-Videos`,
-        );
-      }
-
-      patchStep("recordings", "active");
-      const recordings = await enrichConcertRecordings(res.artistSlug, res.concertSlug);
-      patchStep(
-        "recordings",
-        recordings.recordingsFound ? "done" : "error",
-        recordings.recordingsFound
-          ? `${recordings.recordingsFound} Mitschnitt(e)`
-          : "Kein längerer Mitschnitt gefunden",
+      setMsg(
+        multiAct
+          ? `Multi-Act-Event angelegt: ${res.weekdayTime}.`
+          : `Konzert angelegt: ${res.weekdayTime}.`,
       );
-
-      patchStep("done", "done");
-      setMsg(`Konzert angelegt: ${res.weekdayTime}.`);
-      setLink(res.artistSlug);
+      setLink(res.concertId);
       setPosterPick(null);
       form.reset();
+      setMultiAct(false);
       setDraft({ artistName: "", tourName: "", city: "Berlin", date: "" });
       router.refresh();
     } catch (err) {
@@ -144,8 +104,8 @@ export function AdminForm() {
         <div className="section-head">
           <h2>Konzert hinzufügen</h2>
           <p className="section-desc">
-            Künstler und Datum reichen — Setlist, Tourplakat, YouTube-Videos und Mitschnitte werden automatisch
-            gesucht.
+            Künstler bzw. Event-Name und Datum reichen — Setlist, Tourplakat, YouTube-Videos, Kritiken und
+            Mitschnitte werden automatisch gesucht.
           </p>
         </div>
         <form
@@ -153,10 +113,29 @@ export function AdminForm() {
           onSubmit={onSubmit}
           onChange={(e) => syncDraft(e.currentTarget)}
         >
-          <label>
-            Künstler
-            <input name="artistName" required placeholder="z. B. Placebo" disabled={busy} />
+          <label className="admin-check">
+            <input
+              type="checkbox"
+              checked={multiAct}
+              onChange={(e) => setMultiAct(e.target.checked)}
+              disabled={busy}
+            />
+            <span>Multi-Act-Event (Festival / mehrere Acts)</span>
           </label>
+          <label>
+            {multiAct ? "Event-Name" : "Künstler"}
+            <input
+              name="artistName"
+              required
+              placeholder={multiAct ? "z. B. Peace x Peace" : "z. B. Placebo"}
+              disabled={busy}
+            />
+          </label>
+          {multiAct ? (
+            <p className="admin-hint">
+              Das Event erscheint in der Chronologie mit Multi-Act-Badge. Acts kannst du später ergänzen.
+            </p>
+          ) : null}
           <label>
             Tour (optional)
             <input name="tourName" placeholder="z. B. LIVE 2024" disabled={busy} />
@@ -197,7 +176,11 @@ export function AdminForm() {
             </button>
           </div>
           <button type="submit" disabled={busy}>
-            {busy ? "Anlegen & anreichern …" : "Konzert anlegen"}
+            {busy
+              ? "Anlegen & anreichern …"
+              : multiAct
+                ? "Multi-Act anlegen"
+                : "Konzert anlegen"}
           </button>
         </form>
         {steps ? <EnrichmentProgress steps={steps} /> : null}
@@ -207,7 +190,7 @@ export function AdminForm() {
             {link && (
               <>
                 {" "}
-                — <Link href={`/artist/${link}`}>Zur Künstlerseite</Link>
+                — <Link href={`/concert/${link}`}>Zum Konzert</Link>
               </>
             )}
           </p>

@@ -1,11 +1,12 @@
 import type { ArtistPayload, Concert, ConcertAct, SongStat } from "@/types/domain";
+import { resolveConcertEventKind } from "./festivals";
 import { parsePosterCropJson } from "./poster-crop";
 
 type SetlistRow = { song: string; position: number };
 
 export function computeSongStats(
   concerts: {
-    slug: string;
+    id: string;
     date: string;
     city: string;
     venue: string;
@@ -22,7 +23,7 @@ export function computeSongStats(
       const row = map.get(title)!;
       row.count += 1;
       row.concerts.push({
-        id: c.slug,
+        id: c.id,
         date: c.date,
         city: c.city,
         venue: c.venue,
@@ -39,6 +40,7 @@ export function buildArtistPayload(
   artist: { id: string; slug: string; name: string },
   toursRows: { name: string; posterPath: string | null; label: string | null; kind: string | null }[],
   concertsRows: {
+    id: string;
     slug: string;
     sortDate: string;
     dateLabel: string;
@@ -50,12 +52,17 @@ export function buildArtistPayload(
     posterCropJson: string | null;
     posterLabel: string | null;
     setlistFmUrl: string | null;
+    eventKind?: string | null;
+    eventTitle?: string | null;
     setlist: { position: number; song: string }[];
     acts?: ConcertAct[];
     videos: Record<string, string>;
     reviews: { title: string; url: string; source: string }[];
     recordings: { title: string; url: string; duration: string }[];
     festivalLabel?: string;
+    artistId?: string;
+    artistSlug?: string;
+    artistName?: string;
   }[],
   metaRows: {
     songTitle: string;
@@ -86,29 +93,42 @@ export function buildArtistPayload(
     };
   }
 
-  const concerts: Concert[] = concertsRows.map((c) => ({
-    id: c.slug,
-    sort: c.sortDate,
-    date: c.dateLabel,
-    city: c.city,
-    venue: c.venue,
-    tour: c.tourName,
-    note: c.note || undefined,
-    festivalLabel: c.festivalLabel,
-    poster: c.posterPath || undefined,
-    posterCrop: parsePosterCropJson(c.posterCropJson),
-    posterLabel: c.posterLabel || undefined,
-    setlistFm: c.setlistFmUrl || undefined,
-    setlist: c.setlist.map((s) => s.song),
-    acts: c.acts,
-    videos: c.videos,
-    reviews: c.reviews,
-    recordings: c.recordings,
-  }));
+  const concerts: Concert[] = concertsRows.map((c) => {
+    const eventKind = resolveConcertEventKind({
+      id: c.id,
+      slug: c.slug,
+      eventKind: c.eventKind,
+    });
+    return {
+      id: c.id,
+      slug: c.slug,
+      sort: c.sortDate,
+      date: c.dateLabel,
+      city: c.city,
+      venue: c.venue,
+      tour: c.tourName,
+      note: c.note || undefined,
+      festivalLabel: c.festivalLabel,
+      eventKind,
+      eventTitle: c.eventTitle || undefined,
+      poster: c.posterPath || undefined,
+      posterCrop: parsePosterCropJson(c.posterCropJson),
+      posterLabel: c.posterLabel || undefined,
+      setlistFm: c.setlistFmUrl || undefined,
+      setlist: c.setlist.map((s) => s.song),
+      acts: c.acts,
+      videos: c.videos,
+      reviews: c.reviews,
+      recordings: c.recordings,
+      artistId: c.artistId ?? artist.id,
+      artistSlug: c.artistSlug ?? artist.slug,
+      artistName: c.artistName ?? artist.name,
+    };
+  });
 
   const songs = computeSongStats(
     concertsRows.map((c) => ({
-      slug: c.slug,
+      id: c.id,
       date: c.dateLabel,
       city: c.city,
       venue: c.venue,
@@ -123,19 +143,13 @@ export function buildArtistPayload(
           : c.setlist,
     })),
   );
-  const berlin = concerts.filter((c) => c.city === "Berlin").length;
+
+  const berlin = concerts.filter((c) => /berlin/i.test(c.city)).length;
   const once = songs.filter((s) => s.count === 1).length;
-  const totalSlots = concerts.reduce(
-    (a, c) =>
-      a +
-      (c.acts?.length
-        ? c.acts.reduce((sum, act) => sum + act.setlist.length, 0)
-        : c.setlist.length),
-    0,
-  );
+  const totalSlots = songs.reduce((sum, s) => sum + s.count, 0);
 
   return {
-    artist: { id: artist.id, slug: artist.slug, name: artist.name },
+    artist,
     tours,
     concerts,
     songMeta,
