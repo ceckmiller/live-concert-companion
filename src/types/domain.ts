@@ -47,6 +47,8 @@ export type Concert = {
   eventTitle?: string;
   hidden?: boolean;
   festivalLabel?: string;
+  /** Other attendees shown on the card (e.g. “mit Nadia”). */
+  companions?: string[];
 };
 
 export type ArtistContext = {

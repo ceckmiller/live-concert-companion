@@ -1,7 +1,7 @@
 :root{--bg:#0c0c0f;--surface:#16161c;--surface2:#212128;--surface3:#2a2a33;--text:#f2ede6;--muted:#a8a196;--accent:#d4ad2a;--accent-soft:rgba(212,173,42,.12);--border:#3a3a45;--highlight:#2e2618;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px);--poster-w:9.5rem}
 *{box-sizing:border-box;-webkit-tap-highlight-color:rgba(212,173,42,.18)}
 html{-webkit-text-size-adjust:100%;font-size:17px}
-body{margin:0;font-family:Georgia,"Iowan Old Style",Palatino,serif;background:var(--bg);color:var(--text);line-height:1.6;padding-bottom:var(--safe-bottom)}
+body{margin:0;font-family:Georgia,"Iowan Old Style",Palatino,serif;background:var(--bg);color:var(--text);line-height:1.6;padding-bottom:calc(4.5rem + var(--safe-bottom))}
 a{color:var(--accent)}
 header{padding:calc(1.35rem + var(--safe-top)) 1.1rem 1.35rem;padding-left:calc(1.1rem + var(--safe-left));padding-right:calc(1.1rem + var(--safe-right));border-bottom:1px solid var(--border);background:linear-gradient(165deg,#1c1624 0%,var(--bg) 70%)}
 header h1{margin:0 0 .45rem;font-size:1.85rem;font-weight:400;line-height:1.15;letter-spacing:.01em}
@@ -40,7 +40,7 @@ h2{font-size:1.35rem;font-weight:400;margin:0 0 .35rem;letter-spacing:.03em;colo
 .concert[open] .concert-toggle{background:var(--accent-soft)}
 .poster-caption{font-size:.78rem;color:var(--muted);line-height:1.4;padding-top:.15rem;border-top:1px solid var(--border);margin-top:.1rem}
 .badge{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding:.22rem .5rem;border:1px solid var(--border);color:var(--muted);border-radius:3px;background:var(--surface2)}
-.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.artist{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12);text-decoration:none}.badge.artist:hover,.badge.artist:active{color:#e8dcf8}.badge.multi-act{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12)}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
+.badge.tour{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}.badge.city{border-color:var(--border);color:var(--text)}.badge.artist{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12);text-decoration:none}.badge.artist:hover,.badge.artist:active{color:#e8dcf8}.badge.multi-act{border-color:#8a6ab8;color:#cbb8e8;background:rgba(138,106,184,.12)}.badge.companion{border-color:#6a8a9a;color:#b8d4e0;background:rgba(106,138,154,.14);font-size:.68rem;letter-spacing:.04em}.badge.poster-real{border-color:#5a9a6a;color:#9ee0b0;background:rgba(90,154,106,.1)}.badge.poster-album{border-color:#7a6535;color:var(--accent);background:var(--accent-soft)}.badge.poster-promo{border-color:#5a8aaa;color:#a8d4f0;background:rgba(90,138,170,.1)}
 .concert-body{padding:1rem .95rem 1.1rem;border-top:1px solid var(--border);background:linear-gradient(180deg,var(--surface) 0%,#131318 100%)}
 .body-label{font-size:.78rem;font-weight:400;margin:0 0 .55rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
 .body-label-meta{color:var(--muted);font-size:.72rem;letter-spacing:.04em;text-transform:none}
@@ -274,3 +274,21 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
 .view-toggle button{flex:1;border:none;background:transparent;color:var(--muted);font:inherit;font-size:.88rem;text-transform:uppercase;letter-spacing:.07em;padding:.7rem .85rem;border-radius:8px;cursor:pointer}
 .view-toggle button.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
 .view-toggle button:hover:not(.active){color:var(--text);background:var(--surface2)}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:stretch;gap:0;background:rgba(12,12,15,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:0.15rem 0 calc(0.15rem + var(--safe-bottom));padding-left:var(--safe-left);padding-right:var(--safe-right);box-shadow:0 -4px 24px rgba(0,0,0,.35)}
+.bottom-nav a{flex:1 1 0;min-width:0;text-align:center;text-decoration:none;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:.7rem .35rem;font-weight:400;border:none;border-bottom:none;background:transparent}
+.bottom-nav a.active,.bottom-nav a:hover{color:var(--accent);background:var(--accent-soft);border-bottom:none}
+.page-actions{max-width:980px;margin:0 auto;padding:.85rem 1.1rem 0;padding-left:calc(1.1rem + var(--safe-left));padding-right:calc(1.1rem + var(--safe-right))}
+.page-action-btn{display:inline-block;padding:.55rem .9rem;border-radius:8px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);text-decoration:none;font-size:.88rem;font-weight:600;cursor:pointer}
+.attendees-panel{max-width:980px;margin:0 auto 2rem;padding:0 1.1rem}
+.attendee-check-list{list-style:none;margin:0 0 1rem;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.attendee-check-list .muted{color:var(--muted);font-size:.85em}
+.concert-edit-attendees{display:flex;flex-direction:column;gap:.35rem;padding-top:.25rem;border-top:1px solid var(--border)}
+.user-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.45rem}
+.user-list li,.user-list-item{padding:.65rem .85rem;border:1px solid var(--border);border-radius:8px;background:var(--surface);display:flex;flex-direction:column;gap:.55rem}
+.user-list-meta{line-height:1.4}
+.user-list-actions{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center}
+.user-edit-form{max-width:none;width:100%}
+.user-delete-btn{border-color:#8a4a4a!important;color:#e8a0a0!important;background:rgba(138,74,74,.12)!important}
+.profile-logout{margin-top:1rem;max-width:28rem}
+.login-page{padding-bottom:2rem}
+footer{padding:1.5rem 1rem 5.5rem;text-align:center;color:var(--muted);font-size:.8rem}

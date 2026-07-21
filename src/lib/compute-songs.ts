@@ -63,6 +63,7 @@ export function buildArtistPayload(
     artistId?: string;
     artistSlug?: string;
     artistName?: string;
+    companions?: string[];
   }[],
   metaRows: {
     songTitle: string;
@@ -123,6 +124,7 @@ export function buildArtistPayload(
       artistId: c.artistId ?? artist.id,
       artistSlug: c.artistSlug ?? artist.slug,
       artistName: c.artistName ?? artist.name,
+      companions: c.companions,
     };
   });
 

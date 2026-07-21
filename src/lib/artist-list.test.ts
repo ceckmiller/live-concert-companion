@@ -109,4 +109,32 @@ describe("artist list policy", () => {
       ),
     ).toBe(3);
   });
+
+  it("counts hidden concerts in artist totals", () => {
+    expect(
+      countArtistVisibleConcerts(
+        "placebo",
+        [
+          { id: "1", slug: "placebo-2020-01-01", sort: "2020-01-01", hidden: false },
+          { id: "2", slug: "placebo-2019-01-01", sort: "2019-01-01", hidden: true },
+        ],
+        [],
+      ),
+    ).toBe(2);
+
+    const rows = [
+      {
+        id: "1",
+        slug: "placebo",
+        name: "Placebo",
+        image_path: null,
+        concert_count: 2,
+        headlinerConcerts: [
+          { id: "1", slug: "placebo-2020-01-01", sort: "2020-01-01", hidden: true },
+          { id: "2", slug: "placebo-2019-01-01", sort: "2019-01-01", hidden: true },
+        ],
+      },
+    ];
+    expect(filterSoloConcertArtists(rows).map((r) => r.slug)).toEqual(["placebo"]);
+  });
 });

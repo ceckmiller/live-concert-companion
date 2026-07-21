@@ -2,8 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { updateConcert } from "@/lib/actions";
+import { AttendeePicker, type AttendeeUser } from "@/components/AttendeePicker";
 import { EnrichmentProgress } from "@/components/EnrichmentProgress";
+import { setConcertAttendees, updateConcert } from "@/lib/actions";
+import { getAttendeeEditorStateAction } from "@/lib/auth-actions";
 import {
   initialRefreshEnrichmentSteps,
   setStepStatus,
@@ -45,6 +47,9 @@ export function ConcertEditModal({
   const [enriching, setEnriching] = useState(false);
   const [error, setError] = useState("");
   const [steps, setSteps] = useState<EnrichmentStep[] | null>(null);
+  const [people, setPeople] = useState<AttendeeUser[]>([]);
+  const [attendees, setAttendees] = useState<Set<string>>(new Set());
+  const [currentUserId, setCurrentUserId] = useState("");
   const [form, setForm] = useState({
     artistName,
     date,
@@ -69,7 +74,21 @@ export function ConcertEditModal({
     setError("");
     setSteps(null);
     setEnriching(false);
-  }, [open, artistName, date, venue, city, tourName, note, isFestivalEvent]);
+    let cancelled = false;
+    getAttendeeEditorStateAction(concertId)
+      .then((state) => {
+        if (cancelled) return;
+        setPeople(state.users);
+        setAttendees(new Set(state.selectedIds));
+        setCurrentUserId(state.currentUserId);
+      })
+      .catch(() => {
+        if (!cancelled) setPeople([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, artistName, date, venue, city, tourName, note, isFestivalEvent, concertId]);
 
   if (!open) return null;
 
@@ -82,6 +101,16 @@ export function ConcertEditModal({
     detail?: string,
   ) {
     setSteps((current) => (current ? setStepStatus(current, id, status, detail) : current));
+  }
+
+  function toggleAttendee(id: string) {
+    if (id === currentUserId) return;
+    setAttendees((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
   function onSubmit(e: React.FormEvent) {
@@ -101,6 +130,7 @@ export function ConcertEditModal({
           note: form.note,
           multiAct: form.multiAct,
         });
+        await setConcertAttendees(result.concertId, [...attendees]);
         onClose();
         if (form.multiAct) {
           router.replace(`/concert/${result.concertId}`);
@@ -215,6 +245,20 @@ export function ConcertEditModal({
               disabled={busy}
             />
           </label>
+
+          <div className="concert-edit-attendees">
+            <span className="body-label">Wer war dabei?</span>
+            <p className="concert-edit-hint">
+              Mit dabei markieren — das Konzert erscheint in deren Chronologie.
+            </p>
+            <AttendeePicker
+              users={people}
+              selected={attendees}
+              currentUserId={currentUserId}
+              disabled={busy}
+              onToggle={toggleAttendee}
+            />
+          </div>
 
           <div className="concert-edit-refresh">
             <button

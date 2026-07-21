@@ -1,5 +1,6 @@
 import { permanentRedirect, notFound } from "next/navigation";
 import { ArtistPageClient } from "@/components/ArtistPageClient";
+import { requireUser } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { ensureDbInitialized } from "@/lib/init-db";
 import { findArtistBySlug } from "@/lib/concert-lookup";
@@ -11,9 +12,12 @@ import {
   loadArtistBySlug,
 } from "@/lib/queries";
 
-async function redirectPseudoOrArtist(artist: { id: string; slug: string }) {
+async function redirectPseudoOrArtist(
+  artist: { id: string; slug: string },
+  userId: string,
+) {
   if (isFestivalArtist(artist.slug)) {
-    const concertId = await findPseudoArtistTimelineConcertId(artist.slug);
+    const concertId = await findPseudoArtistTimelineConcertId(artist.slug, userId);
     permanentRedirect(concertId ? `/#concert-${concertId}` : "/");
   }
   permanentRedirect(`/artist/${artist.id}`);
@@ -21,19 +25,19 @@ async function redirectPseudoOrArtist(artist: { id: string; slug: string }) {
 
 export default async function ArtistPage({ params }: { params: Promise<{ slug: string }> }) {
   await ensureDbInitialized();
+  const user = await requireUser();
   const { slug } = await params;
 
   if (looksLikeUuid(slug)) {
-    const data = await loadArtistById(slug);
+    const data = await loadArtistById(slug, user.id);
     if (!data) notFound();
     if (isFestivalArtist(data.artist.slug)) {
-      const concertId = await findPseudoArtistTimelineConcertId(data.artist.slug);
+      const concertId = await findPseudoArtistTimelineConcertId(data.artist.slug, user.id);
       permanentRedirect(concertId ? `/#concert-${concertId}` : "/");
     }
     return <ArtistPageClient data={data} />;
   }
 
-  // Legacy slug URL → permanent redirect to stable UUID route
   let artist: { id: string; slug: string } | null = null;
   try {
     const db = getDb();
@@ -43,10 +47,10 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
   }
 
   if (artist) {
-    await redirectPseudoOrArtist(artist);
+    await redirectPseudoOrArtist(artist, user.id);
   }
 
-  const data = await loadArtistBySlug(slug);
+  const data = await loadArtistBySlug(slug, user.id);
   if (!data) notFound();
-  await redirectPseudoOrArtist(data.artist);
+  await redirectPseudoOrArtist(data.artist, user.id);
 }

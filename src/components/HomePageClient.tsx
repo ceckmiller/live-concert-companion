@@ -5,10 +5,6 @@ import { useEffect, useState } from "react";
 import { GlobalConcertTimeline } from "@/components/ArtistSections";
 import type { ArtistListItem, HomePayload } from "@/types/domain";
 
-type HomeView = "timeline" | "artists";
-
-const VIEW_KEY = "lkc-home-view";
-
 function ArtistRows({ artists }: { artists: ArtistListItem[] }) {
   return (
     <div className="artist-list">
@@ -33,20 +29,17 @@ function ArtistRows({ artists }: { artists: ArtistListItem[] }) {
   );
 }
 
-export function HomePageClient({ home }: { home: HomePayload }) {
-  const [view, setView] = useState<HomeView>("timeline");
+export function HomePageClient({
+  home,
+  timelineOnly = false,
+  artistsOnly = false,
+}: {
+  home: HomePayload;
+  timelineOnly?: boolean;
+  artistsOnly?: boolean;
+}) {
   const [openConcertId, setOpenConcertId] = useState<string>();
   const [showHidden, setShowHidden] = useState(false);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("view") === "artists") {
-      setView("artists");
-      return;
-    }
-    const saved = localStorage.getItem(VIEW_KEY);
-    if (saved === "timeline" || saved === "artists") setView(saved);
-  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -60,11 +53,6 @@ export function HomePageClient({ home }: { home: HomePayload }) {
     });
   }, []);
 
-  function switchView(next: HomeView) {
-    setView(next);
-    localStorage.setItem(VIEW_KEY, next);
-  }
-
   function openConcert(id: string | undefined) {
     setOpenConcertId(id);
     if (!id) return;
@@ -74,6 +62,8 @@ export function HomePageClient({ home }: { home: HomePayload }) {
   }
 
   const s = home.stats;
+  const showTimeline = timelineOnly || (!artistsOnly && !timelineOnly);
+  const showArtists = artistsOnly;
 
   return (
     <main>
@@ -96,34 +86,13 @@ export function HomePageClient({ home }: { home: HomePayload }) {
         </div>
       </div>
 
-      <div className="view-toggle" role="tablist" aria-label="Dashboard-Ansicht">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={view === "timeline"}
-          className={view === "timeline" ? "active" : undefined}
-          onClick={() => switchView("timeline")}
-        >
-          Chronologie
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={view === "artists"}
-          className={view === "artists" ? "active" : undefined}
-          onClick={() => switchView("artists")}
-        >
-          Künstler
-        </button>
-      </div>
-
-      {view === "timeline" ? (
+      {showTimeline ? (
         <>
           <section id="chronologie">
             <div className="section-head">
-              <h2>Chronologie</h2>
+              <h2>Meine Chronologie</h2>
               <p className="section-desc">
-                Alle Konzerte &amp; Multi-Act-Events — neueste zuerst.
+                Alle Konzerte &amp; Multi-Act-Events, bei denen du dabei warst — neueste zuerst.
               </p>
             </div>
             <GlobalConcertTimeline
@@ -158,7 +127,9 @@ export function HomePageClient({ home }: { home: HomePayload }) {
             </p>
           ) : null}
         </>
-      ) : (
+      ) : null}
+
+      {showArtists ? (
         <>
           <section id="kuenstler-solo">
             <div className="section-head">
@@ -182,7 +153,7 @@ export function HomePageClient({ home }: { home: HomePayload }) {
             </section>
           ) : null}
         </>
-      )}
+      ) : null}
     </main>
   );
 }

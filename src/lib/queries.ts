@@ -1,4 +1,4 @@
-import { asc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
 import {
   countArtistVisibleConcerts,
   filterFestivalGuestArtists,
@@ -16,6 +16,7 @@ import { parsePosterCropJson } from "./poster-crop";
 import {
   artists,
   concertActs,
+  concertAttendees,
   concertVideos,
   concerts,
   recordings,
@@ -23,6 +24,7 @@ import {
   setlistItems,
   songMeta,
   tours,
+  users,
 } from "./db/schema";
 import type {
   ArtistListItem,
@@ -31,7 +33,60 @@ import type {
   ConcertAct,
   ConcertPayload,
   HomePayload,
+  SongStat,
 } from "@/types/domain";
+import { computeSongStats } from "./compute-songs";
+
+/** Companion display names per concert (everyone except the viewing user). */
+async function loadCompanionsByConcert(
+  concertIds: string[],
+  viewerUserId: string,
+): Promise<Map<string, string[]>> {
+  const map = new Map<string, string[]>();
+  if (!concertIds.length) return map;
+  const db = getDb();
+  const rows = await db
+    .select({
+      concertId: concertAttendees.concertId,
+      name: users.name,
+      email: users.email,
+    })
+    .from(concertAttendees)
+    .innerJoin(users, eq(users.id, concertAttendees.userId))
+    .where(
+      and(inArray(concertAttendees.concertId, concertIds), ne(concertAttendees.userId, viewerUserId)),
+    )
+    .orderBy(users.name);
+  for (const row of rows) {
+    // Never surface the legacy pseudo-admin account on tiles.
+    if (row.email === "admin@localhost" || row.name === "Admin") continue;
+    const list = map.get(row.concertId) ?? [];
+    list.push(row.name);
+    map.set(row.concertId, list);
+  }
+  return map;
+}
+
+function withCompanions(concertsList: Concert[], companions: Map<string, string[]>): Concert[] {
+  return concertsList.map((c) => {
+    const names = companions.get(c.id);
+    return names?.length ? { ...c, companions: names } : c;
+  });
+}
+
+async function loadAttendanceMap(
+  userId: string,
+): Promise<Map<string, { hidden: boolean }>> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      concertId: concertAttendees.concertId,
+      hidden: concertAttendees.hidden,
+    })
+    .from(concertAttendees)
+    .where(eq(concertAttendees.userId, userId));
+  return new Map(rows.map((r) => [r.concertId, { hidden: r.hidden === true }]));
+}
 
 function mapConcertRow(
   c: {
@@ -145,13 +200,17 @@ export async function listArtists(): Promise<ArtistListItem[]> {
   return rows;
 }
 
-async function loadArtistPayload(artist: {
-  id: string;
-  slug: string;
-  name: string;
-}): Promise<ArtistPayload> {
+async function loadArtistPayload(
+  artist: {
+    id: string;
+    slug: string;
+    name: string;
+  },
+  userId: string,
+): Promise<ArtistPayload> {
   const db = getDb();
-  const [tourRows, concertRows, metaRows, guestActRows] = await Promise.all([
+  const attendance = await loadAttendanceMap(userId);
+  const [tourRows, concertRowsRaw, metaRows, guestActRowsRaw] = await Promise.all([
     db.select().from(tours).where(eq(tours.artistId, artist.id)).orderBy(tours.name),
     db
       .select()
@@ -193,6 +252,16 @@ async function loadArtistPayload(artist: {
       .innerJoin(artists, eq(artists.id, concerts.artistId))
       .where(eq(concertActs.artistSlug, artist.slug)),
   ]);
+
+  const concertRows = concertRowsRaw
+    .filter((c) => attendance.has(c.id))
+    .map((c) => ({ ...c, hidden: attendance.get(c.id)?.hidden ?? false }));
+  const guestActRows = guestActRowsRaw
+    .filter((r) => attendance.has(r.concertId))
+    .map((r) => ({
+      ...r,
+      hidden: attendance.get(r.concertId)?.hidden ?? false,
+    }));
 
   const visibleHeadliners = concertRows.filter((c) => !c.hidden);
   const guestParentIds = [
@@ -336,6 +405,11 @@ async function loadArtistPayload(artist: {
   const concertsPayload = [...headlinerPayload, ...guestPayload].sort((a, b) =>
     b.sort.localeCompare(a.sort),
   );
+  const companions = await loadCompanionsByConcert(
+    concertsPayload.map((c) => c.id),
+    userId,
+  );
+  const concertsWithCompanions = withCompanions(concertsPayload, companions);
 
   return {
     ...buildArtistPayload(
@@ -346,7 +420,7 @@ async function loadArtistPayload(artist: {
         label: t.label,
         kind: t.kind,
       })),
-      concertsPayload.map((c) => ({
+      concertsWithCompanions.map((c) => ({
         id: c.id,
         slug: c.slug,
         sortDate: c.sort,
@@ -370,6 +444,7 @@ async function loadArtistPayload(artist: {
         artistId: c.artistId,
         artistSlug: c.artistSlug,
         artistName: c.artistName,
+        companions: c.companions,
       })),
       metaRows.map((m) => ({
         songTitle: m.songTitle,
@@ -384,22 +459,36 @@ async function loadArtistPayload(artist: {
   };
 }
 
-export async function loadArtistById(id: string): Promise<ArtistPayload | null> {
+export async function loadArtistById(
+  id: string,
+  userId: string,
+): Promise<ArtistPayload | null> {
   const db = getDb();
   const artist = (await db.select().from(artists).where(eq(artists.id, id)).limit(1))[0];
   if (!artist) return null;
-  return loadArtistPayload(artist);
+  return loadArtistPayload(artist, userId);
 }
 
-export async function loadArtistBySlug(slug: string): Promise<ArtistPayload | null> {
+export async function loadArtistBySlug(
+  slug: string,
+  userId: string,
+): Promise<ArtistPayload | null> {
   const db = getDb();
   const artist = (await db.select().from(artists).where(eq(artists.slug, slug)).limit(1))[0];
   if (!artist) return null;
-  return loadArtistPayload(artist);
+  return loadArtistPayload(artist, userId);
 }
 
-export async function loadConcertById(id: string): Promise<ConcertPayload | null> {
+export async function loadConcertById(
+  id: string,
+  userId: string,
+  opts: { isAdmin?: boolean } = {},
+): Promise<ConcertPayload | null> {
   const db = getDb();
+  const attendance = await loadAttendanceMap(userId);
+  const isAttendee = attendance.has(id);
+  if (!isAttendee && !opts.isAdmin) return null;
+
   const row = (
     await db
       .select({
@@ -463,18 +552,26 @@ export async function loadConcertById(id: string): Promise<ConcertPayload | null
   const videos: Record<string, string> = {};
   for (const v of videoRows) videos[v.songTitle] = v.url;
 
-  const concert = mapConcertRow(row, {
-    setlist: flatSetlist.length ? flatSetlist : acts.flatMap((a) => a.setlist),
-    acts: acts.length ? acts : undefined,
-    videos,
-    reviews: reviewRows.map(({ title, url, source }) => ({ title, url, source })),
-    recordings: recordingRows.map(({ title, url, duration }) => ({ title, url, duration })),
-    artistSlug: row.artistSlug,
-    artistName: row.artistName,
-  });
+  const concert = mapConcertRow(
+    {
+      ...row,
+      hidden: attendance.get(id)?.hidden ?? row.hidden,
+    },
+    {
+      setlist: flatSetlist.length ? flatSetlist : acts.flatMap((a) => a.setlist),
+      acts: acts.length ? acts : undefined,
+      videos,
+      reviews: reviewRows.map(({ title, url, source }) => ({ title, url, source })),
+      recordings: recordingRows.map(({ title, url, duration }) => ({ title, url, duration })),
+      artistSlug: row.artistSlug,
+      artistName: row.artistName,
+    },
+  );
+  const companions = await loadCompanionsByConcert([concert.id], userId);
+  const concertWithCompanions = withCompanions([concert], companions)[0]!;
 
   return {
-    concert,
+    concert: concertWithCompanions,
     artist: { id: row.artistId, slug: row.artistSlug, name: row.artistName },
     tours: mapToursRows(tourRows),
     songMeta: mapSongMetaRows(metaRows),
@@ -485,21 +582,24 @@ export async function loadConcertById(id: string): Promise<ConcertPayload | null
 /** First headliner concert UUID for a pseudo-artist (for redirects). */
 export async function findPseudoArtistTimelineConcertId(
   artistSlug: string,
+  userId?: string,
 ): Promise<string | null> {
   const db = getDb();
   const artist = (
     await db.select().from(artists).where(eq(artists.slug, artistSlug)).limit(1)
   )[0];
   if (!artist) return null;
+  const attendance = userId ? await loadAttendanceMap(userId) : null;
   const rows = await db
     .select({ id: concerts.id, slug: concerts.slug, eventKind: concerts.eventKind })
     .from(concerts)
     .where(eq(concerts.artistId, artist.id))
     .orderBy(sql`${concerts.sortDate} DESC`);
-  const multi = rows.find((r) =>
+  const scoped = attendance ? rows.filter((r) => attendance.has(r.id)) : rows;
+  const multi = scoped.find((r) =>
     isTimelineConcert({ id: r.id, slug: r.slug, eventKind: r.eventKind }),
   );
-  return multi?.id ?? rows[0]?.id ?? null;
+  return multi?.id ?? scoped[0]?.id ?? null;
 }
 
 async function buildArtistsBySlug(
@@ -577,37 +677,48 @@ function mapToursRows(
   return toursMap;
 }
 
-export async function loadHomeDashboard(): Promise<HomePayload> {
+export async function loadHomeDashboard(userId: string): Promise<HomePayload> {
   const db = getDb();
-  const [artistRows, concertRows, tourRows, metaRows] = await Promise.all([
+  const attendance = await loadAttendanceMap(userId);
+  const attendedIds = [...attendance.keys()];
+
+  const [artistRows, concertRowsRaw, tourRows, metaRows] = await Promise.all([
     db.select().from(artists).orderBy(artists.name),
-    db
-      .select({
-        id: concerts.id,
-        slug: concerts.slug,
-        sortDate: concerts.sortDate,
-        dateLabel: concerts.dateLabel,
-        city: concerts.city,
-        venue: concerts.venue,
-        tourName: concerts.tourName,
-        note: concerts.note,
-        posterPath: concerts.posterPath,
-        posterCropJson: concerts.posterCropJson,
-        posterLabel: concerts.posterLabel,
-        setlistFmUrl: concerts.setlistFmUrl,
-        hidden: concerts.hidden,
-        eventKind: concerts.eventKind,
-        eventTitle: concerts.eventTitle,
-        artistId: concerts.artistId,
-        artistSlug: artists.slug,
-        artistName: artists.name,
-      })
-      .from(concerts)
-      .innerJoin(artists, eq(concerts.artistId, artists.id))
-      .orderBy(sql`${concerts.sortDate} DESC`),
+    attendedIds.length
+      ? db
+          .select({
+            id: concerts.id,
+            slug: concerts.slug,
+            sortDate: concerts.sortDate,
+            dateLabel: concerts.dateLabel,
+            city: concerts.city,
+            venue: concerts.venue,
+            tourName: concerts.tourName,
+            note: concerts.note,
+            posterPath: concerts.posterPath,
+            posterCropJson: concerts.posterCropJson,
+            posterLabel: concerts.posterLabel,
+            setlistFmUrl: concerts.setlistFmUrl,
+            hidden: concerts.hidden,
+            eventKind: concerts.eventKind,
+            eventTitle: concerts.eventTitle,
+            artistId: concerts.artistId,
+            artistSlug: artists.slug,
+            artistName: artists.name,
+          })
+          .from(concerts)
+          .innerJoin(artists, eq(concerts.artistId, artists.id))
+          .where(inArray(concerts.id, attendedIds))
+          .orderBy(sql`${concerts.sortDate} DESC`)
+      : Promise.resolve([]),
     db.select().from(tours),
     db.select().from(songMeta),
   ]);
+
+  const concertRows = concertRowsRaw.map((c) => ({
+    ...c,
+    hidden: attendance.get(c.id)?.hidden ?? false,
+  }));
 
   const concertIds = concertRows.map((c) => c.id);
   const [setlistRows, videoRows, reviewRows, recordingRows, actRows] = concertIds.length
@@ -685,17 +796,20 @@ export async function loadHomeDashboard(): Promise<HomePayload> {
   });
 
   const visibleConcerts = allConcerts.filter((c) => !c.hidden);
-  const timelineConcerts = visibleConcerts.filter((c) =>
+  const isCountedTimeline = (c: (typeof allConcerts)[number]) =>
     isTimelineConcert({
       id: c.id,
       slug: c.slug,
-      hidden: c.hidden,
+      hidden: false,
       eventKind: c.eventKind,
-    }),
-  );
+    });
+  /** Visible timeline cards (hidden concerts are listed separately). */
+  const timelineConcerts = visibleConcerts.filter(isCountedTimeline);
   const hiddenConcerts = allConcerts.filter((c) => c.hidden);
+  /** Stats always include hidden concerts — they are only hidden in the UI. */
+  const countedTimelineConcerts = allConcerts.filter(isCountedTimeline);
 
-  const years = new Set(timelineConcerts.map((c) => c.sort.slice(0, 4)));
+  const years = new Set(countedTimelineConcerts.map((c) => c.sort.slice(0, 4)));
 
   const concertById = new Map(concertRows.map((c) => [c.id, c]));
   const guestActsByArtist = new Map<
@@ -745,17 +859,48 @@ export async function loadHomeDashboard(): Promise<HomePayload> {
     filterFestivalGuestArtists(artistRows.map(toListRow)),
   );
 
+  const companions = await loadCompanionsByConcert(
+    allConcerts.map((c) => c.id),
+    userId,
+  );
+
   return {
     artists: headlinerArtists,
     festivalGuestArtists,
     artistsBySlug,
     artistsById,
-    concerts: timelineConcerts,
-    hiddenConcerts,
+    concerts: withCompanions(timelineConcerts, companions),
+    hiddenConcerts: withCompanions(hiddenConcerts, companions),
     stats: {
-      concerts: timelineConcerts.length,
+      concerts: countedTimelineConcerts.length,
       artists: headlinerArtists.length,
       years: years.size,
     },
   };
+}
+
+export async function loadSongsDashboard(userId: string): Promise<{
+  songs: SongStat[];
+  concerts: Concert[];
+}> {
+  const home = await loadHomeDashboard(userId);
+  const songs = computeSongStats(
+    home.concerts.map((c) => ({
+      id: c.id,
+      date: c.date,
+      city: c.city,
+      venue: c.venue,
+      setlist: c.setlist.map((song, i) => ({ song, position: i + 1 })),
+    })),
+  );
+  return { songs, concerts: home.concerts };
+}
+
+export async function listConcertAttendeeIds(concertId: string): Promise<string[]> {
+  const db = getDb();
+  const rows = await db
+    .select({ userId: concertAttendees.userId })
+    .from(concertAttendees)
+    .where(eq(concertAttendees.concertId, concertId));
+  return rows.map((r) => r.userId);
 }

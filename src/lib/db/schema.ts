@@ -159,6 +159,71 @@ export const catalogExclusions = sqliteTable("catalog_exclusions", {
   reason: text("reason"),
 });
 
+export const users = sqliteTable(
+  "users",
+  {
+    id: text("id").primaryKey(),
+    email: text("email").notNull(),
+    name: text("name").notNull(),
+    /** Optional login username (admin: "Admin"). */
+    username: text("username"),
+    /** scrypt$salt$hash — null for magic-link-only members. */
+    passwordHash: text("password_hash"),
+    /** admin | member */
+    role: text("role").notNull().default("member"),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [
+    uniqueIndex("users_email_unique").on(t.email),
+    uniqueIndex("users_username_unique").on(t.username),
+  ],
+);
+
+export const sessions = sqliteTable(
+  "sessions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    token: text("token").notNull(),
+    expiresAt: text("expires_at").notNull(),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [uniqueIndex("sessions_token_unique").on(t.token)],
+);
+
+export const magicLinks = sqliteTable(
+  "magic_links",
+  {
+    id: text("id").primaryKey(),
+    email: text("email").notNull(),
+    token: text("token").notNull(),
+    invitedBy: text("invited_by").references(() => users.id, { onDelete: "set null" }),
+    expiresAt: text("expires_at").notNull(),
+    consumedAt: text("consumed_at"),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [uniqueIndex("magic_links_token_unique").on(t.token)],
+);
+
+/** Which users attended which concert (drives personal chronology). */
+export const concertAttendees = sqliteTable(
+  "concert_attendees",
+  {
+    concertId: text("concert_id")
+      .notNull()
+      .references(() => concerts.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    hidden: integer("hidden", { mode: "boolean" }).notNull().default(false),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.concertId, t.userId] })],
+);
+
 export type Artist = typeof artists.$inferSelect;
 export type Concert = typeof concerts.$inferSelect;
 export type Tour = typeof tours.$inferSelect;
+export type User = typeof users.$inferSelect;

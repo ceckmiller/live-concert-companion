@@ -2,20 +2,23 @@
 
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "./db";
 import { ensureDbInitialized } from "./init-db";
 import {
   artists,
   catalogExclusions,
+  concertAttendees,
   concerts,
   concertVideos,
   recordings,
   reviews,
   setlistItems,
   tours,
+  users,
 } from "./db/schema";
+import { requireAdmin, requireUser } from "./auth/session";
 import {
   formatGermanDate,
   formatWeekdayTime,
@@ -195,6 +198,7 @@ export async function setConcertPoster(input: {
   tourName?: string;
   posterCrop?: PosterCrop | null;
 }): Promise<void> {
+  await requireUser();
   const posterUrl = input.posterUrl.trim();
   if (!isValidPosterPath(posterUrl)) throw new Error("Ungültige Poster-URL");
 
@@ -265,6 +269,7 @@ export async function setConcertHidden(
   concertSlugOrHidden?: string | boolean,
   hiddenMaybe?: boolean,
 ): Promise<void> {
+  const user = await requireUser();
   // New: setConcertHidden(concertId, hidden)
   // Legacy: setConcertHidden(artistSlug, concertSlug, hidden)
   let db;
@@ -281,12 +286,88 @@ export async function setConcertHidden(
     }));
     hidden = Boolean(hiddenMaybe);
   }
-  await db.update(concerts).set({ hidden }).where(eq(concerts.id, concert.id));
+
+  const existing = (
+    await db
+      .select()
+      .from(concertAttendees)
+      .where(
+        and(
+          eq(concertAttendees.concertId, concert.id),
+          eq(concertAttendees.userId, user.id),
+        ),
+      )
+      .limit(1)
+  )[0];
+  if (!existing) throw new Error("Du bist bei diesem Konzert nicht eingetragen");
+
+  await db
+    .update(concertAttendees)
+    .set({ hidden })
+    .where(
+      and(eq(concertAttendees.concertId, concert.id), eq(concertAttendees.userId, user.id)),
+    );
   revalidateConcertPaths({
     artistIds: [artist.id],
     concertIds: [concert.id],
     artistSlugs: [artist.slug],
   });
+}
+
+export async function setConcertAttendees(
+  concertId: string,
+  userIds: string[],
+): Promise<void> {
+  const actor = await requireUser();
+  const { db, artist, concert } = await resolveConcertRef({ concertId });
+
+  const current = await db
+    .select()
+    .from(concertAttendees)
+    .where(eq(concertAttendees.concertId, concert.id));
+  const currentIds = new Set(current.map((c) => c.userId));
+  if (actor.role !== "admin" && !currentIds.has(actor.id)) {
+    throw new Error("Nur Teilnehmer:innen dieses Konzerts können Begleitungen setzen");
+  }
+
+  // Actor always stays; companions checked in the UI are added/removed.
+  const unique = [...new Set([...userIds.filter(Boolean), actor.id])];
+  const valid = await db.select({ id: users.id }).from(users).where(inArray(users.id, unique));
+  const validIds = new Set(valid.map((v) => v.id));
+  validIds.add(actor.id);
+
+  for (const row of current) {
+    if (!validIds.has(row.userId)) {
+      await db
+        .delete(concertAttendees)
+        .where(
+          and(
+            eq(concertAttendees.concertId, concert.id),
+            eq(concertAttendees.userId, row.userId),
+          ),
+        );
+    }
+  }
+
+  const now = new Date().toISOString();
+  for (const uid of validIds) {
+    if (currentIds.has(uid)) continue;
+    await db.insert(concertAttendees).values({
+      concertId: concert.id,
+      userId: uid,
+      hidden: false,
+      createdAt: now,
+    });
+  }
+
+  revalidateConcertPaths({
+    artistIds: [artist.id],
+    concertIds: [concert.id],
+    artistSlugs: [artist.slug],
+  });
+  revalidatePath("/");
+  revalidatePath("/artists");
+  revalidatePath(`/concert/${concert.id}`);
 }
 
 async function applyPosterToConcert(input: {
@@ -622,6 +703,7 @@ export async function updateConcert(input: {
   /** When set, switches event between solo and multi_act. */
   multiAct?: boolean;
 }): Promise<UpdateConcertResult> {
+  await requireUser();
   const { db, artist, concert } = await resolveConcertRef(input);
   const previousArtistId = artist.id;
   const previousArtistSlug = artist.slug;
@@ -741,6 +823,7 @@ export async function deleteConcert(
   concertIdOrArtistSlug: string,
   concertSlugValue?: string,
 ): Promise<void> {
+  await requireAdmin();
   await ensureDbInitialized();
   const { db, artist, concert } = concertSlugValue
     ? await resolveConcertRef({
@@ -768,6 +851,7 @@ export async function deleteConcert(
 }
 
 export async function createConcert(formData: FormData): Promise<CreateConcertResult> {
+  const user = await requireUser();
   const artistName = String(formData.get("artistName") || "").trim();
   const date = String(formData.get("date") || "").trim();
   const venue = String(formData.get("venue") || "").trim();
@@ -896,6 +980,27 @@ export async function createConcert(formData: FormData): Promise<CreateConcertRe
       posterPath,
       posterLabel: posterLabel || undefined,
       posterCropJson,
+    });
+  }
+
+  const attendeeExists = (
+    await db
+      .select()
+      .from(concertAttendees)
+      .where(
+        and(
+          eq(concertAttendees.concertId, concertDbId),
+          eq(concertAttendees.userId, user.id),
+        ),
+      )
+      .limit(1)
+  )[0];
+  if (!attendeeExists) {
+    await db.insert(concertAttendees).values({
+      concertId: concertDbId,
+      userId: user.id,
+      hidden: false,
+      createdAt: new Date().toISOString(),
     });
   }
 

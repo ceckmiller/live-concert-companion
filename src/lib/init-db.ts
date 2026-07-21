@@ -3,9 +3,20 @@ import { randomUUID } from "crypto";
 import { getDb } from "./db";
 
 let initialized = false;
+let initPromise: Promise<void> | null = null;
 
 export async function ensureDbInitialized() {
   if (initialized) return;
+  if (!initPromise) {
+    initPromise = runDbInit().catch((err) => {
+      initPromise = null;
+      throw err;
+    });
+  }
+  await initPromise;
+}
+
+async function runDbInit() {
   const db = getDb();
 
   await db.run(sql`
@@ -181,7 +192,82 @@ export async function ensureDbInitialized() {
     )
   `);
 
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      email TEXT NOT NULL,
+      name TEXT NOT NULL,
+      username TEXT,
+      password_hash TEXT,
+      role TEXT NOT NULL DEFAULT 'member',
+      created_at TEXT NOT NULL
+    )
+  `);
+  await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS users_email_unique ON users(email)`);
+  try {
+    await db.run(sql`ALTER TABLE users ADD COLUMN username TEXT`);
+  } catch {
+    // Column already exists.
+  }
+  try {
+    await db.run(sql`ALTER TABLE users ADD COLUMN password_hash TEXT`);
+  } catch {
+    // Column already exists.
+  }
+  await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS users_username_unique ON users(username)`);
+
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS sessions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      token TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `);
+  await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS sessions_token_unique ON sessions(token)`);
+
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS magic_links (
+      id TEXT PRIMARY KEY,
+      email TEXT NOT NULL,
+      token TEXT NOT NULL,
+      invited_by TEXT REFERENCES users(id) ON DELETE SET NULL,
+      expires_at TEXT NOT NULL,
+      consumed_at TEXT,
+      created_at TEXT NOT NULL
+    )
+  `);
+  await db.run(sql`CREATE UNIQUE INDEX IF NOT EXISTS magic_links_token_unique ON magic_links(token)`);
+
+  await db.run(sql`
+    CREATE TABLE IF NOT EXISTS concert_attendees (
+      concert_id TEXT NOT NULL REFERENCES concerts(id) ON DELETE CASCADE,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      hidden INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL,
+      PRIMARY KEY (concert_id, user_id)
+    )
+  `);
+
+  await bootstrapAdminAndAttendees(db);
+
   initialized = true;
+}
+
+
+async function bootstrapAdminAndAttendees(db: ReturnType<typeof getDb>) {
+  const { ensureAdminUser, ensureNadiaUser } = await import("./auth/bootstrap-users");
+  const { deleteAttendeeTestUsers } = await import("./auth/nadia-attendance");
+  const admin = await ensureAdminUser();
+  await ensureNadiaUser();
+  await deleteAttendeeTestUsers();
+  const now = new Date().toISOString();
+  // Backfill: every existing concert belongs to the admin chronology.
+  await db.run(sql`
+    INSERT OR IGNORE INTO concert_attendees (concert_id, user_id, hidden, created_at)
+    SELECT id, ${admin.id}, COALESCE(hidden, 0), ${now} FROM concerts
+  `);
 }
 
 async function migrateKnownEventKinds(db: ReturnType<typeof getDb>) {

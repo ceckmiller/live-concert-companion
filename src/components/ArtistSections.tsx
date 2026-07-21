@@ -327,6 +327,13 @@ export function ConcertCard({
               {c.festivalLabel ? <span className="badge tour">{c.festivalLabel}</span> : null}
               {c.tour && <span className="badge tour">{c.tour}</span>}
               <span className="badge">{concertSongCount(c)} Songs</span>
+              {c.companions?.length
+                ? c.companions.map((name) => (
+                    <span key={name} className="badge companion">
+                      mit {name}
+                    </span>
+                  ))
+                : null}
               {allowHide || hiddenView ? (
                 <button
                   type="button"

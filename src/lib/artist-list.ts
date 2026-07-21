@@ -23,32 +23,31 @@ export type ArtistListRow = {
   headlinerConcerts: HeadlinerConcertRef[];
 };
 
-/** Matches the concert cards shown on the artist detail page (headliners + festival guest slots). */
+/**
+ * Concert count for artist list / stats.
+ * Hidden concerts stay in the count — they are only hidden in the UI.
+ */
 export function countArtistVisibleConcerts(
   artistSlug: string,
   headlinerConcerts: HeadlinerConcertRef[],
   guestActs: GuestActRef[] = [],
 ): number {
-  const visibleHeadliners = headlinerConcerts.filter((c) => !c.hidden);
-  const headlinerForActCheck = visibleHeadliners.map((c) => ({ id: c.id, sort: c.sort }));
-  const includedGuestActs = guestActs
-    .filter((row) => !row.hidden)
-    .filter((row) =>
-      shouldIncludeFestivalAct(artistSlug, row.parentSlug, row.sortDate, headlinerForActCheck),
-    );
-  return visibleHeadliners.length + includedGuestActs.length;
+  const headlinerForActCheck = headlinerConcerts.map((c) => ({ id: c.id, sort: c.sort }));
+  const includedGuestActs = guestActs.filter((row) =>
+    shouldIncludeFestivalAct(artistSlug, row.parentSlug, row.sortDate, headlinerForActCheck),
+  );
+  return headlinerConcerts.length + includedGuestActs.length;
 }
 
 function hasSoloHeadlinerConcerts(headlinerConcerts: HeadlinerConcertRef[]): boolean {
-  return headlinerConcerts.some((c) => {
-    if (c.hidden) return false;
-    return isChronologyConcert({
+  return headlinerConcerts.some((c) =>
+    isChronologyConcert({
       id: c.id,
       slug: c.slug,
-      hidden: Boolean(c.hidden),
+      hidden: false,
       eventKind: c.eventKind,
-    });
-  });
+    }),
+  );
 }
 
 /** Headliners with solo concerts — excludes festival pseudo-artists. */

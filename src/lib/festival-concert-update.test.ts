@@ -5,6 +5,21 @@ vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
 
+vi.mock("./auth/session", () => ({
+  requireUser: vi.fn(async () => ({
+    id: "test-admin",
+    email: "admin@localhost",
+    name: "Admin",
+    role: "admin",
+  })),
+  requireAdmin: vi.fn(async () => ({
+    id: "test-admin",
+    email: "admin@localhost",
+    name: "Admin",
+    role: "admin",
+  })),
+}));
+
 import { getDb } from "./db";
 import { artists, concerts } from "./db/schema";
 import { findConcertBySlug } from "./concert-lookup";
