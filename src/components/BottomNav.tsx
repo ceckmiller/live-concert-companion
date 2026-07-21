@@ -11,7 +11,7 @@ const TABS = [
 ] as const;
 
 export function BottomNav() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
   if (pathname === "/login" || pathname.startsWith("/auth/")) return null;
 
   return (
