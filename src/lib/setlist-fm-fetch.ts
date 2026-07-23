@@ -1,4 +1,5 @@
-const USER_AGENT = "Mozilla/5.0 (compatible; LiveKonzertCompanion/1.0; setlist fetch)";
+const USER_AGENT =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 
 function decodeHtml(text: string): string {
   return text
@@ -29,23 +30,78 @@ export function parseSetlistFmSongs(html: string): string[] {
   return songs;
 }
 
+/** Songs from r.jina.ai markdown of a setlist.fm page. */
+export function parseSetlistFmMarkdownSongs(markdown: string): string[] {
+  const songs: string[] = [];
+  for (const match of markdown.matchAll(
+    /^\s*\d+\.\s+\[([^\]]+)\]\(https?:\/\/(?:www\.)?setlist\.fm\/stats\/songs\/[^)]+\)/gim,
+  )) {
+    const title = match[1].trim();
+    if (title && !/^encore:?$/i.test(title)) songs.push(title);
+  }
+  return songs;
+}
+
 export function extractSetlistLinks(html: string): { url: string; label: string }[] {
   const out: { url: string; label: string }[] = [];
+  const push = (pathOrUrl: string) => {
+    const url = pathOrUrl.startsWith("http")
+      ? pathOrUrl.replace(/^http:\/\//i, "https://")
+      : `https://www.setlist.fm${pathOrUrl}`;
+    if (!/\/setlist\/[^/]+\/\d{4}\//i.test(url)) return;
+    if (out.some((x) => x.url === url)) return;
+    out.push({ url, label: url });
+  };
   for (const match of html.matchAll(/href="(\/setlist\/[^"]+\.html)"/gi)) {
-    const url = `https://www.setlist.fm${match[1]}`;
-    if (out.some((x) => x.url === url)) continue;
-    out.push({ url, label: match[1] });
+    push(match[1]);
+  }
+  for (const match of html.matchAll(
+    /\((https?:\/\/(?:www\.)?setlist\.fm\/setlist\/[^)\s]+\.html)\)/gi,
+  )) {
+    push(match[1]);
   }
   return out;
 }
 
 function dateMatchesPage(html: string, isoDate: string): boolean {
   const [y, m, d] = isoDate.split("-");
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthShort = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const mi = Number(m) - 1;
   const patterns = [
     isoDate,
     `${d}.${m}.${y}`,
     `${Number(d)}.${Number(m)}.${y}`,
     `${y}/${m}/${d}`,
+    `${monthShort[mi]} ${Number(d)} ${y}`,
+    `${monthNames[mi]} ${Number(d)}, ${y}`,
+    `${monthNames[mi]} ${Number(d)} ${y}`,
   ];
   return patterns.some((p) => html.includes(p));
 }
@@ -54,6 +110,39 @@ function germanDate(isoDate: string): string {
   const [y, m, d] = isoDate.split("-");
   if (!y || !m || !d) return isoDate;
   return `${Number(d)}.${Number(m)}.${y}`;
+}
+
+async function fetchText(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent": USER_AGENT,
+        Accept: "text/html,application/xhtml+xml,text/plain,*/*",
+      },
+      signal: AbortSignal.timeout(25000),
+      redirect: "follow",
+    });
+    if (!res.ok || res.status === 202) return null;
+    const text = await res.text();
+    if (!text || text.length < 200) return null;
+    return text;
+  } catch {
+    return null;
+  }
+}
+
+/** Direct fetch, then r.jina.ai reader when setlist.fm blocks bots (HTTP 202). */
+async function fetchSetlistPage(url: string): Promise<string | null> {
+  const direct = await fetchText(url);
+  if (direct) return direct;
+  const viaProxy = await fetchText(`https://r.jina.ai/http://${url.replace(/^https?:\/\//i, "")}`);
+  return viaProxy;
+}
+
+function songsFromPage(page: string): string[] {
+  const htmlSongs = parseSetlistFmSongs(page);
+  if (htmlSongs.length) return htmlSongs;
+  return parseSetlistFmMarkdownSongs(page);
 }
 
 export async function fetchSetlistFromSetlistFm(input: {
@@ -67,45 +156,23 @@ export async function fetchSetlistFromSetlistFm(input: {
     `${input.artistName} ${input.city} ${input.date}`,
     `${input.artistName} ${input.city} ${deDate}`,
     `${input.artistName} ${input.venue || ""} ${input.city} ${input.date}`.trim(),
+    `${input.artistName} ${input.venue || ""} ${input.city} ${deDate}`.trim(),
     `${input.artistName} ${input.date}`,
     `${input.artistName} ${deDate}`,
   ];
 
   for (const query of [...new Set(queries.filter(Boolean))]) {
     const searchUrl = `https://www.setlist.fm/search?query=${encodeURIComponent(query)}`;
-    try {
-      const res = await fetch(searchUrl, {
-        headers: {
-          "User-Agent": USER_AGENT,
-          Accept: "text/html,application/xhtml+xml",
-        },
-        signal: AbortSignal.timeout(20000),
-        redirect: "follow",
-      });
-      // setlist.fm sometimes answers 202/empty to bots — treat as miss, not crash.
-      if (!res.ok || res.status === 202) continue;
-      const html = await res.text();
-      if (!html || html.length < 200) continue;
-      const links = extractSetlistLinks(html).slice(0, 8);
-      for (const link of links) {
-        const pageRes = await fetch(link.url, {
-          headers: {
-            "User-Agent": USER_AGENT,
-            Accept: "text/html,application/xhtml+xml",
-          },
-          signal: AbortSignal.timeout(20000),
-          redirect: "follow",
-        });
-        if (!pageRes.ok || pageRes.status === 202) continue;
-        const pageHtml = await pageRes.text();
-        if (!dateMatchesPage(pageHtml, input.date)) continue;
-        const songs = parseSetlistFmSongs(pageHtml);
-        if (songs.length) return { setlistFmUrl: link.url, songs };
-        // Date matched but empty setlist page — still keep the URL.
-        return { setlistFmUrl: link.url, songs: [] };
-      }
-    } catch {
-      continue;
+    const html = await fetchSetlistPage(searchUrl);
+    if (!html) continue;
+    const links = extractSetlistLinks(html).slice(0, 8);
+    for (const link of links) {
+      const page = await fetchSetlistPage(link.url);
+      if (!page) continue;
+      if (!dateMatchesPage(page, input.date)) continue;
+      const songs = songsFromPage(page);
+      if (songs.length) return { setlistFmUrl: link.url, songs };
+      return { setlistFmUrl: link.url, songs: [] };
     }
   }
 

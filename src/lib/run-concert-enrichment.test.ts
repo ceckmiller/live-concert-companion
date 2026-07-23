@@ -22,7 +22,7 @@ describe("runConcertInternetEnrichment", () => {
     const events: { id: string; status: string; detail?: string }[] = [];
     await expect(
       runConcertInternetEnrichment(
-        { artistSlug: "simply-red", concertSlug: "simply-red-1998-01-30" },
+        { artistSlug: "portishead", concertSlug: "portishead-1998-01-30" },
         {
           includePoster: true,
           patchStep: (id, status, detail) => {
