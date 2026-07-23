@@ -73,8 +73,8 @@ export function AdminForm() {
 
       setMsg(
         multiAct
-          ? `Multi-Act-Event angelegt: ${res.weekdayTime}.`
-          : `Konzert angelegt: ${res.weekdayTime}.`,
+          ? `Multi-Act-Event angelegt: ${res.weekdayTime}. Fehlende Online-Daten kannst du später nachziehen.`
+          : `Konzert angelegt: ${res.weekdayTime}. Fehlende Online-Daten (z. B. Setlist) kannst du später nachziehen.`,
       );
       setLink(res.concertId);
       setPosterPick(null);

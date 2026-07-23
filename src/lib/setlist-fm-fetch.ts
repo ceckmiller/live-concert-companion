@@ -50,38 +50,59 @@ function dateMatchesPage(html: string, isoDate: string): boolean {
   return patterns.some((p) => html.includes(p));
 }
 
+function germanDate(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-");
+  if (!y || !m || !d) return isoDate;
+  return `${Number(d)}.${Number(m)}.${y}`;
+}
+
 export async function fetchSetlistFromSetlistFm(input: {
   artistName: string;
   city: string;
   date: string;
   venue?: string;
 }): Promise<{ setlistFmUrl: string | null; songs: string[] }> {
+  const deDate = germanDate(input.date);
   const queries = [
     `${input.artistName} ${input.city} ${input.date}`,
+    `${input.artistName} ${input.city} ${deDate}`,
     `${input.artistName} ${input.venue || ""} ${input.city} ${input.date}`.trim(),
     `${input.artistName} ${input.date}`,
+    `${input.artistName} ${deDate}`,
   ];
 
-  for (const query of [...new Set(queries)]) {
+  for (const query of [...new Set(queries.filter(Boolean))]) {
     const searchUrl = `https://www.setlist.fm/search?query=${encodeURIComponent(query)}`;
     try {
       const res = await fetch(searchUrl, {
-        headers: { "User-Agent": USER_AGENT },
+        headers: {
+          "User-Agent": USER_AGENT,
+          Accept: "text/html,application/xhtml+xml",
+        },
         signal: AbortSignal.timeout(20000),
+        redirect: "follow",
       });
-      if (!res.ok) continue;
+      // setlist.fm sometimes answers 202/empty to bots — treat as miss, not crash.
+      if (!res.ok || res.status === 202) continue;
       const html = await res.text();
+      if (!html || html.length < 200) continue;
       const links = extractSetlistLinks(html).slice(0, 8);
       for (const link of links) {
         const pageRes = await fetch(link.url, {
-          headers: { "User-Agent": USER_AGENT },
+          headers: {
+            "User-Agent": USER_AGENT,
+            Accept: "text/html,application/xhtml+xml",
+          },
           signal: AbortSignal.timeout(20000),
+          redirect: "follow",
         });
-        if (!pageRes.ok) continue;
+        if (!pageRes.ok || pageRes.status === 202) continue;
         const pageHtml = await pageRes.text();
         if (!dateMatchesPage(pageHtml, input.date)) continue;
         const songs = parseSetlistFmSongs(pageHtml);
         if (songs.length) return { setlistFmUrl: link.url, songs };
+        // Date matched but empty setlist page — still keep the URL.
+        return { setlistFmUrl: link.url, songs: [] };
       }
     } catch {
       continue;
