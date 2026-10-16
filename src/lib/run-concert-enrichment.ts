@@ -37,7 +37,7 @@ async function runStep(
   }
 }
 
-/** Shared internet enrichment sequence used by create + refresh. */
+/** Internet enrichment for newly created concerts. Existing concerts use a preview. */
 export async function runConcertInternetEnrichment(
   ref: ConcertEnrichmentRef,
   options: {

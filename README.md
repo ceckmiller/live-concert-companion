@@ -1,4 +1,4 @@
-# Live Konzert Companion
+# Meine Konzerte
 
 Persönliche Konzert-App mit Setlists, YouTube, Spotify — **Next.js + Turso + Drizzle + Netlify**.
 

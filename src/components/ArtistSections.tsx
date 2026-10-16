@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useState, useTransition } from "react";
 import { TourPosterEditModal } from "@/components/TourPosterEditModal";
 import { ConcertEditModal } from "@/components/ConcertEditModal";
+import { ConcertRefreshControl } from "@/components/ConcertRefreshControl";
 import { UploadVideoModal } from "@/components/UploadVideoModal";
 import { PosterCropFrame } from "@/components/PosterCropFrame";
 import { deleteConcert, setConcertHidden, setConcertPoster } from "@/lib/actions";
@@ -462,6 +463,7 @@ export function ConcertCard({
               </ul>
             </div>
           )}
+          <ConcertRefreshControl concertId={c.id} title={`${artistLabel} · ${c.date} · ${c.city}`} />
         </div>
       </details>
       {isDetail ? (

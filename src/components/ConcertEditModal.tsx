@@ -3,15 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { AttendeePicker, type AttendeeUser } from "@/components/AttendeePicker";
-import { EnrichmentProgress } from "@/components/EnrichmentProgress";
 import { setConcertAttendees, updateConcert } from "@/lib/actions";
 import { getAttendeeEditorStateAction } from "@/lib/auth-actions";
-import {
-  initialRefreshEnrichmentSteps,
-  setStepStatus,
-  type EnrichmentStep,
-} from "@/lib/enrichment-progress";
-import { runConcertInternetEnrichment } from "@/lib/run-concert-enrichment";
 
 type ConcertEditModalProps = {
   open: boolean;
@@ -44,9 +37,7 @@ export function ConcertEditModal({
 }: ConcertEditModalProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [enriching, setEnriching] = useState(false);
   const [error, setError] = useState("");
-  const [steps, setSteps] = useState<EnrichmentStep[] | null>(null);
   const [people, setPeople] = useState<AttendeeUser[]>([]);
   const [attendees, setAttendees] = useState<Set<string>>(new Set());
   const [currentUserId, setCurrentUserId] = useState("");
@@ -72,8 +63,6 @@ export function ConcertEditModal({
       multiAct: isFestivalEvent,
     });
     setError("");
-    setSteps(null);
-    setEnriching(false);
     let cancelled = false;
     getAttendeeEditorStateAction(concertId)
       .then((state) => {
@@ -92,16 +81,7 @@ export function ConcertEditModal({
 
   if (!open) return null;
 
-  const busy = pending || enriching;
-  const canRefresh = Boolean(artistSlug && concertSlug);
-
-  function patchStep(
-    id: EnrichmentStep["id"],
-    status: EnrichmentStep["status"],
-    detail?: string,
-  ) {
-    setSteps((current) => (current ? setStepStatus(current, id, status, detail) : current));
-  }
+  const busy = pending;
 
   function toggleAttendee(id: string) {
     if (id === currentUserId) return;
@@ -144,26 +124,8 @@ export function ConcertEditModal({
     });
   }
 
-  async function onRefreshFromInternet() {
-    if (!artistSlug || !concertSlug || enriching) return;
-    setError("");
-    setSteps(initialRefreshEnrichmentSteps());
-    setEnriching(true);
-    try {
-      await runConcertInternetEnrichment(
-        { artistSlug, concertSlug },
-        { forceRecordings: true, patchStep },
-      );
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Aktualisieren fehlgeschlagen");
-    } finally {
-      setEnriching(false);
-    }
-  }
-
   return (
-    <div className="poster-modal-backdrop" onClick={enriching ? undefined : onClose}>
+    <div className="poster-modal-backdrop" onClick={onClose}>
       <dialog className="poster-modal concert-edit-modal" open onClick={(e) => e.stopPropagation()}>
         <div className="poster-modal-head">
           <h2>{form.multiAct ? "Multi-Act bearbeiten" : "Konzert bearbeiten"}</h2>
@@ -172,7 +134,7 @@ export function ConcertEditModal({
             className="poster-modal-close"
             onClick={onClose}
             aria-label="Schließen"
-            disabled={enriching}
+            disabled={pending}
           >
             ×
           </button>
@@ -260,30 +222,15 @@ export function ConcertEditModal({
             />
           </div>
 
-          <div className="concert-edit-refresh">
-            <button
-              type="button"
-              className="concert-edit-refresh-btn"
-              onClick={onRefreshFromInternet}
-              disabled={!canRefresh || busy}
-            >
-              {enriching ? "Daten werden abgerufen …" : "Daten aus dem Internet erneut abrufen"}
-            </button>
-            <p className="concert-edit-hint">
-              Setlist, YouTube-Videos, Konzertkritiken und längere Mitschnitte nacheinander suchen.
-            </p>
-          </div>
-
-          {steps ? <EnrichmentProgress steps={steps} /> : null}
           {error ? <p className="poster-modal-error">{error}</p> : null}
           <div className="concert-edit-actions">
             <button
               type="button"
               className="poster-modal-upload-btn"
               onClick={onClose}
-              disabled={enriching}
+              disabled={pending}
             >
-              {enriching ? "Läuft …" : "Abbrechen"}
+              Abbrechen
             </button>
             <button type="submit" className="poster-modal-search-btn" disabled={busy}>
               {pending ? "Speichern …" : "Speichern"}

@@ -152,7 +152,8 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
   .concert-head{padding:1.2rem 1.35rem}
   .concert-toggle{font-size:1.75rem;min-width:3.5rem}
 }
-.home-link{color:var(--text);text-decoration:none}
+.home-link{display:inline-flex;align-items:center;gap:.65rem;color:var(--text);text-decoration:none}
+.app-logo{flex-shrink:0;border-radius:10px}
 .home-link:hover,.home-link:active{color:var(--accent)}
 .app-shell-nav{display:flex;gap:1rem;padding:.85rem 1.1rem;padding-left:calc(1.1rem + var(--safe-left));padding-right:calc(1.1rem + var(--safe-right));background:rgba(12,12,15,.96);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
 .app-shell-nav a{color:var(--muted);text-decoration:none;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
@@ -250,11 +251,26 @@ footer{padding:1.35rem 1.1rem calc(1.35rem + var(--safe-bottom));border-top:1px 
 .concert-edit-form label,.upload-video-form label{display:flex;flex-direction:column;gap:.35rem;font-size:.82rem;color:var(--muted)}
 .concert-edit-form input,.concert-edit-form textarea,.upload-video-form select{font:inherit;padding:.55rem .65rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text)}
 .concert-edit-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.25rem}
-.concert-edit-refresh{display:flex;flex-direction:column;gap:.35rem;padding-top:.25rem;border-top:1px solid var(--border)}
-.concert-edit-refresh-btn{font:inherit;padding:.6rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;text-align:left}
-.concert-edit-refresh-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.concert-edit-refresh-btn:disabled{opacity:.65;cursor:wait}
-.concert-edit-modal .enrichment-progress{max-width:none;margin-top:.35rem}
+.concert-refresh{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border)}
+.concert-refresh-btn{font:inherit;font-size:.85rem;padding:.7rem .9rem;min-height:44px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;text-align:left}
+.concert-refresh-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.concert-refresh-btn:disabled{opacity:.65;cursor:wait}
+.concert-refresh-modal{width:min(640px,calc(100% - 2rem));max-height:calc(100dvh - 2rem);box-sizing:border-box;margin:auto}
+.concert-refresh-modal::backdrop{background:rgba(0,0,0,.75)}
+.concert-refresh-context,.concert-refresh-hint{font-size:.82rem;color:var(--muted);line-height:1.5}
+.concert-refresh-modal .enrichment-progress{max-width:none;margin-bottom:1rem}
+.concert-refresh-modal .enrichment-step{flex-wrap:wrap}
+.concert-refresh-modal .enrichment-step-detail{overflow-wrap:anywhere}
+.concert-refresh-results{font-size:.9rem;line-height:1.6}
+.concert-refresh-result{border-top:1px solid var(--border);padding-top:.85rem;margin-top:1rem}
+.concert-refresh-result h3{font-size:.92rem;margin:0 0 .5rem}
+.concert-refresh-result ol,.concert-refresh-result ul,.concert-refresh-warnings ul{padding-left:1.4rem}
+.concert-refresh-result a{overflow-wrap:anywhere}
+.concert-refresh-result details>summary{cursor:pointer;color:var(--muted);font-size:.82rem}
+.concert-refresh-warnings{font-size:.82rem;color:var(--muted);border:1px solid var(--border);padding:.75rem;border-radius:8px;margin-top:1rem}
+.concert-refresh-warnings p{margin-top:0}
+.concert-refresh-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.5rem;padding-top:1rem;margin-top:1rem;border-top:1px solid var(--border)}
+.concert-refresh-actions button{min-height:44px}
 .concert-poster-stacked .concert summary{display:flex;flex-direction:column;min-height:auto;padding:0}
 .concert-poster-stacked .concert-poster{width:100%;border-right:none;border-bottom:1px solid var(--border)}
 .concert-poster-stacked .concert-poster-edit .poster-crop-frame,.concert-poster-stacked .concert-poster-edit .card-placeholder{width:100%;min-height:12rem;aspect-ratio:3/4;height:auto}
